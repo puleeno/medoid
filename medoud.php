@@ -7,5 +7,12 @@
  * Version: 1.0.0
  * Description: Replacement WordPress media with Cloud Storage and CDN
  * Tags: media, clouds, cdn, multi-cloud, synchonize
+ *
+ * @package Medoud
  */
 
+define( 'MEDOUD_PLUGIN_FILE', __FILE__ );
+
+require_once dirname( MEDOUD_PLUGIN_FILE ) . '/includes/class-medoud.php';
+
+$GLOBALS['medoud'] = Medoud::instance();
