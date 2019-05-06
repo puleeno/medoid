@@ -13,6 +13,17 @@
 
 define( 'MEDOUD_PLUGIN_FILE', __FILE__ );
 
-require_once dirname( MEDOUD_PLUGIN_FILE ) . '/includes/class-medoud.php';
+if ( ! class_exists( 'Medoud' ) ) {
+	require_once dirname( MEDOUD_PLUGIN_FILE ) . '/includes/class-medoud.php';
+}
+if ( ! function_exists( 'medoud' ) ) {
+	/**
+	 * Get the medoud singleton instance.
+	 */
+	function medoud() {
+		return Medoud::instance();
+	}
+}
 
-$GLOBALS['medoud'] = Medoud::instance();
+
+$GLOBALS['medoud'] = medoud();
