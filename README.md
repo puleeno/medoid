@@ -1,7 +1,7 @@
 Medoud
 =
 
-A WordPress Media replacement to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
+The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
 
 # Main Features
 - [ ] Replace WordPress media and use thirdparty cloud platform

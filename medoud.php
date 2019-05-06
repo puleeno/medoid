@@ -5,7 +5,7 @@
  * Author: Puleeno Nguyen
  * Author URI: https://puleeno.com
  * Version: 1.0.0
- * Description: Replacement WordPress media with Cloud Storage and CDN
+ * Description: The replacement for WordPress Media to cloud services: AWS S3, Cloudinary, Google Cloud Storage, etc
  * Tags: media, clouds, cdn, multi-cloud, synchonize
  *
  * @package Medoud
