@@ -1,0 +1,19 @@
+{
+    "name": "ramphor/medoud",
+    "description": "The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Puleeno Nguyen",
+            "email": "puleeno@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "google/cloud-storage": "dev-master",
+        "aws/aws-sdk-php": "^3.0@dev",
+        "j0k3r/php-imgur-api-client": "3.x-dev",
+        "cloudinary/cloudinary_php": "dev-master"
+    }
+}
