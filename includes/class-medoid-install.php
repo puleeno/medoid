@@ -1,6 +1,6 @@
 <?php
 
-class Medoud_Install {
+class Medoid_Install {
 	public static function active() {
 
 	}

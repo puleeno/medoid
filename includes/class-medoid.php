@@ -1,23 +1,24 @@
+
 <?php
 /**
- * The Medoud plugin main class
+ * The Medoid plugin main class
  *
- * @package Medoud
+ * @package Medoid
  */
 
 /**
- * Medoud class
+ * Medoid class
  */
-class Medoud {
+class Medoid {
 	/**
-	 * Medoud instance
+	 * Medoid instance
 	 *
-	 * @var Medoud
+	 * @var Medoid
 	 */
 	protected static $instance;
 
 	/**
-	 * Get singleton Medoud instance.
+	 * Get singleton Medoid instance.
 	 */
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
@@ -50,10 +51,10 @@ class Medoud {
 	 * Include plugin files to plugin working
 	 */
 	protected function includes() {
-		require_once MD_ABSPATH . '/includes/medoud-helpers.php';
+		require_once MD_ABSPATH . '/includes/medoid-helpers.php';
 
 		if ( $this->is_request( 'admin' ) ) {
-			require_once MD_ABSPATH . '/includes/admin/class-medoud-admin.php';
+			require_once MD_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
 	}
 
@@ -61,8 +62,8 @@ class Medoud {
 	 * Init mecloud plugin hooks
 	 */
 	protected function hooks() {
-		// register_activation_hook( MEDOUD_PLUGIN_FILE, array( 'Medoud_Install', 'active' ) );
-		// register_deactivation_hook( MEDOUD_PLUGIN_FILE, array( 'Medoud_Install', 'deactivate' ) );
+		// register_activation_hook( MEDOUD_PLUGIN_FILE, array( 'Medoid_Install', 'active' ) );
+		// register_deactivation_hook( MEDOUD_PLUGIN_FILE, array( 'Medoid_Install', 'deactivate' ) );
 	}
 
 	/**

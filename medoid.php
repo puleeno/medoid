@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Medoud
+ * Plugin Name: Medoid
  * Plugin URI: https://puleeno.com
  * Author: Puleeno Nguyen
  * Author URI: https://puleeno.com
@@ -8,22 +8,22 @@
  * Description: The replacement for WordPress Media to cloud services: AWS S3, Cloudinary, Google Cloud Storage, etc
  * Tags: media, clouds, cdn, multi-cloud, synchonize
  *
- * @package Medoud
+ * @package Medoid
  */
 
 define( 'MEDOUD_PLUGIN_FILE', __FILE__ );
 
-if ( ! class_exists( 'Medoud' ) ) {
-	require_once dirname( MEDOUD_PLUGIN_FILE ) . '/includes/class-medoud.php';
+if ( ! class_exists( 'Medoid' ) ) {
+	require_once dirname( MEDOUD_PLUGIN_FILE ) . '/includes/class-medoid.php';
 }
-if ( ! function_exists( 'medoud' ) ) {
+if ( ! function_exists( 'medoid' ) ) {
 	/**
-	 * Get the medoud singleton instance.
+	 * Get the medoid singleton instance.
 	 */
-	function medoud() {
-		return Medoud::instance();
+	function medoid() {
+		return Medoid::instance();
 	}
 }
 
 
-$GLOBALS['medoud'] = medoud();
+$GLOBALS['medoid'] = medoid();

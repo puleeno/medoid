@@ -2,6 +2,6 @@
 /**
  * Mecloud helper functions
  *
- * @package Medoud
+ * @package Medoid
  * @category Helpers
  */
