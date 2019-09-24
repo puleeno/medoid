@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Medoid
+ * Plugin Name: Medoid Cloud Storage
  * Plugin URI: https://github.com/medoid/medoid
  * Author: Puleeno Nguyen
  * Author URI: https://puleeno.com
@@ -15,7 +15,7 @@ if (!class_exists('Medoid')) {
     require_once dirname(__FILE__) . '/includes/class-medoid.php';
 }
 
-if (function_exists('medoid')) {
+if (!function_exists('medoid')) {
     function medoid() {
         return Medoid::instance();
     }
