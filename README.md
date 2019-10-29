@@ -13,3 +13,4 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 - [ ] Google Cloud Storage
 - [ ] Imgur
 - [ ] Backblaze
+- [ ] imagekit.io
