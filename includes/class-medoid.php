@@ -26,14 +26,19 @@ final class Medoid {
 	}
 
 	public function includes() {
-        require_once MEDOID_ABSPATH . '/includes/interfaces/medoid-cloud-interface.php';
-        require_once MEDOID_ABSPATH . '/includes/abstracts/class-medoid-cloud.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
-        $this->include_clouds();
-        $this->include_job_runners();
-        if ( $this->is_request( 'admin' ) ) {
+		require_once MEDOID_ABSPATH . '/includes/interfaces/medoid-cloud-interface.php';
+		require_once MEDOID_ABSPATH . '/includes/abstracts/class-medoid-cloud.php';
+
+		$this->include_clouds();
+		$this->include_job_runners();
+		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
-        }
+		}
+
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-cdn-integration.php';
 	}
 
 	private function is_request( $type ) {
@@ -45,16 +50,18 @@ final class Medoid {
 			case 'cron':
 				return defined( 'DOING_CRON' );
 			case 'frontend':
-				return ( ! is_admin() || defined( 'DOING_AJAX' ) ) && ! defined( 'DOING_CRON' );
+				return ( ! is_admin() || defined( 'DOING_AJAX' ) )
+					&& ! defined( 'DOING_CRON' )
+					&& ! defined( 'REST_REQUEST' );
 		}
-    }
+	}
 
 
-    public function include_clouds() {
-        require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-awss3.php';
-        require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-backblaze.php';
-    }
+	public function include_clouds() {
+		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-awss3.php';
+		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-backblaze.php';
+	}
 
-    public function include_job_runners() {
-    }
+	public function include_job_runners() {
+	}
 }

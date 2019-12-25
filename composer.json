@@ -11,10 +11,5 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "google/cloud-storage": "dev-master",
-        "aws/aws-sdk-php": "^3.0@dev",
-        "j0k3r/php-imgur-api-client": "3.x-dev",
-        "cloudinary/cloudinary_php": "dev-master",
-        "league/flysystem": "^1.1@dev"
     }
 }
