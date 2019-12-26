@@ -28,6 +28,10 @@ class Medoid_Image {
 			$height = 160;
 			$width  = 220;
 		}
+		if ( is_array( $size ) ) {
+			$width  = $size[0];
+			$height = $size[1];
+		}
 
 		// try for a new style intermediate size
 		$intermediate = image_get_intermediate_size( $id, $size );
