@@ -25,8 +25,8 @@ class Medoid_Image {
 		$img_url_basename = wp_basename( $img_url );
 
 		if ( $size == 'medium' ) {
-			$height = 160;
-			$width  = 220;
+			$height = 410;
+			$width  = 520;
 		}
 		if ( is_array( $size ) ) {
 			$width  = $size[0];
@@ -54,8 +54,8 @@ class Medoid_Image {
 				$img_url         = str_replace( $img_url_basename, wp_basename( $thumb_file ), $img_url );
 				$is_intermediate = true;
 			}
-			$width  = 180;
-			$height = 250;
+			$width  = 320;
+			$height = 400;
 		}
 
 		if ( ! $width && ! $height && isset( $meta['width'], $meta['height'] ) ) {
