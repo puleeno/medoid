@@ -27,7 +27,11 @@ class Medoid_Image {
 		if ( $size == 'medium' ) {
 			$height = 410;
 			$width  = 520;
+		} elseif ( $size == 'large') {
+			$height = 540;
+			$width  = 620;
 		}
+
 		if ( is_array( $size ) ) {
 			$width  = $size[0];
 			$height = $size[1];
