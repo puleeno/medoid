@@ -9,8 +9,8 @@ class Medoid_Cloud_Storages {
 		if ( is_null( $id ) ) {
 			return self::$clouds;
 		}
-		if ( isset( $clouds[ $id ] ) ) {
-			return $clouds[ $id ];
+		if ( isset( self::$clouds[ $id ] ) ) {
+			return self::$clouds[ $id ];
 		}
 		return false;
 	}
@@ -20,13 +20,13 @@ class Medoid_Cloud_Storages {
 		$this->setup_clouds();
 	}
 
-	public static function defaultCloud() {
+	public static function getDefaultCloud() {
 		return self::getClouds( 1 );
 	}
 
 	public function setup_clouds() {
 		$options = array();
-		$cloud   = new Medoid_Cloud_Backblaze();
+		$cloud   = new Medoid_Cloud_Backblaze( 1 );
 		if ( $cloud instanceof Medoid_Cloud ) {
 			self::$clouds[1] = $cloud;
 		}

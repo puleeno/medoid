@@ -27,23 +27,38 @@ final class Medoid {
 	}
 
 	public function includes() {
+		$composer = sprintf( '%s/vendor/autoload.php', MEDOID_ABSPATH );
+		if ( ! file_exists( $composer ) ) {
+			if ( is_admin() ) {
+				add_action( 'admin_notices', array( $this, 'composer_not_found' ) );
+			}
+			return;
+		}
+		require_once $composer;
+
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-query.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-response.php';
 		require_once MEDOID_ABSPATH . '/includes/interfaces/medoid-cloud-interface.php';
+		require_once MEDOID_ABSPATH . '/includes/interfaces/medoid-cdn-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/abstracts/class-medoid-cloud.php';
+		require_once MEDOID_ABSPATH . '/includes/abstracts/class-medoid-cdn.php';
 
 		$this->include_clouds();
-		$this->include_job_runners();
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
 
+		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-upload-helpers.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-cdn-integration.php';
+
+		$this->include_job_runners();
 	}
 
 	private function is_request( $type ) {
@@ -63,7 +78,6 @@ final class Medoid {
 
 
 	public function include_clouds() {
-		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-awss3.php';
 		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-backblaze.php';
 	}
 
@@ -72,5 +86,11 @@ final class Medoid {
 
 	public function init_hooks() {
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
+	}
+
+	public function composer_not_found() {
+		echo '<div class="notice notice-warning is-dismissible">
+			<p>Medoid need composer to support cloud storages.</p>
+		</div>';
 	}
 }
