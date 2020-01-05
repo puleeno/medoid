@@ -12,6 +12,7 @@ final class Medoid {
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
+		$this->init_hooks();
 	}
 
 	public function define_constants() {
@@ -26,6 +27,7 @@ final class Medoid {
 	}
 
 	public function includes() {
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
 		require_once MEDOID_ABSPATH . '/includes/interfaces/medoid-cloud-interface.php';
@@ -37,6 +39,9 @@ final class Medoid {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
 
+		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-upload-helpers.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-cdn-integration.php';
 	}
@@ -63,5 +68,9 @@ final class Medoid {
 	}
 
 	public function include_job_runners() {
+	}
+
+	public function init_hooks() {
+		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
 	}
 }
