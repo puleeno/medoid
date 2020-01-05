@@ -11,5 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
+        "league/flysystem": "~1.0.63",
+        "mhetreramesh/flysystem-backblaze": "1.5.2"
     }
 }
