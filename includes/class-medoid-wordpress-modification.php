@@ -26,7 +26,7 @@ class Medoid_Wordpress_Modification {
 			),
 			array(
 				"if ( file_exists( \$new_file ) ) { // This line added by Medoid Cloud Storage\n\t// Set correct file permissions.",
-				"chmod( \$new_file, \$perms );\n\t}",
+				"chmod( \$new_file, \$perms );\n\t} // Medoid end block",
 			),
 			$contents
 		);
