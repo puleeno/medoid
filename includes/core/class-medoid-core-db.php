@@ -25,7 +25,7 @@ class Medoid_Core_Db {
 
 	public function check_db() {
 		$this->db_table_created = get_option(
-			'medoid_created_db_tables',
+			'_medoid_created_db_tables',
 			false
 		);
 	}
@@ -38,6 +38,7 @@ class Medoid_Core_Db {
 			'image_url'      => 'TEXT NULL',
 			'cloud_settings' => 'LONGTEXT',
 			'description'    => 'TEXT NULL',
+			'active'         => 'BOOLEAN NOT NULL DEFAULT 0',
 			'created_at'     => 'TIMESTAMP NULL',
 			'updated_at'     => 'TIMESTAMP NULL',
 			'PRIMARY KEY'    => '(ID)',
@@ -89,6 +90,6 @@ class Medoid_Core_Db {
 
 			$wpdb->query( $sql );
 		}
-		update_option( 'medoid_created_db_tables', true );
+		update_option( '_medoid_created_db_tables', true );
 	}
 }
