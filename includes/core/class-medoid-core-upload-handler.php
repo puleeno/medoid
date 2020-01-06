@@ -1,11 +1,15 @@
 <?php
 class Medoid_Core_Upload_Handler {
-	protected $results;
+	protected $result;
+	protected $db;
+	protected $file;
 
 	public function __construct() {
+		$this->db = new Medoid_Core_Db();
+
 		add_filter( 'pre_move_uploaded_file', array( $this, 'upload_handle' ), 10, 4 );
-		add_filter( 'wp_handle_upload', array( $this, 'upload_results' ), 10, 2 );
-		// _wp_attachment_metadata Add meta to integrated with WordPress core.
+		add_filter( 'wp_handle_upload', array( $this, 'upload_result' ), 10, 2 );
+		add_filter( 'wp_update_attachment_metadata', array( $this, 'update_image_meta' ), 10, 2 );
 	}
 
 	public function upload_handle( $pre_move_file_handle, $file, $new_file, $type ) {
@@ -37,19 +41,43 @@ class Medoid_Core_Upload_Handler {
 
 		$response = $medoid->upload( $file, $new_file, $post, $type );
 		if ( $response instanceof Medoid_Response ) {
-			$this->results = $response;
+			$this->result = $response;
+			$this->file   = $file;
 		}
 
 		return 'custom_upload_handle';
 	}
 
-	public function upload_results( $results, $action ) {
-		if ( empty( $this->results ) ) {
-			return $results;
+	public function upload_result( $result, $action ) {
+		if ( empty( $this->result ) ) {
+			return false;
 		}
-		$results['url'] = (string) $this->results->get_url();
 
-		return $results;
+		$result['url'] = (string) $this->result->get_url();
+		return $result;
+	}
+
+	public function update_image_meta( $data, $attachment_id ) {
+		if ( empty( $this->result ) ) {
+			return $data;
+		}
+
+		$image_data = array(
+			'cloud_id'          => $this->result->get_provider_id(),
+			'provider_image_id' => $this->result->get_provider_image_id(),
+			'post_id'           => $attachment_id,
+			'image_url'         => $this->result->get_url(),
+			'file_size'         => $this->result->get( 'file_size' ),
+			'file_name'         => $this->file['name'],
+			'mime_type'         => $this->file['type'],
+		);
+
+		$image = $this->db->insert_image( $image_data );
+		if ( is_wp_error( $image ) ) {
+			return $data;
+		}
+
+		return [];
 	}
 }
 

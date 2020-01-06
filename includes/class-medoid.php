@@ -48,6 +48,7 @@ final class Medoid {
 
 		$this->include_clouds();
 		if ( $this->is_request( 'admin' ) ) {
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-manage-images.php';
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
 

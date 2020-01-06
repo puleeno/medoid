@@ -20,7 +20,6 @@ class Medoid_Core_Db {
 		$this->image_size_db_table = sprintf( '%smedoid_image_sizes', $wpdb->prefix );
 
 		$this->check_db();
-		$this->load_db_fields();
 	}
 
 	public function check_db() {
@@ -91,5 +90,33 @@ class Medoid_Core_Db {
 			$wpdb->query( $sql );
 		}
 		update_option( '_medoid_created_db_tables', true );
+	}
+
+	public function create_cloud() {
+	}
+
+	public function update_cloud() {
+	}
+
+	public function delete_cloud() {
+	}
+
+	public function insert_image( $image_data, $format = null ) {
+		global $wpdb;
+		if ( empty( $image_data ) ) {
+			return new WP_Error( 'empty_data', __( 'The image data is empty', 'medoid' ) );
+		}
+
+		try {
+			$wpdb->insert( $this->image_db_table, $image_data );
+		} catch ( \Exception $e ) {
+			return new WP_Error( 'sql_error', $e->getMessage() );
+		}
+	}
+
+	public function update_image() {
+	}
+
+	public function delete_image() {
 	}
 }

@@ -21,11 +21,15 @@ class Medoid_Response {
 		$this->cdn = new Medoid_Cdn_Integration();
 	}
 
+	public function get_provider_id() {
+		return $this->provider_id;
+	}
+
 	public function set_provider_image_id( $id ) {
 		$this->provider_image_id = $id;
 	}
 
-	public function get_provider_image_id( $id ) {
+	public function get_provider_image_id() {
 		return $this->provider_image_id;
 	}
 
