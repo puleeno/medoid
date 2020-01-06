@@ -1,12 +1,21 @@
 <?php
 
 class Medoid_Core_Db {
+	protected static $instance;
+
 	protected $cloud_db_table;
 	protected $image_db_table;
 	protected $image_size_db_table;
 	protected $create_tables = [];
 
 	public $db_table_created = false;
+
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance;
+		}
+		return self::$instance;
+	}
 
 	public function __construct() {
 		$this->init_tables();
@@ -57,6 +66,7 @@ class Medoid_Core_Db {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(ID)',
+			'UNIQUE KEY'        => 'post_id (post_id)',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_id'        => 'BIGINT',
@@ -99,6 +109,16 @@ class Medoid_Core_Db {
 	}
 
 	public function delete_cloud() {
+	}
+
+	public function get_image_by_attachment_id( $attatchment_id, $output = 'ARRAY_A' ) {
+		global $wpdb;
+		$sql = "SELECT * FROM {$this->image_db_table} WHERE post_id=%d";
+
+		return $wpdb->get_row(
+			$wpdb->prepare( $sql, $attatchment_id ),
+			$output
+		);
 	}
 
 	public function insert_image( $image_data, $format = null ) {

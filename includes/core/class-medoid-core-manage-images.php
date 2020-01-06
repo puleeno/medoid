@@ -3,7 +3,7 @@ class Medoid_Core_Manage_Images {
 	protected $db;
 
 	public function __construct() {
-		$this->db = new Medoid_Core_Db();
+		$this->db = Medoid_Core_Db::instance();
 
 		/**
 		 * Init the WordPress hooks

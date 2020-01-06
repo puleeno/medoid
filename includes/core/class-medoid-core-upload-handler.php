@@ -5,7 +5,7 @@ class Medoid_Core_Upload_Handler {
 	protected $file;
 
 	public function __construct() {
-		$this->db = new Medoid_Core_Db();
+		$this->db = Medoid_Core_Db::instance();
 
 		add_filter( 'pre_move_uploaded_file', array( $this, 'upload_handle' ), 10, 4 );
 		add_filter( 'wp_handle_upload', array( $this, 'upload_result' ), 10, 2 );

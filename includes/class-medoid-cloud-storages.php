@@ -16,7 +16,6 @@ class Medoid_Cloud_Storages {
 	}
 
 	public function __construct() {
-		$this->query = new Medoid_Query();
 		$this->setup_clouds();
 	}
 

@@ -39,7 +39,6 @@ final class Medoid {
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-query.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-response.php';
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cloud-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
