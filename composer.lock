@@ -4,26 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "632d6a4b44cff0f39ca5ac28f23471d6",
+    "content-hash": "3e8a710d13440582ca5b2854d1a15b42",
     "packages": [
         {
             "name": "gliterd/backblaze-b2",
-            "version": "dev-master",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gliterd/backblaze-b2.git",
-                "reference": "4ce5182293ba2fd421f6c68b6a4daf4235eb736f"
+                "reference": "e53df57516868d0158af36d90b1942656f52dab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gliterd/backblaze-b2/zipball/4ce5182293ba2fd421f6c68b6a4daf4235eb736f",
-                "reference": "4ce5182293ba2fd421f6c68b6a4daf4235eb736f",
+                "url": "https://api.github.com/repos/gliterd/backblaze-b2/zipball/e53df57516868d0158af36d90b1942656f52dab8",
+                "reference": "e53df57516868d0158af36d90b1942656f52dab8",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^6.1",
-                "nesbot/carbon": "~1.20|~2.0",
-                "php": "^7.1.8"
+                "php": ">=5.5.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.8.*",
@@ -59,7 +58,7 @@
                 "filesystem",
                 "storage"
             ],
-            "time": "2019-07-24T18:08:57+00:00"
+            "time": "2018-08-24T21:26:22+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -607,7 +606,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "nesbot/carbon": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
