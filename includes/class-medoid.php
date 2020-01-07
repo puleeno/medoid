@@ -45,11 +45,11 @@ final class Medoid {
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
-		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-upload-helpers.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
 
 		$this->include_clouds();
+		$this->include_cdns();
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
 
@@ -79,6 +79,10 @@ final class Medoid {
 
 	public function include_clouds() {
 		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-backblaze.php';
+	}
+
+	public function include_cdns() {
+		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-imagecdn-app.php';
 	}
 
 	public function include_job_runners() {

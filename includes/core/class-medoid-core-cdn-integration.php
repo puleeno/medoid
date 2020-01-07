@@ -6,6 +6,8 @@ class Medoid_Core_Cdn_Integration {
 	protected $real_url;
 	protected $url;
 
+	protected $cdn_provider;
+
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
@@ -15,29 +17,34 @@ class Medoid_Core_Cdn_Integration {
 	}
 
 	public function __construct() {
+		$this->setup_cdn();
 	}
 
-	public function __toString() {
-		if ( is_string( $this->url ) ) {
-			return $this->url;
-		} elseif ( $this->real_url ) {
-			return $this->real_url;
-		}
-
-		return __return_empty_string();
+	public function setup_cdn() {
+		$options            = array();
+		$this->cdn_provider = new Medoid_Cdn_Imagecdn_App( $options );
 	}
 
-	public function isEnabled() {
-	}
-
-	protected function process() {
-		$this->url = $this->real_url;
+	public function is_enabled() {
+		return true;
 	}
 
 	public function delivery( $url ) {
-		$this->real_url = $url;
-		$this->process();
+		if ( ! $this->is_enabled() ) {
+			return $url;
+		}
 
-		return self;
+		return $this->cdn_provider->process( $url );
+	}
+
+	public function resize() {
+		return call_user_func_array(
+			array( $this->cdn_provider, 'resize' ),
+			func_get_args()
+		);
+	}
+
+	public function get_provider() {
+		return $this->cdn_provider;
 	}
 }

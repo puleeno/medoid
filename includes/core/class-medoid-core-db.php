@@ -69,12 +69,13 @@ class Medoid_Core_Db {
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_id'        => 'BIGINT',
+			'cloud_id'        => 'BIGINT',
 			'image_size'      => 'VARCHAR(255)',
 			'image_url'       => 'TEXT NULL',
 			'proxy_image_url' => 'LONGTEXT',
 			'created_at'      => 'TIMESTAMP NULL',
 			'updated_at'      => 'TIMESTAMP NULL',
-			'PRIMARY KEY'     => '(image_id, image_size)',
+			'PRIMARY KEY'     => '(image_id, cloud_id, image_size)',
 		);
 	}
 
