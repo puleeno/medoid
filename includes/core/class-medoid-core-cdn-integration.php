@@ -1,8 +1,18 @@
 <?php
 
-class Medoid_Cdn_Integration {
+class Medoid_Core_Cdn_Integration {
+	protected static $instance;
+
 	protected $real_url;
 	protected $url;
+
+	public static function instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	public function __construct() {
 	}
@@ -31,5 +41,3 @@ class Medoid_Cdn_Integration {
 		return self;
 	}
 }
-
-new Medoid_Cdn_Integration();

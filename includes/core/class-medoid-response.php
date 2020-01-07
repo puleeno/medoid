@@ -9,16 +9,12 @@ class Medoid_Response {
 	protected $data;
 	protected $errors;
 
-	protected $cdn;
-
 	public function __construct( $provider, $status = false, $url = '', $data = array() ) {
 		$this->provider_id = $provider;
 
 		$this->status = $status;
 		$this->url    = $url;
 		$this->data   = $data;
-
-		$this->cdn = new Medoid_Cdn_Integration();
 	}
 
 	public function get_provider_id() {
@@ -38,11 +34,7 @@ class Medoid_Response {
 	}
 
 	public function set_url( $url ) {
-		if ( $this->cdn->isEnabled() ) {
-			$this->url = $this->cdn->delivery( $url );
-		} else {
-			$this->url = $url;
-		}
+		$this->url = $url;
 	}
 
 	public function get_url() {

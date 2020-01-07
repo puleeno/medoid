@@ -44,21 +44,21 @@ final class Medoid {
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
+		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
+		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-upload-helpers.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
 
 		$this->include_clouds();
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
+
+		$this->include_job_runners();
+
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-manage-images.php';
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
-
-		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
-		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-upload-helpers.php';
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-cdn-integration.php';
-
-		$this->include_job_runners();
 	}
 
 	private function is_request( $type ) {

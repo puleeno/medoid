@@ -4,9 +4,12 @@
  */
 class Medoid_Image {
 	protected $db;
+	protected $cdn;
 
 	public function __construct() {
-		$this->db = Medoid_Core_Db::instance();
+		$this->db  = Medoid_Core_Db::instance();
+		$this->cdn = Medoid_Core_Cdn_Integration::instance();
+
 		add_action( 'init', array( $this, 'init_hooks' ) );
 	}
 
