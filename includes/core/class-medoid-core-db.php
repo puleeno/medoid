@@ -66,7 +66,6 @@ class Medoid_Core_Db {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(ID)',
-			'UNIQUE KEY'        => 'post_id (post_id)',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_id'        => 'BIGINT',
