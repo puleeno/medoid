@@ -10,6 +10,7 @@ class Medoid_Core_Upload_Handler {
 		add_filter( 'pre_move_uploaded_file', array( $this, 'upload_handle' ), 10, 4 );
 		add_filter( 'wp_handle_upload', array( $this, 'upload_result' ), 10, 2 );
 		add_filter( 'wp_update_attachment_metadata', array( $this, 'update_image_meta' ), 10, 2 );
+		add_filter( 'update_attached_file', array( $this, 'dont_create__wp_attached_file' ), 10, 2 );
 	}
 
 	public function upload_handle( $pre_move_file_handle, $file, $new_file, $type ) {
@@ -63,9 +64,9 @@ class Medoid_Core_Upload_Handler {
 		}
 
 		$image_data = array(
+			'post_id'           => $attachment_id,
 			'cloud_id'          => $this->result->get_provider_id(),
 			'provider_image_id' => $this->result->get_provider_image_id(),
-			'post_id'           => $attachment_id,
 			'image_url'         => $this->result->get_url(),
 			'file_size'         => $this->result->get( 'file_size' ),
 			'file_name'         => $this->file['name'],
@@ -78,6 +79,14 @@ class Medoid_Core_Upload_Handler {
 		}
 
 		return [];
+	}
+
+	public function dont_create__wp_attached_file( $file, $attachment_id ) {
+		if ( $this->result ) {
+			return null;
+		}
+
+		return $file;
 	}
 }
 

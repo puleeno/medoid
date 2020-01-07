@@ -110,6 +110,10 @@ class Medoid_Image {
 	}
 
 	public function image_src( $image, $attachment_id, $size ) {
+		$medoid_image = $this->get_image( $attachment_id, $size );
+		if ( $medoid_image ) {
+			$image[0] = $medoid_image['image_url'];
+		}
 		return $image;
 	}
 }
