@@ -38,8 +38,24 @@ class Medoid_Image {
 		$medoid_image = $this->get_image( $attachment->ID );
 
 		if ( $medoid_image ) {
-			$response['url']  = $medoid_image['image_url'];
-			$response['icon'] = $medoid_image['image_url'];
+			$medoid_image_url = $medoid_image['image_url'];
+
+			$response['url']   = $medoid_image_url;
+			$response['icon']  = $medoid_image_url;
+			$response['sizes'] = array(
+				'thumbnail' => array(
+					'height'      => 150,
+					'width'       => 150,
+					'url'         => $medoid_image_url,
+					'orientation' => 'landscape',
+				),
+				'full'      => array(
+					'height'      => 200,
+					'width'       => 200,
+					'url'         => $medoid_image_url,
+					'orientation' => 'landscape',
+				),
+			);
 		}
 
 		return $response;
