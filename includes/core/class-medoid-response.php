@@ -59,7 +59,7 @@ class Medoid_Response {
 
 	public function set_error( $error ) {
 		if ( $error instanceof \Exception ) {
-			$this->errors[] = $e->getMessage();
+			$this->errors[] = $error->getMessage();
 		} else {
 			$this->errors[] = $error;
 		}

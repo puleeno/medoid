@@ -1,5 +1,7 @@
 <?php
 class Medoid_Core_Upload_Handler {
+	public static $current_post;
+
 	protected $result;
 	protected $db;
 	protected $file;
@@ -18,7 +20,8 @@ class Medoid_Core_Upload_Handler {
 		if ( ! $medoid_enabled ) {
 			return $pre_move_file_handle;
 		}
-		$post = null;
+
+		$post = self::$current_post;
 		if ( isset( $_POST['post_id'] ) ) {
 			$post = get_post( $_POST['post_id'] );
 		} elseif ( isset( $_POST['post'] ) ) {
@@ -87,6 +90,15 @@ class Medoid_Core_Upload_Handler {
 		}
 
 		return $file;
+	}
+
+	public static function set_current_post( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+
+			$post = get_post( $post );
+		}
+
+		self::$current_post = $post;
 	}
 }
 
