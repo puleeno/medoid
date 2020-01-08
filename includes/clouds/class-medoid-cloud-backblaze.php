@@ -30,7 +30,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 				}
 			}
 			$ext       = pathinfo( $file['name'], PATHINFO_EXTENSION );
-			$file_name = sprintf( '%s%s%s', $parent_folder, $folder, substr( md5( $file['name'] . time() ), 0, 6 ) );
+			$file_name = sprintf( '%s%s%s.%s', $parent_folder, $folder, substr( md5( $file['name'] . time() ), 0, 6 ), $ext );
 			$tmp_file  = $file['tmp_name'];
 			$resource  = fopen( $tmp_file, 'r' );
 
