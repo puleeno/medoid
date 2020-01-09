@@ -40,7 +40,8 @@ class Medoid_Core_Upload_Handler {
 			)
 		);
 		if ( ! $medoid instanceof Medoid_Cloud ) {
-			return null;
+			$this->result = null;
+			return;
 		}
 
 		$response = $medoid->upload( $file, $new_file, $post, $type );
@@ -53,8 +54,10 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function upload_result( $result, $action ) {
-		if ( empty( $this->result ) ) {
-			return false;
+		if ( empty( $this->result ) || empty( $this->result->get_url() ) ) {
+			return [
+				'error' => __( 'Medoid upload image has error', 'medoid' ),
+			];
 		}
 
 		$result['url'] = (string) $this->result->get_url();
