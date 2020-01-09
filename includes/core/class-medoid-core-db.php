@@ -121,7 +121,8 @@ class Medoid_Core_Db {
 		);
 	}
 
-	public function get_image_size() {
+	public function get_image_size( $attatchment_id ) {
+		return wp_get_attachment_url( $attatchment_id );
 	}
 
 	public function insert_image( $image_data, $format = null ) {
