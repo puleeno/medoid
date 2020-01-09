@@ -121,6 +121,9 @@ class Medoid_Core_Db {
 		);
 	}
 
+	public function get_image_size() {
+	}
+
 	public function insert_image( $image_data, $format = null ) {
 		global $wpdb;
 		if ( empty( $image_data ) ) {
