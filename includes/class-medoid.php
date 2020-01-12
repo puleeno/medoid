@@ -50,7 +50,7 @@ final class Medoid {
 
 		$this->include_clouds();
 		$this->include_cdns();
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
+
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
 
 		$this->include_job_runners();

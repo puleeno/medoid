@@ -16,6 +16,10 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function upload_handle( $pre_move_file_handle, $file, $new_file, $type ) {
+		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
+			require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
+		}
+
 		$medoid_enabled = true;
 		if ( ! $medoid_enabled ) {
 			return $pre_move_file_handle;
