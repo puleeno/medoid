@@ -20,11 +20,7 @@ class Medoid_Image {
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'image_src' ), 99, 3 );
 	}
 
-	public function load_image( $image, $attachment_id, $size ) {
-		return $image;
-	}
-
-	public function get_image( $attachment_id ) {
+	public function get_image( $attachment_id, $cloud_id = null ) {
 		$medoid_image = $this->db->get_image_by_attachment_id(
 			$attachment_id
 		);
@@ -52,6 +48,10 @@ class Medoid_Image {
 
 				return $medoid_image;
 			}
+		}
+
+		if ( 'full' === $size ) {
+			return $this->get_image( $attachment_id, $cloud_id = null );
 		}
 
 		return $this->db->get_image_size( $attachment_id, $size, $cloud_id = null );
