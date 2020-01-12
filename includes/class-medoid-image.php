@@ -31,7 +31,7 @@ class Medoid_Image {
 		if ( empty( $medoid_image ) ) {
 			return;
 		}
-		if ( $this->cdn->is_enable() ) {
+		if ( $this->cdn->is_enabled() ) {
 			$medoid_image['image_url'] = $this->cdn->delivery( $medoid_image['image_url'] );
 		}
 
