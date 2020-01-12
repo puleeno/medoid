@@ -30,10 +30,6 @@ class Medoid_Core_Cdn_Integration {
 	}
 
 	public function delivery( $url ) {
-		if ( ! $this->is_enabled() ) {
-			return $url;
-		}
-
 		return $this->cdn_provider->process( $url );
 	}
 

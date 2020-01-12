@@ -11,6 +11,10 @@ class Medoid_Image {
 		$this->cdn = Medoid_Core_Cdn_Integration::instance();
 
 		add_action( 'init', array( $this, 'init_hooks' ) );
+
+		if ( defined( 'MEDOID_DEBUG' ) && MEDOID_DEBUG ) {
+			add_filter( 'wp_get_attachment_image_src', array( $this, 'image_dev_url' ), 5 );
+		}
 	}
 
 	public function init_hooks() {
@@ -27,12 +31,14 @@ class Medoid_Image {
 		if ( empty( $medoid_image ) ) {
 			return;
 		}
-		$medoid_image['image_url'] = $this->cdn->delivery( $medoid_image['image_url'] );
+		if ( $this->cdn->is_enable() ) {
+			$medoid_image['image_url'] = $this->cdn->delivery( $medoid_image['image_url'] );
+		}
 
-		return $medoid_image;
+		return apply_filters( 'medoid_image', $medoid_image, $attachment, 'full', $cloud_id );
 	}
 
-	public function get_image_size( $attachment_id, $size = 'thumbnail' ) {
+	public function get_image_size( $attachment_id, $size = 'thumbnail', $cloud_id = null ) {
 		$medoid_image = $this->db->get_image_by_attachment_id(
 			$attachment_id
 		);
@@ -46,7 +52,7 @@ class Medoid_Image {
 				$medoid_image['image_url'] = $this->cdn->resize( $medoid_image['image_url'], $sizes );
 				$medoid_image['sizes']     = $sizes;
 
-				return $medoid_image;
+				return apply_filters( 'medoid_image', $medoid_image, $attachment, 'full', $cloud_id );
 			}
 		}
 
@@ -54,7 +60,13 @@ class Medoid_Image {
 			return $this->get_image( $attachment_id, $cloud_id = null );
 		}
 
-		return $this->db->get_image_size( $attachment_id, $size, $cloud_id = null );
+		return apply_filters(
+			'medoid_image',
+			$this->db->get_image_size( $attachment_id, $size, $cloud_id = null ),
+			$attachment_id,
+			$size,
+			$cloud_id
+		);
 	}
 
 	public function image_downsize( $image, $attachment_id, $size ) {
@@ -97,7 +109,25 @@ class Medoid_Image {
 			$image[2] = $medoid_image['sizes']['height'];
 		}
 
+		if ( $this->cdn->is_enabled() ) {
+			if ( $this->cdn->get_provider()->is_support( 'resize' ) ) {
+				$sizes    = medoid_get_image_sizes( $size );
+				$image[0] = $this->cdn->resize( $image[0], $sizes );
+			} else {
+				$image[0] = $this->cdn->delivery( $image[0] );
+			}
+		}
+
 		return $image;
+	}
+
+	public function image_dev_url( $image_url ) {
+		if ( ! defined( 'MEDOID_DEBUG_DOMAIN' ) ) {
+			return $image_url;
+		}
+		 $dev_domain = constant( 'MEDOID_DEBUG_DOMAIN' );
+
+		 return str_replace( site_url(), $dev_domain, $image_url );
 	}
 }
 
