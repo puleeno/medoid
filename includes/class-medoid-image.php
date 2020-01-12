@@ -37,11 +37,15 @@ class Medoid_Image {
 	}
 
 	public function get_image_size( $attachment_id, $size = 'thumbnail' ) {
+		$medoid_image = $this->db->get_image_by_attachment_id(
+			$attachment_id
+		);
+		if ( empty( $medoid_image ) ) {
+			return false;
+		}
+
 		if ( $this->cdn->get_provider()->is_support( 'resize' ) ) {
-			$medoid_image = $this->db->get_image_by_attachment_id(
-				$attachment_id
-			);
-			$sizes        = medoid_get_image_sizes( $size );
+			$sizes = medoid_get_image_sizes( $size );
 			if ( $medoid_image ) {
 				$medoid_image['image_url'] = $this->cdn->resize( $medoid_image['image_url'], $sizes );
 				$medoid_image['sizes']     = $sizes;
@@ -87,11 +91,12 @@ class Medoid_Image {
 
 	public function image_src( $image, $attachment_id, $size ) {
 		$medoid_image = $this->get_image_size( $attachment_id, $size );
-		if ( $medoid_image ) {
+		if ( false !== $medoid_image ) {
 			$image[0] = $medoid_image['image_url'];
 			$image[1] = $medoid_image['sizes']['width'];
 			$image[2] = $medoid_image['sizes']['height'];
 		}
+
 		return $image;
 	}
 }
