@@ -60,7 +60,9 @@ class Medoid_Core_Upload_Handler {
 	public function upload_result( $result, $action ) {
 		if ( empty( $this->result ) || empty( $this->result->get_url() ) ) {
 			return [
-				'error' => __( 'Medoid upload image has error', 'medoid' ),
+				'error' => empty( $this->result )
+					? __( 'Medoid upload image has error', 'medoid' )
+					: $this->result->get_error_message(),
 			];
 		}
 
