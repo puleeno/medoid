@@ -105,8 +105,10 @@ class Medoid_Image {
 		$medoid_image = $this->get_image_size( $attachment_id, $size );
 		if ( false !== $medoid_image ) {
 			$image[0] = $medoid_image['image_url'];
-			$image[1] = $medoid_image['sizes']['width'];
-			$image[2] = $medoid_image['sizes']['height'];
+			if ( is_array( $medoid_image['sizes'] ) ) {
+				$image[1] = $medoid_image['sizes']['width'];
+				$image[2] = $medoid_image['sizes']['height'];
+			}
 		}
 
 		if ( $this->cdn->is_enabled() ) {
