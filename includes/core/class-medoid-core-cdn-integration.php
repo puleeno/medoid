@@ -17,12 +17,18 @@ class Medoid_Core_Cdn_Integration {
 	}
 
 	public function __construct() {
+		$this->includes();
 		$this->setup_cdn();
+	}
+
+	public function includes() {
+		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-gumlet.php';
+		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-imagecdn-app.php';
 	}
 
 	public function setup_cdn() {
 		$options            = array();
-		$this->cdn_provider = new Medoid_Cdn_Imagecdn_App( $options );
+		$this->cdn_provider = new Medoid_Cdn_Gumlet( $options );
 	}
 
 	public function is_enabled() {
