@@ -39,7 +39,12 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 	}
 
 	public function resize( $url, $sizes ) {
-		$sizes['mode'] = 'crop';
+		$sizes = wp_parse_args(
+			$sizes,
+			array(
+				'mode' => 'crop',
+			)
+		);
 		return $this->create_url( $url, $sizes );
 	}
 
@@ -56,6 +61,10 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 			} else {
 				$convert_fields[ $field ] = $value;
 			}
+		}
+
+		if ( true === $convert_fields['crop'] ) {
+			$convert_fields['crop'] = 'entropy';
 		}
 
 		return $convert_fields;
