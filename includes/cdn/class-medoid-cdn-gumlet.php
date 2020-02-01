@@ -27,11 +27,15 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 		$image_url = str_replace(
 			array(
 				'f000.backblazeb2.com',
+				'dev.loveofboys.com',
 				'loveofboys.com',
+				'fanboylove.monster',
 			),
 			array(
 				'lobs.gumlet.com',
 				'loveofboys.gumlet.com',
+				'loveofboys.gumlet.com',
+				'fanboylove.gumlet.com',
 			),
 			$url
 		);

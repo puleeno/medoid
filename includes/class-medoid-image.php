@@ -70,6 +70,33 @@ class Medoid_Image {
 	}
 
 	public function image_downsize( $image, $attachment_id, $size ) {
+		$sizes = medoid_get_image_sizes( $size );
+		if ( ! isset( $sizes['width'], $sizes['height'] ) ) {
+			return $image;
+		}
+		$str_size   = sprintf( '%sx%s', $sizes['width'], $sizes['height'] );
+		$image_size = $this->db->get_image_size_by_attachment_id( $attachment_id, $str_size );
+
+		if ( $image_size ) {
+			$image[0] = $image_size;
+			return $image;
+		}
+
+		$image_url = '';
+		if ( $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' ) ) {
+			$medoid_image = $this->db->get_image_by_attachment_id( $attachment_id );
+
+			if ( $medoid_image ) {
+				$image_url = $this->cdn->resize( $medoid_image['image_url'], $sizes );
+			} else {
+				$image_url = $this->cdn->resize( wp_get_attachment_url( $attachment_id ), $sizes );
+			}
+		}
+
+		if ( $image_url ) {
+			$image[0] = $image_url;
+		}
+
 		return $image;
 	}
 
@@ -102,24 +129,6 @@ class Medoid_Image {
 	}
 
 	public function image_src( $image, $attachment_id, $size ) {
-		$medoid_image = $this->get_image_size( $attachment_id, $size );
-		if ( false !== $medoid_image ) {
-			$image[0] = $medoid_image['image_url'];
-			if ( is_array( $medoid_image['sizes'] ) ) {
-				$image[1] = $medoid_image['sizes']['width'];
-				$image[2] = $medoid_image['sizes']['height'];
-			}
-		}
-
-		if ( $this->cdn->is_enabled() ) {
-			if ( $this->cdn->get_provider()->is_support( 'resize' ) ) {
-				$sizes    = medoid_get_image_sizes( $size );
-				$image[0] = $this->cdn->resize( $image[0], $sizes );
-			} else {
-				$image[0] = $this->cdn->delivery( $image[0] );
-			}
-		}
-
 		return $image;
 	}
 
