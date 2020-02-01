@@ -29,13 +29,11 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 				'f000.backblazeb2.com',
 				'dev.loveofboys.com',
 				'loveofboys.com',
-				'fanboylove.monster',
 			),
 			array(
-				'lobs.gumlet.com',
+				MEDOID_GUMLET_DOMAIN,
 				'loveofboys.gumlet.com',
 				'loveofboys.gumlet.com',
-				'fanboylove.gumlet.com',
 			),
 			$url
 		);
