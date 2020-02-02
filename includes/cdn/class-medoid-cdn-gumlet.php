@@ -24,14 +24,17 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 			$query .= '?' . http_build_query( $api_query );
 		}
 
+		$site      = parse_url( site_url() );
 		$image_url = str_replace(
 			array(
 				'f000.backblazeb2.com',
 				'dev.loveofboys.com',
+				$site['host'],
 				'loveofboys.com',
 			),
 			array(
 				MEDOID_GUMLET_DOMAIN,
+				'loveofboys.gumlet.com',
 				'loveofboys.gumlet.com',
 				'loveofboys.gumlet.com',
 			),
