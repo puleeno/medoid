@@ -34,28 +34,45 @@ final class Medoid {
 			}
 			return;
 		}
+		/**
+		 * Load dependences via Composer Package Manager
+		 */
 		require_once $composer;
 
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
-
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-response.php';
+		/**
+		 * Require the interfaces and abstracts
+		 */
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cloud-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
+
+		/**
+		 * Install Medoid
+		 */
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
+
+		/**
+		 * Load medoid helpers
+		 */
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
+
+		/**
+		 * Added medoid flow via WordPress Native upload Flow
+		 */
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
-		$this->include_clouds();
-
+		/**
+		 * Customize WordPress load the images
+		 */
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
 
-		$this->include_job_runners();
-
+		/**
+		 * Load Medoid Admin
+		 */
 		if ( $this->is_request( 'admin' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-manage-images.php';
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
 	}
@@ -73,14 +90,6 @@ final class Medoid {
 					&& ! defined( 'DOING_CRON' )
 					&& ! defined( 'REST_REQUEST' );
 		}
-	}
-
-
-	public function include_clouds() {
-		require_once MEDOID_ABSPATH . '/includes/clouds/class-medoid-cloud-backblaze.php';
-	}
-
-	public function include_job_runners() {
 	}
 
 	public function init_hooks() {
