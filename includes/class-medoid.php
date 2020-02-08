@@ -45,8 +45,8 @@ final class Medoid {
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
 		$this->include_clouds();
 
