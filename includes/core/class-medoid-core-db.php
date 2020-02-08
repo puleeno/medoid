@@ -57,7 +57,6 @@ class Medoid_Core_Db {
 			'post_id'           => 'BIGINT NOT NULL',
 			'provider_image_id' => 'TEXT NULL',
 			'image_url'         => 'TEXT NULL',
-			'temp_url'          => 'TEXT NULL',
 			'is_uploaded'       => 'TINYINT DEFAULT 0',
 			'proxy_image_url'   => 'TEXT NULL',
 			'hash_filename'     => 'TEXT',
@@ -149,7 +148,7 @@ class Medoid_Core_Db {
 		}
 
 		try {
-			$wpdb->insert( $this->image_db_table, $image_data );
+			$wpdb->insert( $this->image_db_table, $image_data, $format );
 		} catch ( \Exception $e ) {
 			return new WP_Error( 'sql_error', $e->getMessage() );
 		}

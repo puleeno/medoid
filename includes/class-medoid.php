@@ -92,4 +92,8 @@ final class Medoid {
 			<p>Medoid need composer to support cloud storages.</p>
 		</div>';
 	}
+
+	public static function is_active() {
+		return true;
+	}
 }

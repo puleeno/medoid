@@ -1,113 +1,77 @@
 <?php
 class Medoid_Core_Upload_Handler {
 	public static $current_post;
-
-	protected $result;
 	protected $db;
-	protected $file;
+	protected $cdn;
+	protected $result;
 
-	public function __construct() {
-		$this->db = Medoid_Core_Db::instance();
-
-		add_filter( 'pre_move_uploaded_file', array( $this, 'upload_handle' ), 10, 4 );
-		add_filter( 'wp_handle_upload', array( $this, 'upload_result' ), 10, 2 );
-		add_filter( 'wp_update_attachment_metadata', array( $this, 'update_image_meta' ), 10, 2 );
-		add_filter( 'update_attached_file', array( $this, 'dont_create__wp_attached_file' ), 10, 2 );
+	public static function set_current_post( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			$post = get_post( $post );
+		}
+		self::$current_post = $post;
 	}
 
-	public function upload_handle( $pre_move_file_handle, $file, $new_file, $type ) {
+	public function __construct() {
+		$this->init();
+		$this->initHooks();
+	}
+
+	public function init() {
+		$this->db  = Medoid_Core_Db::instance();
+		$this->cdn = Medoid_Core_Cdn_Integration::instance();
+	}
+
+	public function initHooks() {
+		add_action( 'wp_handle_upload', array( $this, 'get_upload_result' ), 10 );
+		add_action( 'add_attachment', array( $this, 'insert_temporary_cloud_image' ) );
+	}
+
+	public function get_upload_result( $result ) {
 		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
 		}
 
-		$medoid_enabled = true;
-		if ( ! $medoid_enabled ) {
-			return $pre_move_file_handle;
+		$this->cdn_support_resize = $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' );
+
+		if ( $this->cdn_support_resize ) {
+			add_filter( 'intermediate_image_sizes', '__return_empty_array' );
+			add_filter( 'wp_update_attachment_metadata', '__return_null' );
 		}
 
-		$post = self::$current_post;
-		if ( isset( $_POST['post_id'] ) ) {
-			$post = get_post( $_POST['post_id'] );
-		} elseif ( isset( $_POST['post'] ) ) {
-			$post = get_post( $_POST['post'] );
-		}
-
-		$medoid = apply_filters(
-			'medoid_active_cloud_provider',
-			Medoid_Cloud_Storages::getDefaultCloud(),
-			$file,
-			$post,
-			array(
-				'new_file' => $new_file,
-				'type'     => $type,
-				'request'  => $_POST,
-			)
-		);
-		if ( ! $medoid instanceof Medoid_Cloud ) {
-			$this->result = null;
-			return;
-		}
-
-		$response = $medoid->upload( $file, $new_file, $post, $type );
-		if ( $response instanceof Medoid_Response ) {
-			$this->result = $response;
-			$this->file   = $file;
-		}
-
-		return 'custom_upload_handle';
-	}
-
-	public function upload_result( $result, $action ) {
-		if ( empty( $this->result ) || empty( $this->result->get_url() ) ) {
-			return [
-				'error' => empty( $this->result )
-					? __( 'Medoid upload image has error', 'medoid' )
-					: $this->result->get_error_message(),
-			];
-		}
-
-		$result['url'] = (string) $this->result->get_url();
+		$this->result = $result;
 		return $result;
 	}
 
-	public function update_image_meta( $data, $attachment_id ) {
-		if ( empty( $this->result ) ) {
-			return $data;
-		}
+	public function insert_temporary_cloud_image( $attachment_id ) {
+		$clouds = Medoid_Cloud_Storages::get_active_clouds();
+		if ( ! Medoid::is_active() || empty( $clouds ) ) {
+			return;
+		};
 
 		$image_data = array(
-			'post_id'           => $attachment_id,
-			'cloud_id'          => $this->result->get_provider_id(),
-			'provider_image_id' => $this->result->get_provider_image_id(),
-			'image_url'         => $this->result->get_url(),
-			'file_size'         => $this->result->get( 'file_size' ),
-			'file_name'         => $this->file['name'],
-			'mime_type'         => $this->file['type'],
+			'post_id'   => $attachment_id,
+			'image_url' => $this->result['url'],
+			'file_size' => filesize( $this->result['file'] ),
+			'file_name' => str_replace( ABSPATH, '', $this->result['file'] ),
+			'mime_type' => $this->result['type'],
 		);
 
-		$image = $this->db->insert_image( $image_data );
-		if ( is_wp_error( $image ) ) {
-			return $data;
+		foreach ( array_keys( $clouds ) as $cloud_id ) {
+			$image_data['cloud_id'] = $cloud_id;
+			/**
+			 * The cloud_id is zero this mean the cloud is Local Storage
+			 * so the plugin don't need upload the image
+			 */
+			$image_data['is_uploaded'] = $cloud_id === 0;
+
+			$this->db->insert_image( $image_data );
 		}
 
-		return [];
-	}
-
-	public function dont_create__wp_attached_file( $file, $attachment_id ) {
-		if ( $this->result ) {
-			return null;
+		if ( $this->cdn_support_resize ) {
+			remove_filter( 'intermediate_image_sizes', '__return_empty_array' );
+			remove_filter( 'wp_update_attachment_metadata', '__return_null' );
 		}
-
-		return $file;
-	}
-
-	public static function set_current_post( $post ) {
-		if ( ! $post instanceof WP_Post ) {
-
-			$post = get_post( $post );
-		}
-
-		self::$current_post = $post;
 	}
 }
 

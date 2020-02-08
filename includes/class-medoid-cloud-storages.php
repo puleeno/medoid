@@ -16,11 +16,11 @@ class Medoid_Cloud_Storages {
 		}
 	}
 
-	public static function getDefaultCloud() {
-		return self::getClouds( 1 );
+	public static function get_default_cloud() {
+		return self::get_clouds( 1 );
 	}
 
-	public static function getClouds( $id = null ) {
+	public static function get_clouds( $id = null ) {
 		if ( is_null( $id ) ) {
 			return self::$clouds;
 		}
@@ -30,8 +30,10 @@ class Medoid_Cloud_Storages {
 		return false;
 	}
 
-	public static function getActiveClouds() {
-		return [ 1 => 'Default' ];
+	public static function get_active_clouds() {
+		return array(
+			1 => 'Backblaze',
+		);
 	}
 }
 
