@@ -5,8 +5,10 @@ class Medoid_Cloud_Storages {
 	protected $query;
 
 	public function __construct() {
+		$this->includes();
 		$this->setup_clouds();
 	}
+	
 
 	public function setup_clouds() {
 		$options = array();

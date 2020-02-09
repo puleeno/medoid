@@ -51,23 +51,34 @@ final class Medoid {
 		 * Install Medoid
 		 */
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-install.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
 
 		/**
 		 * Load medoid helpers
 		 */
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
 
-		/**
-		 * Added medoid flow via WordPress Native upload Flow
-		 */
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
+		if ( !$this->is_request( 'cron' ) ) {
+			/**
+			 * Added medoid flow via WordPress Native upload Flow
+			 */
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
-		/**
-		 * Customize WordPress load the images
-		 */
-		require_once MEDOID_ABSPATH . '/includes/class-medoid-image.php';
+			/**
+			 * Customize WordPress load the images
+			 */
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
+		} else {
+			/**
+			 * Load the Medoid syncer
+			 * The image will be upload to Cloud Store via WordPress Cronjob
+			 *
+			 * Reference: https://developer.wordpress.org/plugins/cron/
+			 */
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-syncer.php';
+		}
 
 		/**
 		 * Load Medoid Admin
