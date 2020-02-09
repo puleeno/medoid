@@ -8,15 +8,9 @@ class Medoid_Core_Db {
 	protected $image_size_db_table;
 	protected $create_tables = [];
 	protected $wheremap      = array(
-		'integer' => array(
-			'val' => '%d',
-		),
-		'boolean' => array(
-			'val' => '%d',
-		),
-		'string'  => array(
-			'val' => '%s',
-		),
+		'integer' => array( 'val' => '%d' ),
+		'boolean' => array( 'val' => '%d' ),
+		'string'  => array( 'val' => '%s' ),
 		'array'   => array(
 			'val'     => '%s',
 			'compare' => 'IN',
