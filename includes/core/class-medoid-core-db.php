@@ -42,6 +42,7 @@ class Medoid_Core_Db {
 		$this->create_tables[ $this->cloud_db_table ]      = array(
 			'ID'             => 'BIGINT NOT NULL AUTO_INCREMENT',
 			'name'           => 'VARCHAR(255) NOT NULL',
+			'cloud_type'     => 'VARCHAR(100) NOT NULL',
 			'icon_name'      => 'VARCHAR(255) NULL',
 			'image_url'      => 'TEXT NULL',
 			'cloud_settings' => 'LONGTEXT',
@@ -110,6 +111,17 @@ class Medoid_Core_Db {
 	}
 
 	public function delete_cloud() {
+	}
+
+	public function get_clouds() {
+		return array(
+			(object) array(
+				'ID'         => 1,
+				'name'       => 'Medoid Cloud Name',
+				'cloud_type' => Medoid_Cloud_Backblaze::CLOUD_TYPE,
+				'active'     => true,
+			),
+		);
 	}
 
 	public function get_image_by_attachment_id( $attatchment_id, $output = 'ARRAY_A' ) {

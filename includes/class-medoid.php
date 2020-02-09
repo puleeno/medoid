@@ -17,6 +17,7 @@ final class Medoid {
 
 	public function define_constants() {
 		$this->define( 'MEDOID_ABSPATH', dirname( MEDOID_PLUGIN_FILE ) );
+		$this->define( 'MEDOID_CLOUDS_DIR', MEDOID_ABSPATH . '/includes/clouds' );
 	}
 
 	private function define( $name, $value ) {
@@ -52,14 +53,13 @@ final class Medoid {
 		 */
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-install.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
 
 		/**
 		 * Load medoid helpers
 		 */
 		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
 
-		if ( !$this->is_request( 'cron' ) ) {
+		if ( ! $this->is_request( 'cron' ) ) {
 			/**
 			 * Added medoid flow via WordPress Native upload Flow
 			 */

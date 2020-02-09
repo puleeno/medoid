@@ -18,8 +18,7 @@ if ( ! function_exists( 'array_get' ) ) {
 }
 
 function medoid_get_wp_image_sizes( $size ) {
-	$wp_additional_image_sizes = wp_get_additional_image_sizes();
-
+	$wp_additional_image_sizes    = wp_get_additional_image_sizes();
 	$sizes                        = array();
 	$get_intermediate_image_sizes = get_intermediate_image_sizes();
 

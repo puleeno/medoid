@@ -3,6 +3,8 @@ use BackblazeB2\Client;
 use BackblazeB2\Bucket;
 
 class Medoid_Cloud_Backblaze extends Medoid_Cloud {
+	const CLOUD_TYPE = 'backblaze';
+
 	protected $_internal_cloud_id;
 	protected $client;
 	protected $bucket_name;

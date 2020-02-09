@@ -29,7 +29,7 @@ class Medoid_Core_Upload_Handler {
 
 	public function get_upload_result( $result ) {
 		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/class-medoid-cloud-storages.php';
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
 		}
 
 		$this->cdn_support_resize = $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' );
