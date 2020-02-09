@@ -14,44 +14,20 @@ class Medoid_Syncer {
 	}
 
 	public function schedules( $schedules ) {
-		$schedules['1_minute']   = array(
-			'interval' => 60,
-			'display'  => esc_html__( __( 'Every Minute', 'medoid' ) ),
-		);
-		$schedules['2_minutes']  = array(
-			'interval' => 2 * 60,
-			'display'  => esc_html__( __( 'Every Two Minutes', 'medoid' ) ),
-		);
-		$schedules['3_minutes']  = array(
-			'interval' => 3 * 60,
-			'display'  => esc_html__( __( 'Every Three Minutes', 'medoid' ) ),
-		);
-		$schedules['5_minutes']  = array(
-			'interval' => 5 * 60,
-			'display'  => esc_html__( __( 'Every Five Minutes', 'medoid' ) ),
-		);
-		$schedules['10_minutes'] = array(
-			'interval' => 10 * 60,
-			'display'  => esc_html__( __( 'Every Ten Minutes', 'medoid' ) ),
-		);
-		$schedules['15_minutes'] = array(
-			'interval' => 15 * 60,
-			'display'  => esc_html__( __( 'Every Fiveteen Minutes', 'medoid' ) ),
-		);
-		$schedules['20_minutes'] = array(
-			'interval' => 20 * 60,
-			'display'  => esc_html__( __( 'Every Twenty Minutes', 'medoid' ) ),
-		);
-		$schedules['30_minutes'] = array(
-			'interval' => 30 * 60,
-			'display'  => esc_html__( __( 'Every Thirdty Minutes', 'medoid' ) ),
-		);
+		$medoid_schedules = include MEDOID_ABSPATH . '/configs/schedules.php';
 
-		return $schedules;
+		return array_merge(
+			$schedules,
+			$medoid_schedules
+		);
 	}
 
 	public function syncer( $args ) {
-		var_dump( $args );
+		if ( empty( $args['cloud_id'] ) ) {
+			return;
+		}
+		$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
+		$cloud->sync_to_cloud( $args['limit_items'] );
 	}
 
 	public function setup_cron() {
