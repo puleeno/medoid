@@ -18,27 +18,13 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		$this->client      = new Client( $accountId, $applicationKey );
 	}
 
-	public function upload( $file, $new_file, $post = null, $type = null ) {
+	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
-			$parent_folder = '';
-			$folder        = '';
-			if ( $post ) {
-				$folder .= $post->post_name . '/';
-				if ( $post->post_parent ) {
-					$parent         = get_post( $post->post_parent );
-					$parent_folder .= $parent->post_name . '/';
-				}
-			}
-			$ext       = pathinfo( $file['name'], PATHINFO_EXTENSION );
-			$file_name = sprintf( '%s%s%s.%s', $parent_folder, $folder, substr( md5( $file['name'] . time() ), 0, 6 ), strtolower( $ext ) );
-			$tmp_file  = $file['tmp_name'];
-			$resource  = fopen( $tmp_file, 'r' );
-
 			$backblaze_file = $this->client->upload(
 				[
 					'BucketName' => $this->bucket_name,
-					'FileName'   => $file_name,
+					'FileName'   => $new_file,
 					'Body'       => $resource,
 				]
 			);
@@ -66,5 +52,16 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		}
 
 		return $response;
+	}
+
+	public function is_exists( $file ) {
+		return $this->client->fileExists(
+			array(
+				'FileName' => $file,
+			)
+		);
+	}
+
+	public function delete_file( $file_id ) {
 	}
 }

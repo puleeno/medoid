@@ -27,9 +27,39 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 		}
 
 		foreach ( $images as $image ) {
-			$file = get_attached_file( $image->post_id, true );
-			var_dump( $file );
-			die;
+			$file    = get_attached_file( $image->post_id, true );
+			$newfile = apply_filters_ref_array(
+				'medoid_create_file_name_unique',
+				array( basename( $file ), $image, &$this )
+			);
+
+			if ( empty( $newfile ) ) {
+				$this->delete_file( $image->ID );
+				continue;
+			}
+			$response = $this->upload( $file, $newfile );
+
+			if ( $response->status ) {
+				$this->db->update_image(
+					array(
+						'image_url'   => $response->get_url(),
+						'is_uploaded' => true,
+						'updated_at'  => current_time( 'mysql' ),
+					)
+				);
+
+				/**
+				 * Do actions after upload image to cloud success
+				 */
+				do_action( 'medoid_upload_cloud_image', $image, $response, $this );
+			} else {
+				$this->db->update_image(
+					array(
+						'retry'      => (int) $image->retry + 1,
+						'updated_at' => current_time( 'mysql' ),
+					)
+				);
+			}
 		}
 	}
 }

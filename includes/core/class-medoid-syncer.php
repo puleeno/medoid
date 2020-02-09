@@ -14,13 +14,15 @@ class Medoid_Syncer {
 	}
 
 	public function includes() {
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-response.php';
 		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
 			require_once dirname( __FILE__ ) . '/class-medoid-cloud-storages.php';
-			$cloud_storage = new Medoid_Cloud_Storages();
-			$cloud_storage->includes();
-			$cloud_storage->init();
-			$cloud_storage->setup_clouds();
 		}
+
+		$cloud_storage = new Medoid_Cloud_Storages();
+		$cloud_storage->includes();
+		$cloud_storage->init();
+		$cloud_storage->setup_clouds();
 	}
 
 	public function schedules( $schedules ) {

@@ -59,6 +59,7 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 
 	public function convert_api_query( $fields ) {
 		$convert_fields = array();
+
 		foreach ( $fields as $field => $value ) {
 			if ( isset( $this->api_fields_maps[ $field ] ) ) {
 				$field_name                    = $this->api_fields_maps[ $field ];
@@ -68,7 +69,7 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 			}
 		}
 
-		if ( true === $convert_fields['crop'] ) {
+		if ( isset( $convert_fields['crop'] ) && true === $convert_fields['crop'] ) {
 			$convert_fields['crop'] = 'entropy';
 		}
 

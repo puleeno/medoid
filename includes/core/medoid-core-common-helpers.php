@@ -18,8 +18,8 @@ if ( ! function_exists( 'array_get' ) ) {
 }
 
 function medoid_get_wp_image_sizes( $size ) {
-	$wp_additional_image_sizes    = wp_get_additional_image_sizes();
 	$sizes                        = array();
+	$wp_additional_image_sizes    = wp_get_additional_image_sizes();
 	$get_intermediate_image_sizes = get_intermediate_image_sizes();
 
 	// Create the full array with sizes and crop info
@@ -66,4 +66,42 @@ function medoid_get_image_sizes( $size ) {
 	}
 
 	return medoid_get_wp_image_sizes( $size );
+}
+
+function medoid_create_file_name_unique( $new_file, $image, $medoid_cloud ) {
+	if ( gettype( $image ) === 'object' ) {
+		$attachment = get_post( $image->post_id );
+		if ( ! $attachment ) {
+			return false;
+		}
+
+		if ( $attachment->post_parent > 0 ) {
+			$prefix = medoid_create_parent_prefix_from_post( $attachment );
+		} else {
+			$prefix = 'untils';
+		}
+		$ret = sprintf( '%s/%s', $prefix, $new_file );
+
+		if ( ! $medoid_cloud instanceof Medoid_Cloud || $medoid_cloud->is_exists( $ret ) ) {
+			$ret = sprintf( '%s/%s-%s', $prefix, date( 'Y-m-d-His' ), $new_file );
+		}
+
+		return $ret;
+	}
+	return sprintf( '%s-%s', date( 'Y-m-d-His' ), $new_file );
+}
+
+function medoid_create_parent_prefix_from_post( $post, $current_slug = '' ) {
+	if ( $post->post_parent > 0 ) {
+		$parent = get_post( $post->post_parent );
+		if ( $parent ) {
+			$current_slug .= sprintf( '/%s', $parent->post_name );
+			var_dump( 'cur:' . $current_slug . PHP_EOL );
+
+			$current_slug .= get_parent_slug_from_post( $parent, $current_slug );
+			var_dump( 'cur:' . $current_slug . PHP_EOL );
+		}
+	}
+
+	return $current_slug;
 }

@@ -30,7 +30,7 @@ class Medoid_Response {
 	}
 
 	public function set_status( $success ) {
-		$this->status = $success;
+		$this->status = (bool) $success;
 	}
 
 	public function set_url( $url ) {
