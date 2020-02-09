@@ -94,7 +94,7 @@ class Medoid_Image {
 		}
 
 		if ( $image_url ) {
-			$image[0] = $image_url;
+			return array( $image_url, $sizes['width'], $sizes['height'] );
 		}
 
 		return $image;
