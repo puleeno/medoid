@@ -5,12 +5,11 @@ use BackblazeB2\Bucket;
 class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	const CLOUD_TYPE = 'backblaze';
 
-	protected $_internal_cloud_id;
 	protected $client;
 	protected $bucket_name;
 
 	public function __construct( $id, $configs = array() ) {
-		$this->_internal_cloud_id = $id;
+		$this->set_id( $id );
 
 		$accountId      = MEDOID_BACKBLAZE_APP_KEY_ID;
 		$applicationKey = MEDOID_BACKBLAZE_APP_MASTER_KEY;
@@ -20,7 +19,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	}
 
 	public function upload( $file, $new_file, $post = null, $type = null ) {
-		$response = new Medoid_Response( $this->_internal_cloud_id );
+		$response = new Medoid_Response( $this->get_id() );
 		try {
 			$parent_folder = '';
 			$folder        = '';

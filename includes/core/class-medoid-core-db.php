@@ -2,12 +2,26 @@
 
 class Medoid_Core_Db {
 	protected static $instance;
-
 	protected $wpdb;
 	protected $cloud_db_table;
 	protected $image_db_table;
 	protected $image_size_db_table;
 	protected $create_tables = [];
+	protected $wheremap      = array(
+		'integer' => array(
+			'val' => '%d',
+		),
+		'boolean' => array(
+			'val' => '%d',
+		),
+		'string'  => array(
+			'val' => '%s',
+		),
+		'array'   => array(
+			'val'     => '%s',
+			'compare' => 'IN',
+		),
+	);
 	public $db_table_created = false;
 
 	public static function instance() {
@@ -58,25 +72,31 @@ class Medoid_Core_Db {
 			'provider_image_id' => 'TEXT NULL',
 			'image_url'         => 'TEXT NULL',
 			'is_uploaded'       => 'TINYINT DEFAULT 0',
+			'retry'             => 'INT DEFAULT 0',
 			'proxy_image_url'   => 'TEXT NULL',
 			'hash_filename'     => 'TEXT',
 			'file_name'         => 'VARCHAR(255)',
 			'file_type'         => 'VARCHAR(255)',
 			'mime_type'         => 'VARCHAR(255)',
 			'file_size'         => 'BIGINT',
+			'delete_local_file' => 'TINYINT DEFAULT 0',
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(ID)',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
-			'image_id'        => 'BIGINT',
-			'cloud_id'        => 'BIGINT',
-			'image_size'      => 'VARCHAR(255)',
-			'image_url'       => 'TEXT NULL',
-			'proxy_image_url' => 'LONGTEXT',
-			'created_at'      => 'TIMESTAMP NULL',
-			'updated_at'      => 'TIMESTAMP NULL',
-			'PRIMARY KEY'     => '(image_id, cloud_id, image_size)',
+			'image_id'          => 'BIGINT',
+			'cloud_id'          => 'BIGINT',
+			'image_size'        => 'VARCHAR(255)',
+			'image_url'         => 'TEXT NULL',
+			'post_id'           => 'BIGINT NULL', // This field is used when use WordPress Native processing
+			'provider_image_id' => 'TEXT NULL', // This field is used when use WordPress Native processing
+			'is_uploaded'       => 'TINYINT DEFAULT 0', // This field is used when use WordPress Native processing
+			'retry'             => 'INT DEFAULT 0', // This field is used when use WordPress Native processing
+			'proxy_image_url'   => 'LONGTEXT',
+			'created_at'        => 'TIMESTAMP NULL',
+			'updated_at'        => 'TIMESTAMP NULL',
+			'PRIMARY KEY'       => '(image_id, cloud_id, image_size)',
 		);
 	}
 
@@ -122,7 +142,53 @@ class Medoid_Core_Db {
 		);
 	}
 
-	public function get_images( $cloud_id, $limit, $order = null ) {
+	public function get_images( $query_vars = array() ) {
+		$sql = "SELECT * FROM {$this->image_db_table}";
+		if ( ! empty( $query_vars ) ) {
+			$limit = 0;
+			if ( isset( $query_vars['limit'] ) ) {
+				$limit = $query_vars['limit'];
+				unset( $query_vars['limit'] );
+			}
+
+			$offset = 0;
+			if ( isset( $query_vars['offset'] ) ) {
+				$offset = $query_vars['offset'];
+				unset( $query_vars['offset'] );
+			}
+			$orderby = 'post_id ASC';
+			if ( isset( $query_vars['orderby'] ) ) {
+				$orderby = $query_vars['orderby'];
+				unset( $query_vars['orderby'] );
+			}
+
+			$sql .= ' WHERE ';
+			foreach ( $query_vars as $key => $value ) {
+				$type = gettype( $value );
+				if ( ! isset( $this->wheremap[ $type ] ) ) {
+					continue;
+				}
+				$placeholder = sprintf(
+					' %s%s%s AND ',
+					$key,
+					isset( $this->wheremap[ $type ]['compare'] ) ? $this->wheremap[ $type ]['compare'] : '=',
+					$this->wheremap[ $type ]['val']
+				);
+
+				$sql .= $this->wpdb->prepare(
+					$placeholder,
+					( $type === 'array' ) ? sprintf( '(%s)', implode( ', ', $value ) ) : $value
+				);
+			}
+			$sql  = rtrim( $sql, 'AND ' );
+			$sql .= sprintf( ' ORDER BY %s', $orderby );
+			if ( $limit > 0 ) {
+				$sql .= sprintf( ' LIMIT %d', $limit );
+			}
+			$sql .= sprintf( ' OFFSET %d', $offset );
+		}
+
+		return $this->wpdb->get_results( $sql );
 	}
 
 	public function get_image_by_attachment_id( $attatchment_id, $output = 'ARRAY_A' ) {
