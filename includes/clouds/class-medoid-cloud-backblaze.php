@@ -21,6 +21,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
+			$resource       = fopen( $file, 'r' );
 			$backblaze_file = $this->client->upload(
 				[
 					'BucketName' => $this->bucket_name,
@@ -57,7 +58,8 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	public function is_exists( $file ) {
 		return $this->client->fileExists(
 			array(
-				'FileName' => $file,
+				'BucketName' => $this->bucket_name,
+				'FileName'   => $file,
 			)
 		);
 	}

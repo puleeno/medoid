@@ -33,18 +33,20 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				array( basename( $file ), $image, &$this )
 			);
 
-			if ( empty( $newfile ) ) {
+			if ( false === $newfile ) {
 				$this->delete_file( $image->ID );
 				continue;
 			}
 			$response = $this->upload( $file, $newfile );
 
-			if ( $response->status ) {
+			if ( $response->get_status() ) {
 				$this->db->update_image(
 					array(
-						'image_url'   => $response->get_url(),
-						'is_uploaded' => true,
-						'updated_at'  => current_time( 'mysql' ),
+						'ID'                => $image->ID,
+						'image_url'         => $response->get_url(),
+						'provider_image_id' => $response->get_provider_image_id(),
+						'is_uploaded'       => true,
+						'updated_at'        => current_time( 'mysql' ),
 					)
 				);
 
@@ -55,6 +57,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			} else {
 				$this->db->update_image(
 					array(
+						'ID'         => $image->ID,
 						'retry'      => (int) $image->retry + 1,
 						'updated_at' => current_time( 'mysql' ),
 					)
