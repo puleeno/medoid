@@ -5,6 +5,10 @@ class Medoid_Syncer {
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'includes' ), 30 );
 		add_filter( 'cron_schedules', array( $this, 'schedules' ) );
+
+		/**
+		 * Setup WordPress cron via action hooks
+		 */
 		add_action( 'init', array( $this, 'setup_cron' ), 20 );
 		add_action( 'init', array( $this, 'run_cron' ), 30 );
 	}
