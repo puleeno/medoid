@@ -1,6 +1,6 @@
 <?php
 class Medoid_Syncer {
-	protected $cloud_events = array();
+	protected $upload_events = array();
 
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'includes' ), 30 );
@@ -51,10 +51,8 @@ class Medoid_Syncer {
 			$cloud_schedule = '3_minutes';
 			$limit_items    = 50;
 			$cron_key       = sprintf( '%s_id%s_hook', $cloud::CLOUD_TYPE, $cloud_id );
-
 			add_action( $cron_key, array( $this, 'syncer' ) );
-
-			$this->cloud_events[ $cron_key ] = array(
+			$this->upload_events[ $cron_key ] = array(
 				'cloud_id'    => $cloud_id,
 				'limit_items' => $limit_items,
 				'schedule'    => $cloud_schedule,
@@ -63,7 +61,7 @@ class Medoid_Syncer {
 	}
 
 	public function run_cron() {
-		foreach ( $this->cloud_events as $cron_hook => $cloud_event ) {
+		foreach ( $this->upload_events as $cron_hook => $cloud_event ) {
 			$args = array( $cloud_event );
 			if ( ! wp_next_scheduled( $cron_hook, $args ) ) {
 				wp_schedule_event(
