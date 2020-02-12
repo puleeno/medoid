@@ -13,6 +13,7 @@ class Medoid_Install {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
+		return self::$instance;
 	}
 
 	public function __construct() {
@@ -21,7 +22,7 @@ class Medoid_Install {
 	}
 
 	public static function active() {
-		$installer = self::instance();
+		$installer = self::get_instance();
 
 		$installer->load_db_fields();
 		$installer->create_tables();
