@@ -25,19 +25,10 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 		}
 
 		$site      = parse_url( site_url() );
+		$filters   = $this->get_filters();
 		$image_url = str_replace(
-			array(
-				'f000.backblazeb2.com',
-				'dev.loveofboys.com',
-				$site['host'],
-				'loveofboys.com',
-			),
-			array(
-				MEDOID_GUMLET_DOMAIN,
-				'loveofboys.gumlet.com',
-				'loveofboys.gumlet.com',
-				'loveofboys.gumlet.com',
-			),
+			$filters['search'],
+			$filters['replace'],
 			$url
 		);
 		return sprintf( '%s%s', $image_url, $query );
@@ -74,5 +65,15 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 		}
 
 		return $convert_fields;
+	}
+
+	public function get_filters() {
+		return apply_filters(
+			'medoid_cdn_gumlet_filters',
+			array(
+				'search'  => array(),
+				'replace' => array(),
+			)
+		);
 	}
 }
