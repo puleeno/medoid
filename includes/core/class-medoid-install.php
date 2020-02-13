@@ -90,7 +90,7 @@ class Medoid_Install {
 			'proxy_image_url'   => 'LONGTEXT',
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
-			'PRIMARY KEY'       => 'image_size_id',
+			'PRIMARY KEY'       => '(image_size_id)',
 		);
 	}
 
