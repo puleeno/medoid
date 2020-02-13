@@ -78,6 +78,7 @@ class Medoid_Install {
 			'PRIMARY KEY'       => '(ID)',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
+			'image_size_id'     => 'BIGINT NOT NULL AUTO_INCREMENT',
 			'image_id'          => 'BIGINT',
 			'cloud_id'          => 'BIGINT',
 			'image_size'        => 'VARCHAR(255)',
@@ -89,7 +90,7 @@ class Medoid_Install {
 			'proxy_image_url'   => 'LONGTEXT',
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
-			'PRIMARY KEY'       => '(image_id, cloud_id, image_size)',
+			'PRIMARY KEY'       => 'image_size_id',
 		);
 	}
 
