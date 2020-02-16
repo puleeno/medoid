@@ -96,10 +96,7 @@ function medoid_create_parent_prefix_from_post( $post, $current_slug = '' ) {
 		$parent = get_post( $post->post_parent );
 		if ( $parent ) {
 			$current_slug .= sprintf( '/%s', $parent->post_name );
-			var_dump( 'cur:' . $current_slug . PHP_EOL );
-
-			$current_slug .= get_parent_slug_from_post( $parent, $current_slug );
-			var_dump( 'cur:' . $current_slug . PHP_EOL );
+			$current_slug .= medoid_create_parent_prefix_from_post( $parent, $current_slug );
 		}
 	}
 
