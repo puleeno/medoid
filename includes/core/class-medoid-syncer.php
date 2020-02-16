@@ -1,6 +1,7 @@
 <?php
 class Medoid_Syncer {
 	protected $upload_events = array();
+	protected $sync_events   = array();
 
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'includes' ), 30 );
@@ -57,6 +58,14 @@ class Medoid_Syncer {
 				'limit_items' => $limit_items,
 				'schedule'    => $cloud_schedule,
 			);
+
+			$is_local2cloud = true;
+			if ( $is_local2cloud ) {
+				$sync_key                       = sprintf( '%s_id%d_to_cloud', $cloud::CLOUD_TYPE, $cloud_id );
+				$this->sync_events[ $sync_key ] = array(
+					'cloud_id' => $cloud_id,
+				);
+			}
 		}
 	}
 
