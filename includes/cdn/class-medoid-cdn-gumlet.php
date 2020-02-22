@@ -26,7 +26,7 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 
 		$site      = parse_url( site_url() );
 		$filters   = $this->get_filters();
-		$image_url = str_replace(
+		$image_url = preg_replace(
 			$filters['search'],
 			$filters['replace'],
 			$url
