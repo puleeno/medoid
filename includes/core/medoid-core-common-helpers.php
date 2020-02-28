@@ -78,9 +78,9 @@ function medoid_create_file_name_unique( $new_file, $image, $medoid_cloud ) {
 		if ( $attachment->post_parent > 0 ) {
 			$prefix = medoid_create_parent_prefix_from_post( $attachment );
 		} else {
-			$prefix = 'untils';
+			$prefix = 'untils/';
 		}
-		$ret = sprintf( '%s/%s', $prefix, $new_file );
+		$ret = sprintf( '%s%s', $prefix, $new_file );
 
 		if ( ! $medoid_cloud instanceof Medoid_Cloud || $medoid_cloud->is_exists( $ret ) ) {
 			$ret = sprintf( '%s/%s-%s', $prefix, date( 'Y-m-d-His' ), $new_file );
@@ -91,12 +91,13 @@ function medoid_create_file_name_unique( $new_file, $image, $medoid_cloud ) {
 	return sprintf( '%s-%s', date( 'Y-m-d-His' ), $new_file );
 }
 
-function medoid_create_parent_prefix_from_post( $post, $current_slug = '' ) {
+function medoid_create_parent_prefix_from_post( $post ) {
+	$current_slug = '';
 	if ( $post->post_parent > 0 ) {
 		$parent = get_post( $post->post_parent );
 		if ( $parent ) {
-			$current_slug .= sprintf( '/%s', $parent->post_name );
-			$current_slug .= medoid_create_parent_prefix_from_post( $parent, $current_slug );
+			$current_slug .= sprintf( '%s/', $parent->post_name );
+			$current_slug  = sprintf( '%s%s', medoid_create_parent_prefix_from_post( $parent ), $current_slug );
 		}
 	}
 

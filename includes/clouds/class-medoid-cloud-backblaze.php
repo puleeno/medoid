@@ -56,6 +56,8 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	}
 
 	public function is_exists( $file ) {
+		var_dump( $file );
+		die;
 		return $this->client->fileExists(
 			array(
 				'BucketName' => $this->bucket_name,
