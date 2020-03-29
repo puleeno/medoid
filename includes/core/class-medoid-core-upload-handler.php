@@ -18,6 +18,10 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function init() {
+		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
+		}
+
 		$this->db  = Medoid_Core_Db::instance();
 		$this->cdn = Medoid_Core_Cdn_Integration::instance();
 	}
@@ -28,9 +32,6 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function get_upload_result( $result ) {
-		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
-		}
 		$cloud_storage = new Medoid_Cloud_Storages();
 		$cloud_storage->init();
 
