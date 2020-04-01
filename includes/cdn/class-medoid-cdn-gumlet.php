@@ -59,10 +59,7 @@ class Medoid_Cdn_Gumlet extends Medoid_Cdn {
 				$convert_fields[ $field ] = $value;
 			}
 		}
-
-		if ( isset( $convert_fields['crop'] ) && true === $convert_fields['crop'] ) {
-			$convert_fields['crop'] = 'entropy';
-		}
+		$convert_fields['crop'] = 'entropy';
 
 		return $convert_fields;
 	}
