@@ -129,6 +129,9 @@ class Medoid_Image {
 	}
 
 	public function image_src( $image, $attachment_id, $size ) {
+		if ( empty( $image[0] ) ) {
+			$image[0] = wp_get_attachment_url( $attachment_id );
+		}
 		return $image;
 	}
 
