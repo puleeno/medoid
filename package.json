@@ -1,0 +1,25 @@
+{
+  "name": "medoid",
+  "version": "0.1.0",
+  "description": "The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medoid/medoid.git"
+  },
+  "keywords": [
+    "WordPress",
+    "Media",
+    "Cloud",
+    "Storage"
+  ],
+  "author": "Puleeno Nguyen",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/medoid/medoid/issues"
+  },
+  "homepage": "https://github.com/medoid/medoid#readme"
+}
