@@ -19,8 +19,6 @@ class Medoid_Image {
 
 	public function init_hooks() {
 		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
-
-		add_filter( 'image_downsize', array( $this, 'image_downsize' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'image_src' ), 99, 3 );
 	}
 
@@ -69,22 +67,6 @@ class Medoid_Image {
 		);
 	}
 
-	public function image_downsize( $image, $attachment_id, $size ) {
-		$sizes = medoid_get_image_sizes( $size );
-		if ( ! isset( $sizes['width'], $sizes['height'] ) ) {
-			return $image;
-		}
-		$str_size   = sprintf( '%sx%s', $sizes['width'], $sizes['height'] );
-		$image_size = $this->db->get_image_size_by_attachment_id( $attachment_id, $str_size );
-
-		if ( $image_size ) {
-			$image[0] = $image_size;
-			return $image;
-		}
-
-		return $image;
-	}
-
 	public function prepare_json( $response, $attachment, $meta ) {
 		$medoid_image = $this->get_image( $attachment->ID );
 		$thumbnail    = $this->get_image_size( $attachment->ID, array( 150, 150 ) );
@@ -116,6 +98,18 @@ class Medoid_Image {
 	public function image_src( $image, $attachment_id, $size ) {
 		if ( empty( $image[0] ) ) {
 			$image[0] = wp_get_attachment_url( $attachment_id );
+		}
+
+		$sizes = medoid_get_image_sizes( $size );
+		if ( ! isset( $sizes['width'], $sizes['height'] ) ) {
+			return $image;
+		}
+		$str_size   = sprintf( '%sx%s', $sizes['width'], $sizes['height'] );
+		$image_size = $this->db->get_image_size_by_attachment_id( $attachment_id, $str_size );
+
+		if ( $image_size ) {
+			$image[0] = $image_size;
+			return $image;
 		}
 
 		$image_url = '';
