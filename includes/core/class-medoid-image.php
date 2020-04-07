@@ -82,21 +82,6 @@ class Medoid_Image {
 			return $image;
 		}
 
-		$image_url = '';
-		if ( $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' ) ) {
-			$medoid_image = $this->db->get_image_by_attachment_id( $attachment_id );
-
-			if ( $medoid_image ) {
-				$image_url = $this->cdn->resize( $medoid_image['image_url'], $sizes );
-			} else {
-				$image_url = $this->cdn->resize( wp_get_attachment_url( $attachment_id ), $sizes );
-			}
-		}
-
-		if ( $image_url ) {
-			return array( $image_url, $sizes['width'], $sizes['height'] );
-		}
-
 		return $image;
 	}
 
@@ -132,6 +117,22 @@ class Medoid_Image {
 		if ( empty( $image[0] ) ) {
 			$image[0] = wp_get_attachment_url( $attachment_id );
 		}
+
+		$image_url = '';
+		if ( $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' ) ) {
+			$medoid_image = $this->db->get_image_by_attachment_id( $attachment_id );
+
+			if ( $medoid_image ) {
+				$image_url = $this->cdn->resize( $medoid_image['image_url'], $sizes );
+			} else {
+				$image_url = $this->cdn->resize( wp_get_attachment_url( $attachment_id ), $sizes );
+			}
+		}
+
+		if ( $image_url ) {
+			return array( $image_url, $sizes['width'], $sizes['height'] );
+		}
+
 		return $image;
 	}
 
