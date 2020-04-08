@@ -52,7 +52,9 @@ class Medoid_Syncer {
 			$cloud_schedule = '3_minutes';
 			$limit_items    = 50;
 			$cron_key       = sprintf( '%s_id%s_hook', $cloud::CLOUD_TYPE, $cloud_id );
+
 			add_action( $cron_key, array( $this, 'syncer' ) );
+
 			$this->upload_events[ $cron_key ] = array(
 				'cloud_id'    => $cloud_id,
 				'limit_items' => $limit_items,
