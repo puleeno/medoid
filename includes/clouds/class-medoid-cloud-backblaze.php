@@ -64,6 +64,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		);
 	}
 
-	public function delete_file( $file_id ) {
+	public function delete_file( $image ) {
+		parent::delete_file( $image );
 	}
 }

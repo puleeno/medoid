@@ -40,7 +40,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			);
 
 			if ( false === $newfile ) {
-				$this->delete_file( $image->ID );
+				$this->delete_file( $image );
 				continue;
 			}
 			$response = $this->upload( $file, $newfile );
@@ -69,6 +69,12 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					)
 				);
 			}
+		}
+	}
+
+	public function delete_file( $image ) {
+		if ( isset( $image->post_id ) ) {
+			wp_delete_attachment( $image->post_id, true );
 		}
 	}
 }
