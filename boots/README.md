@@ -13,8 +13,10 @@ location ~ /image/.* {
     server_tokens off;
     lua_code_cache off;
 
+    set $app_root $realpath_root;
+
     access_by_lua_block {
-        require('medoid').access('/image');
+        require('medoid'):access('/image');
     }
     proxy_pass $target;
     proxy_redirect off;
