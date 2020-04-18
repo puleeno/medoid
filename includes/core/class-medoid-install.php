@@ -68,6 +68,7 @@ class Medoid_Install {
 			'retry'             => 'INT DEFAULT 0',
 			'proxy_id'          => 'TEXT NULL',
 			'proxy_image_url'   => 'TEXT NULL',
+			'cdn_image_url'     => 'TEXT NULL',
 			'hash_filename'     => 'TEXT',
 			'file_name'         => 'VARCHAR(255)',
 			'file_type'         => 'VARCHAR(255)',
@@ -90,6 +91,7 @@ class Medoid_Install {
 			'retry'             => 'INT DEFAULT 0', // This field is used when use WordPress Native processing
 			'proxy_id'          => 'TEXT NULL',
 			'proxy_image_url'   => 'LONGTEXT',
+			'cdn_image_url'     => 'TEXT NULL',
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(image_size_id)',
