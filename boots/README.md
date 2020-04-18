@@ -6,7 +6,7 @@
 Added new location for server
 
 ```
-location ~ /images/.* {
+location ~ ^/images/.* {
     server_tokens off;
     resolver 8.8.8.8 ipv6=off;
 
