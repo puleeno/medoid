@@ -82,7 +82,7 @@ end
 function medoid.placeholder_image(self)
 end
 
-function medoid.access(self, realpath_root, prefix, host)
+function medoid.access(self, prefix, host)
     ngx.header["Content-Type"] = "text/html"
 
     self.parse_config_file(self, ngx.var.app_root)
