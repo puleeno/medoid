@@ -7,17 +7,16 @@ Added new location for server
 
 ```
 location ~ /images/.* {
-    set $target '';
+    server_tokens off;
     resolver 8.8.8.8 ipv6=off;
 
-    server_tokens off;
-    lua_code_cache off;
-
+    set $target '';
     set $app_root $realpath_root;
 
     access_by_lua_block {
         require('medoid'):access('/images');
     }
+
     proxy_pass $target;
     proxy_redirect off;
 }```
