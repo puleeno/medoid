@@ -9,7 +9,9 @@ local medoid = {
 }
 
 function medoid.parse_config_file(self, app_root)
-    local wp_config = io.open(string.format("%s/wp-config.php", app_root), "r")
+    local wp_config_file = string.format("%s/wp-config.php", app_root)
+    local wp_config = io.open(wp_config_file, "r")
+
     if wp_config ~= nil then
         local all_configs = wp_config:read("*all")
         local db_configs = all_configs:gmatch("define%(%s?'(DB_[^']+)',%s?'([^']+)")
