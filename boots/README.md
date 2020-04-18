@@ -6,7 +6,7 @@
 Added new location for server
 
 ```
-location ~ /image/.* {
+location ~ /images/.* {
     set $target '';
     resolver 8.8.8.8 ipv6=off;
 
@@ -16,7 +16,7 @@ location ~ /image/.* {
     set $app_root $realpath_root;
 
     access_by_lua_block {
-        require('medoid'):access('/image');
+        require('medoid'):access('/images');
     }
     proxy_pass $target;
     proxy_redirect off;

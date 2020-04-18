@@ -88,7 +88,7 @@ function medoid.access(self, realpath_root, prefix, host)
     self.parse_config_file(self, ngx.var.app_root)
     self.open_db(self)
 
-    local image_id = ngx.var.uri:gsub("/?image/", "")
+    local image_id = ngx.var.uri:gsub(prefix .. "/", "")
     local image = self.get_image(self, image_id)
     local image_url = ""
 
