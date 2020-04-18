@@ -58,7 +58,9 @@ function medoid.get_image(self, proxy_image_id)
                     i.post_id,
                     i.image_url,
                     s.image_url AS image_size_url,
-                    p.guid
+                    p.guid,
+                    i.cdn_image_url,
+                    s.cdn_image_url as cdn_image_size_url
                 FROM
                     lc_medoid_images i
                     LEFT JOIN lc_medoid_image_sizes s ON s.image_id = i.ID
@@ -99,8 +101,12 @@ function medoid.access(self, realpath_root, prefix, host)
         end
     end
 
-    if image[3] ~= "" then -- Check image size URL
+    if image[6] ~= "" then -- Check cdn image size URL
+        image_url = image[6]
+    elseif image[3] ~= "" then -- Check image size URL
         image_url = image[3]
+    elseif image[5] ~= "" then -- Check cdn image URL
+        image_url = image[5]
     elseif image[2] ~= "" then -- Check image URL
         image_url = image[2]
     else
