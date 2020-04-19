@@ -10,7 +10,7 @@ class Medoid_Image_Proxy {
 	}
 
 	public function view_file() {
-		die('test');
+		die( 'test' );
 	}
 }
 

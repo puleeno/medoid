@@ -7,6 +7,7 @@ class Medoid_Core_Cdn_Integration {
 	protected $url;
 
 	protected $cdn_provider;
+	protected $cdns;
 
 	public static function instance() {
 		if ( is_null( self::$instance ) ) {
@@ -23,12 +24,21 @@ class Medoid_Core_Cdn_Integration {
 
 	public function includes() {
 		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-gumlet.php';
-		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-imagecdn-app.php';
+		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-imagekit.php';
 	}
 
 	public function setup_cdn() {
-		$options            = array();
-		$this->cdn_provider = new Medoid_Cdn_Gumlet( $options );
+		$this->cdns = [
+			'imagekit' => Medoid_Cdn_Imagekit::class,
+			'gumlet'   => Medoid_Cdn_Gumlet::class,
+		];
+
+		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['gumlet'] );
+
+		/**
+		 * Create CDN Provider via class name
+		 */
+		$this->cdn_provider = new $cdn_provider( [] );
 	}
 
 	public function is_enabled() {
