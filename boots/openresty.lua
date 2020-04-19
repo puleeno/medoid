@@ -121,6 +121,7 @@ function medoid.access(self, prefix, host)
 
     self.close_db(self)
     ngx.var.target = image_url
+    ngx.var.cdn_host = image_url:match('https?://([^/]+)')
 end
 
 return medoid
