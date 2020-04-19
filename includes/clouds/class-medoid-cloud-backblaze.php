@@ -25,7 +25,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			$backblaze_file = $this->client->upload(
 				[
 					'BucketName' => $this->bucket_name,
-					'FileName'   => $new_file,
+					'FileName'   => ltrim( $new_file, '/' ),
 					'Body'       => $resource,
 				]
 			);
