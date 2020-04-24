@@ -1,11 +1,13 @@
 <?php
 class Medoid_Cdn_Imagekit {
-	protected $support_url = true;
-	protected $processing  = true;
+	protected $processing = true;
 
-	protected $resize = true;
+	protected $support_url    = false;
+	protected $support_proxy  = true;
+	protected $support_crop   = true;
+	protected $support_resize = true;
 
-	protected $domain = 'https://imagecdn.app';
+	protected $domain = 'https://imagekit.io/';
 
 	public function resize( $url, $sizes ) {
 	}

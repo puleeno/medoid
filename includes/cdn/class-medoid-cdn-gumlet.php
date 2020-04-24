@@ -1,9 +1,13 @@
 <?php
 
 class Medoid_Cdn_Gumlet extends Medoid_Cdn {
-	protected $support_url = false;
-	protected $processing  = true;
-	protected $resize      = true;
+	protected $processing = true;
+
+	protected $support_url    = false;
+	protected $support_proxy  = false;
+	protected $support_crop   = true;
+	protected $support_resize = true;
+
 	protected $api_fields_maps;
 
 	public function load_options( $options = array() ) {
