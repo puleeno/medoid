@@ -1,5 +1,5 @@
 <?php
-class Medoid_Cdn_Imagekit {
+class Medoid_Cdn_CloudImage {
 	protected $processing = true;
 
 	protected $support_url    = false;
@@ -7,7 +7,7 @@ class Medoid_Cdn_Imagekit {
 	protected $support_crop   = true;
 	protected $support_resize = true;
 
-	protected $domain = 'https://imagekit.io/';
+	protected $domain = 'https://cloudimage.io/';
 
 	public function resize( $url, $sizes ) {
 	}

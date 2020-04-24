@@ -24,13 +24,13 @@ class Medoid_Core_Cdn_Integration {
 
 	public function includes() {
 		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-gumlet.php';
-		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-imagekit.php';
+		require_once MEDOID_ABSPATH . '/includes/cdn/class-medoid-cdn-cloudimage.php';
 	}
 
 	public function setup_cdn() {
 		$this->cdns = [
-			'imagekit' => Medoid_Cdn_Imagekit::class,
-			'gumlet'   => Medoid_Cdn_Gumlet::class,
+			'imagekit'   => Medoid_Cdn_Imagekit::class,
+			'cloudimage' => Medoid_Cdn_CloudImage::class,
 		];
 
 		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['gumlet'] );
