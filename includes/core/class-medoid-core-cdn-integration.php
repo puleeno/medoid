@@ -29,7 +29,7 @@ class Medoid_Core_Cdn_Integration {
 
 	public function setup_cdn() {
 		$this->cdns = [
-			'imagekit'   => Medoid_Cdn_Imagekit::class,
+			'gumlet'   => Medoid_Cdn_Gumlet::class,
 			'cloudimage' => Medoid_Cdn_CloudImage::class,
 		];
 
