@@ -1,6 +1,6 @@
 <?php
 
-class Medoid_Cdn_Gumlet extends Medoid_Cdn {
+class Medoid_CDN_Gumlet extends Medoid_CDN {
 	protected $processing = true;
 
 	protected $support_url    = false;

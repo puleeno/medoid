@@ -8,7 +8,7 @@ class Medoid_Image {
 
 	public function __construct() {
 		$this->db  = Medoid_Core_Db::instance();
-		$this->cdn = Medoid_Core_Cdn_Integration::instance();
+		$this->cdn = Medoid_Core_CDN_Integration::instance();
 
 		add_action( 'init', array( $this, 'init_hooks' ) );
 

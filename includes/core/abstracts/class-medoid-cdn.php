@@ -1,6 +1,6 @@
 <?php
 
-abstract class Medoid_Cdn implements Medoid_Cdn_Interface {
+abstract class Medoid_CDN implements Medoid_CDN_Interface {
 	protected $options;
 	protected $processing = false;
 

@@ -23,7 +23,7 @@ class Medoid_Core_Upload_Handler {
 		}
 
 		$this->db  = Medoid_Core_Db::instance();
-		$this->cdn = Medoid_Core_Cdn_Integration::instance();
+		$this->cdn = Medoid_Core_CDN_Integration::instance();
 	}
 
 	public function initHooks() {

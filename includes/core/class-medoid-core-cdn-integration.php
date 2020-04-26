@@ -1,6 +1,6 @@
 <?php
 
-class Medoid_Core_Cdn_Integration {
+class Medoid_Core_CDN_Integration {
 	protected static $instance;
 
 	protected $real_url;
@@ -29,11 +29,11 @@ class Medoid_Core_Cdn_Integration {
 
 	public function setup_cdn() {
 		$this->cdns = [
-			'gumlet'   => Medoid_Cdn_Gumlet::class,
-			'cloudimage' => Medoid_Cdn_CloudImage::class,
+			'gumlet'   => Medoid_CDN_Gumlet::class,
+			'cloudimage' => Medoid_CDN_CloudImage::class,
 		];
 
-		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['gumlet'] );
+		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['cloudimage'] );
 
 		/**
 		 * Create CDN Provider via class name
