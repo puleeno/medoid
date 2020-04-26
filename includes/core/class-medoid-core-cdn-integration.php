@@ -29,7 +29,7 @@ class Medoid_Core_CDN_Integration {
 
 	public function setup_cdn() {
 		$this->cdns = [
-			'gumlet'   => Medoid_CDN_Gumlet::class,
+			'gumlet'     => Medoid_CDN_Gumlet::class,
 			'cloudimage' => Medoid_CDN_CloudImage::class,
 		];
 
@@ -39,6 +39,9 @@ class Medoid_Core_CDN_Integration {
 		 * Create CDN Provider via class name
 		 */
 		$this->cdn_provider = new $cdn_provider( [] );
+		if ( ! ( $this->cdn_provider instanceof Medoid_CDN ) ) {
+			error_log( sprintf( '%s must be a instance of %s', $cdn_provider, Medoid_CDN::class ) );
+		}
 	}
 
 	public function is_enabled() {

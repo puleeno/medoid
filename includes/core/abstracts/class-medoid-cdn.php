@@ -4,10 +4,21 @@ abstract class Medoid_CDN implements Medoid_CDN_Interface {
 	protected $options;
 	protected $processing = false;
 
-	protected $support_url    = false;
-	protected $support_proxy  = false;
-	protected $support_crop   = false;
-	protected $support_resize = false;
+	/**
+	 * CDN features
+	 */
+	protected $support_url         = false;
+	protected $support_proxy       = false;
+	protected $support_crop        = false;
+	protected $support_resize      = false;
+	protected $support_filters     = false;
+	protected $support_operattions = false;
+	protected $support_watermark   = false;
+
+	/**
+	 * CDN specs
+	 */
+	protected $spec_url_format = 'query'; // Support `query` or `separator`
 
 	public function __construct( $options = array() ) {
 		$this->options = $this->load_options( $options );
@@ -20,5 +31,8 @@ abstract class Medoid_CDN implements Medoid_CDN_Interface {
 		}
 
 		return (bool) $this->$feature;
+	}
+
+	public function generate_url() {
 	}
 }

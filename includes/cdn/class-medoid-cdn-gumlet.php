@@ -3,10 +3,13 @@
 class Medoid_CDN_Gumlet extends Medoid_CDN {
 	protected $processing = true;
 
-	protected $support_url    = false;
-	protected $support_proxy  = false;
-	protected $support_crop   = true;
-	protected $support_resize = true;
+	protected $support_url         = false;
+	protected $support_proxy       = false;
+	protected $support_crop        = true;
+	protected $support_resize      = true;
+	protected $support_filters     = true;
+	protected $support_operattions = false;
+	protected $support_watermark   = true;
 
 	protected $api_fields_maps;
 
