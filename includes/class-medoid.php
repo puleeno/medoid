@@ -52,12 +52,12 @@ final class Medoid {
 		 * Install Medoid
 		 */
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-install.php';
+		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
 		/**
 		 * Load medoid helpers
 		 */
-		require_once MEDOID_ABSPATH . '/includes/core/medoid-core-common-helpers.php';
+		require_once MEDOID_ABSPATH . '/includes/medoid-common-helpers.php';
 
 		if ( ! $this->is_request( 'cron' ) ) {
 			/**
