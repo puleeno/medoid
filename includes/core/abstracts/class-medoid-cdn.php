@@ -33,6 +33,9 @@ abstract class Medoid_CDN implements Medoid_CDN_Interface {
 		return (bool) $this->$feature;
 	}
 
+	protected function get_filters() {
+	}
+
 	public function generate_url() {
 	}
 }

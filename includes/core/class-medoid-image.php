@@ -19,6 +19,7 @@ class Medoid_Image {
 
 	public function init_hooks() {
 		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
+		add_action( 'image_downsize', array( $this, 'resize_image' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'image_src' ), 99, 3 );
 	}
 
@@ -65,6 +66,10 @@ class Medoid_Image {
 			$size,
 			$cloud_id
 		);
+	}
+
+	public function resize_image( $downsize, $id, $size ) {
+		return $downsize;
 	}
 
 	public function prepare_json( $response, $attachment, $meta ) {

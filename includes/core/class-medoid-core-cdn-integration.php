@@ -33,7 +33,7 @@ class Medoid_Core_CDN_Integration {
 			'cloudimage' => Medoid_CDN_CloudImage::class,
 		];
 
-		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['cloudimage'] );
+		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['gumlet'] );
 
 		/**
 		 * Create CDN Provider via class name
