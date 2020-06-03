@@ -1,7 +1,7 @@
 <?php
 
 class Medoid_Cloud_Storages {
-	protected static $clouds = [];
+	protected static $clouds = array();
 	protected $query;
 	protected $db;
 

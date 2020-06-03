@@ -2,7 +2,7 @@
 class Medoid_Install {
 	protected static $instance;
 
-	protected $create_tables = [];
+	protected $create_tables = array();
 	public $db_table_created = false;
 
 	protected $cloud_db_table;

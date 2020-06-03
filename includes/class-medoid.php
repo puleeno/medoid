@@ -108,6 +108,8 @@ final class Medoid {
 	public function init_hooks() {
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
 		add_filter( 'medoid_create_file_name_unique', 'medoid_create_file_name_unique', 10, 3 );
+
+		Medoid_Logger::warning( 'zozozo', array( '?' ), array( '?' ) );
 	}
 
 	public function composer_not_found() {

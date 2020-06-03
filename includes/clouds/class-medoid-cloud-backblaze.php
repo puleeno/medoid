@@ -23,11 +23,11 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		try {
 			$resource       = fopen( $file, 'r' );
 			$backblaze_file = $this->client->upload(
-				[
+				array(
 					'BucketName' => $this->bucket_name,
 					'FileName'   => ltrim( $new_file, '/' ),
 					'Body'       => $resource,
-				]
+				)
 			);
 			$response->set_provider_image_id( $backblaze_file->getId() );
 
