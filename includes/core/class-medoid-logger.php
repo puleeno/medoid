@@ -3,26 +3,33 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
 final class Medoid_Logger {
-	private static $instance;
+	private static $instances;
 	protected static $callbacks = array( 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
 
 	private $log;
 
-	private static function instance() {
+	private static function instance( $name = 'medoid' ) {
 		if ( ! defined( 'WP_DEBUG_LOG' ) || empty( WP_DEBUG_LOG ) ) {
 			return;
 		}
 
-		if ( is_null( self::$instance ) && class_exists( Logger::class ) ) {
-			self::$instance = new self();
+		if ( is_null( self::$instances[ $name ] ) && class_exists( Logger::class ) ) {
+
+			self::$instances[ $name ] = new self( $name );
 		}
 
-		return self::$instance;
+		return self::$instances[ $name ];
 	}
 
-	private function __construct( $options = array() ) {
-		$this->log = new Logger( 'Medoid' );
-		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/debug.log' ) );
+	private function __construct( $name, $options = array() ) {
+
+		$this->log = new Logger( strtoupper( $name ) );
+
+		if ( $name === 'medoid' ) {
+			$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/debug.log' ) );
+		} else {
+			$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/' . ltrim( $name, 'medoid_' ) . '.log' ) );
+		}
 
 		add_action( 'init', array( $this, 'setup_logger' ) );
 	}
@@ -38,7 +45,12 @@ final class Medoid_Logger {
 	}
 
 	public static function __callStatic( $name, $args ) {
-		$medoid_logger = self::instance();
+		$logger_name = 'medoid';
+		if ( ! empty( $args[2] ) ) {
+			$logger_name .= '_' . $args[2];
+		}
+		$medoid_logger = self::instance( $logger_name );
+
 		if ( is_null( $medoid_logger ) || ! in_array( $name, self::$callbacks ) ) {
 			return;
 		}
