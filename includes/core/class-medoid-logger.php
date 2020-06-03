@@ -4,7 +4,7 @@ use Monolog\Handler\StreamHandler;
 
 final class Medoid_Logger {
 	private static $instance;
-	protected static $callbacks = [ 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' ];
+	protected static $callbacks = array( 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
 
 	private $log;
 
@@ -16,7 +16,7 @@ final class Medoid_Logger {
 		return self::$instance;
 	}
 
-	private function __construct( $options = [] ) {
+	private function __construct( $options = array() ) {
 		$this->log = new Logger( 'Medoid' );
 		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/debug.log' ) );
 
@@ -35,15 +35,15 @@ final class Medoid_Logger {
 
 	public static function __callStatic( $name, $args ) {
 		$medoid_logger = self::instance();
-		if ( is_null( $medoid_logger ) ) {
+		if ( is_null( $medoid_logger ) || ! in_array( $name, self::$callbacks ) ) {
 			return;
 		}
 
 		return call_user_func_array(
-			[
+			array(
 				$medoid_logger->getLogger(),
 				$name,
-			],
+			),
 			$args
 		);
 	}
