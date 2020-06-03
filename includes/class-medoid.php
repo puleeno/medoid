@@ -47,6 +47,7 @@ final class Medoid {
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-logger.php';
 
 		/**
 		 * Install Medoid
@@ -106,7 +107,6 @@ final class Medoid {
 
 	public function init_hooks() {
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
-
 		add_filter( 'medoid_create_file_name_unique', 'medoid_create_file_name_unique', 10, 3 );
 	}
 

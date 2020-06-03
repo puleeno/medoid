@@ -12,6 +12,6 @@
     "minimum-stability": "dev",
     "require": {
         "gliterd/backblaze-b2": "1.1.0",
-        "ramphor/logger": "dev-master"
+        "ramphor/logger": "0.1.0"
     }
 }
