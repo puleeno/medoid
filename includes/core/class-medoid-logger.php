@@ -9,6 +9,10 @@ final class Medoid_Logger {
 	private $log;
 
 	private static function instance() {
+		if ( ! defined( 'WP_DEBUG_LOG' ) || empty( WP_DEBUG_LOG ) ) {
+			return;
+		}
+
 		if ( is_null( self::$instance ) && class_exists( Logger::class ) ) {
 			self::$instance = new self();
 		}

@@ -11,14 +11,14 @@
 
 define( 'MEDOID_PLUGIN_FILE', __FILE__ );
 
-if (!class_exists('Medoid')) {
-    require_once dirname(__FILE__) . '/includes/class-medoid.php';
+if ( ! class_exists( 'Medoid' ) ) {
+	require_once dirname( __FILE__ ) . '/includes/class-medoid.php';
 }
 
-if (!function_exists('medoid')) {
-    function medoid() {
-        return Medoid::instance();
-    }
+if ( ! function_exists( 'medoid' ) ) {
+	function medoid() {
+		return Medoid::instance();
+	}
 }
 
 $GLOBALS['medoid'] = medoid();
