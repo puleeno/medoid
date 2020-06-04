@@ -4,7 +4,7 @@ use Monolog\Handler\StreamHandler;
 
 final class Medoid_Logger {
 	private static $instances;
-	protected static $callbacks = array( 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
+	protected static $callbacks = array( 'log', 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
 
 	private $log;
 
@@ -31,13 +31,13 @@ final class Medoid_Logger {
 			$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/' . ltrim( $name, 'medoid_' ) . '.log' ) );
 		}
 
-		add_action( 'init', array( $this, 'setup_logger' ) );
+		$this->setup_logger( $name );
 	}
 
 	public function setup_logger() {
 		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/errors.log', Logger::WARNING ) );
 
-		do_action( 'medoid_setup_logger', $this->log );
+		do_action( 'medoid_setup_logger', $this->log, $this->getLogger(), $name );
 	}
 
 	public function getLogger() {
@@ -45,22 +45,28 @@ final class Medoid_Logger {
 	}
 
 	public static function __callStatic( $name, $args ) {
-		$logger_name = 'medoid';
-		if ( ! empty( $args[2] ) ) {
-			$logger_name .= '_' . $args[2];
-		}
-		$medoid_logger = self::instance( $logger_name );
+		$args = $args + array( '', [], false, 'medoid' );
+		list($message, $data, $cron_mode, $logger_name) = $args;
 
+		$medoid_logger = self::instance( $logger_name );
 		if ( is_null( $medoid_logger ) || ! in_array( $name, self::$callbacks ) ) {
 			return;
 		}
 
-		return call_user_func_array(
+		/**
+		 * Dont write log when cron mode is enable but run via frontend page
+		 */
+		if ( $cron_mode == true && ( ! defined( 'DOING_CRON' ) || false === DOING_CRON ) ) {
+			return;
+		}
+
+		return call_user_func(
 			array(
 				$medoid_logger->getLogger(),
 				$name,
 			),
-			$args
+			$message,
+			$data
 		);
 	}
 }
