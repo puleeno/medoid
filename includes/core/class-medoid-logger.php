@@ -4,7 +4,7 @@ use Monolog\Handler\StreamHandler;
 
 final class Medoid_Logger {
 	private static $instances;
-	protected static $callbacks = array( 'log', 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
+	protected static $callbacks = array( 'debug', 'info', 'warning', 'error', 'critical', 'alert', 'emergency' );
 
 	private $log;
 
@@ -34,7 +34,7 @@ final class Medoid_Logger {
 		$this->setup_logger( $name );
 	}
 
-	public function setup_logger() {
+	public function setup_logger( $name ) {
 		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/errors.log', Logger::WARNING ) );
 
 		do_action( 'medoid_setup_logger', $this->log, $this->getLogger(), $name );

@@ -12,7 +12,8 @@ final class Medoid {
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
-		$this->init_hooks();
+
+		add_action( 'plugins_loaded', array( $this, 'init_hooks' ) );
 	}
 
 	public function define_constants() {
