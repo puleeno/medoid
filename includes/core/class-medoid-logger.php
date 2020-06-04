@@ -12,17 +12,13 @@ final class Medoid_Logger {
 		if ( ! defined( 'WP_DEBUG_LOG' ) || empty( WP_DEBUG_LOG ) ) {
 			return;
 		}
-
 		if ( is_null( self::$instances[ $name ] ) && class_exists( Logger::class ) ) {
-
 			self::$instances[ $name ] = new self( $name );
 		}
-
 		return self::$instances[ $name ];
 	}
 
 	private function __construct( $name, $options = array() ) {
-
 		$this->log = new Logger( strtoupper( $name ) );
 
 		if ( $name === 'medoid' ) {
