@@ -3,6 +3,16 @@
 abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 	protected $db;
 	protected $_internal_cloud_id;
+	protected $options;
+
+	public function __construct( $id, $configs = array() ) {
+		$this->set_id( $id );
+		$this->set_options( $configs );
+	}
+
+	protected function set_options( $options ) {
+		$this->options = $options;
+	}
 
 	protected function set_id( $id ) {
 		$this->_internal_cloud_id = (int) $id;
@@ -28,6 +38,14 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				'orderby'     => 'retry DESC, post_id ASC',
 			)
 		);
+
+		Medoid_Logger::debug(
+			'Load images from database to sync to ' . $this->get_name(),
+			[
+				'total_images' => count( $images ),
+			]
+		);
+
 		if ( empty( $images ) ) {
 			return;
 		}
