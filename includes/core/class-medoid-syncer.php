@@ -39,8 +39,13 @@ class Medoid_Syncer {
 		if ( empty( $args['cloud_id'] ) ) {
 			return;
 		}
-		$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
-		$cloud->sync_to_cloud( $args['limit_items'] );
+
+		try {
+			$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
+			$cloud->sync_to_cloud( $args['limit_items'] );
+		} catch ( Exception $e ) {
+			Medoid_Logger::error( $e->getMessage(), $this );
+		}
 	}
 
 	public function setup_cron() {
