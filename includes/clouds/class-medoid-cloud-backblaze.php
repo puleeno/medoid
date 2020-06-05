@@ -8,21 +8,27 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	protected $client;
 	protected $bucket_name;
 
-	public function __construct( $id, $configs = array() ) {
-		$this->set_id( $id );
+	public function get_name() {
+		return ucfirst( self::CLOUD_TYPE );
+	}
 
-		$accountId      = MEDOID_BACKBLAZE_APP_KEY_ID;
-		$applicationKey = MEDOID_BACKBLAZE_APP_MASTER_KEY;
+	public function get_client() {
+		if ( is_null( $this->client ) ) {
+			$accountId      = MEDOID_BACKBLAZE_APP_KEY_ID;
+			$applicationKey = MEDOID_BACKBLAZE_APP_MASTER_KEY;
 
-		$this->bucket_name = MEDOID_BACKBLAZE_DEFAULT_BUCKET_NAME;
-		$this->client      = new Client( $accountId, $applicationKey );
+			$this->bucket_name = MEDOID_BACKBLAZE_DEFAULT_BUCKET_NAME;
+			$this->client      = new Client( $accountId, $applicationKey );
+		}
+
+		return $this->client;
 	}
 
 	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
 			$resource       = fopen( $file, 'r' );
-			$backblaze_file = $this->client->upload(
+			$backblaze_file = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,
 					'FileName'   => ltrim( $new_file, '/' ),
@@ -56,7 +62,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	}
 
 	public function is_exists( $file ) {
-		return $this->client->fileExists(
+		return $this->get_client()->fileExists(
 			array(
 				'BucketName' => $this->bucket_name,
 				'FileName'   => $file,
