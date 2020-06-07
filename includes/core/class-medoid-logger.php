@@ -12,20 +12,22 @@ final class Medoid_Logger {
 		if ( ! defined( 'WP_DEBUG_LOG' ) || empty( WP_DEBUG_LOG ) ) {
 			return;
 		}
-		if ( is_null( self::$instances[ $name ] ) && class_exists( Logger::class ) ) {
+		if ( empty( self::$instances[ $name ] ) && class_exists( Logger::class ) ) {
 			self::$instances[ $name ] = new self( $name );
 		}
 		return self::$instances[ $name ];
 	}
 
 	private function __construct( $name, $options = array() ) {
-		$this->log = new Logger( strtoupper( $name ) );
+		$this->log     = new Logger( strtoupper( $name ) );
+		$log_file_name = preg_replace( '/^medoid_?/', '', $name );
+		$log_dir       = apply_filters(
+			'medoid_logs_directory',
+			sprintf( '%s/medoid/logs', WP_CONTENT_DIR )
+		);
+		$log_file      = sprintf( '%s/%s.log', $log_dir, empty( $log_file_name ) ? 'medoid' : $log_file_name );
 
-		if ( $name === 'medoid' ) {
-			$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/debug.log' ) );
-		} else {
-			$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/' . ltrim( $name, 'medoid_' ) . '.log' ) );
-		}
+		$this->log->pushHandler( new StreamHandler( $log_file ) );
 
 		$this->setup_logger( $name );
 	}
@@ -62,7 +64,7 @@ final class Medoid_Logger {
 				$name,
 			),
 			$message,
-			$data
+			(array) $data
 		);
 	}
 }
