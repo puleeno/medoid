@@ -189,4 +189,35 @@ class Medoid_Core_Db {
 			return new WP_Error( 'sql_error', $e->getMessage() );
 		}
 	}
+
+	public function delete_image( $image_id, $cloud_id = null, $force_delete = true ) {
+		$deleted_image = array( 'ID' => $image_id );
+		if ( ! is_null( $cloud_id ) ) {
+			$deleted_image['cloud_id'] = $cloud_id;
+		}
+		$this->wpdb->delete(
+			$this->image_db_table,
+			$deleted_image
+		);
+
+		$this->delete_image_sizes( $image_id, $cloud_id );
+	}
+
+	public function delete_image_sizes( $image_id, $cloud_id = null ) {
+		$deleted_image_size = array(
+			'image_id' => $image_id,
+		);
+
+		if ( is_null( $cloud_id ) ) {
+			$deleted_image_size['cloud_id'] = $cloud_id;
+		}
+
+		$this->wpdb->delete(
+			$this->image_size_db_table,
+			$deleted_image_size
+		);
+	}
+
+	public function delete_image_size( $image_size_id ) {
+	}
 }

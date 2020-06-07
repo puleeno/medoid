@@ -70,7 +70,65 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		);
 	}
 
-	public function delete_file( $image ) {
-		parent::delete_file( $image );
+	public function delete_image( $image, $delete_cloud_file = true, $delete_attachment = true, $soft_delete = false ) {
+		if ( is_numeric( $image ) ) {
+			$image = $this->db->get_image( $image );
+		}
+
+		if ( empty( $image ) || $image->cloud_id != $this->get_id() ) {
+			$image->current_cloud_id = $this->get_id();
+
+			Medoid_Logger::debug( 'The delete action is skipped', $image );
+			return;
+		}
+
+		try {
+			if ( $soft_delete ) {
+				if ( $delete_attachment ) {
+					wp_update_post(
+						[
+							'ID'          => $image->post_id,
+							'post_status' => 'trash',
+						]
+					);
+				}
+				$this->db->delete_image( $image->ID, false );
+				Medoid_Logger::debug(
+					sprintf(
+						'The image %d is marked delete flag',
+						$image->ID,
+						[
+							'cloud_id' => $image->cloud_id,
+							'post_id'  => $image->post_id,
+						]
+					)
+				);
+			} else {
+				if ( empty( $image->provider_image_id ) ) {
+					Medoid_Logger::warning( 'Provider image ID is not exists so can not delete it', $image );
+				} else {
+					// Delete file on Backblaze via FileID
+					$this->client->deleteFile( array( 'FileId' => $image->provider_image_id ) );
+				}
+
+				// Delete Medoid image from database
+				$this->db->delete_image( $image->ID, $this->get_id(), true );
+
+				// Delete WordPress attachment
+				wp_delete_attachment( $image->post_id );
+				Medoid_Logger::debug(
+					sprintf(
+						'The image %d is deleted forever',
+						$image->ID,
+						[
+							'cloud_id' => $image->cloud_id,
+							'post_id'  => $image->post_id,
+						]
+					)
+				);
+			}
+		} catch ( Exception $e ) {
+			Medoid_Logger::warning( $e->getMessage(), $image );
+		}
 	}
 }

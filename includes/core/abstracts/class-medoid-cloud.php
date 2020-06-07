@@ -39,60 +39,54 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			)
 		);
 
-		Medoid_Logger::debug(
-			'Load images from database to sync to ' . $this->get_name(),
-			[
-				'total_images' => count( $images ),
-			]
-		);
-
+		Medoid_Logger::debug( 'Load images from database to sync to ' . $this->get_name(), [ 'total_images' => count( $images ) ] );
 		if ( empty( $images ) ) {
 			return;
 		}
 
 		foreach ( $images as $image ) {
+			$attachment = get_post( $image->post_id );
+			if ( empty( $attachment ) ) {
+				$this->delete_image( $image, true, false );
+
+				Medoid_Logger::debug( 'Delete the image not exists in WordPress', $image, false, 'medoid_syncer' );
+				continue;
+			}
 			$file    = get_attached_file( $image->post_id, true );
 			$newfile = apply_filters_ref_array(
 				'medoid_create_file_name_unique',
 				array( basename( $file ), $image, &$this )
 			);
 
-			if ( false === $newfile ) {
-				$this->delete_file( $image );
-				continue;
+			try {
+				$response = $this->upload( $file, $newfile );
+				if ( $response->get_status() ) {
+					$this->db->update_image(
+						array(
+							'ID'                => $image->ID,
+							'image_url'         => $response->get_url(),
+							'provider_image_id' => $response->get_provider_image_id(),
+							'is_uploaded'       => true,
+							'updated_at'        => current_time( 'mysql' ),
+						)
+					);
+
+					/**
+					 * Do actions after upload image to cloud success
+					 */
+					do_action( 'medoid_upload_cloud_image', $image, $response, $this );
+				} else {
+					$this->db->update_image(
+						array(
+							'ID'         => $image->ID,
+							'retry'      => (int) $image->retry + 1,
+							'updated_at' => current_time( 'mysql' ),
+						)
+					);
+				}
+			} catch ( Exception $e ) {
+				Medoid_Logger::error( $e->getMessage(), $image, false, 'medoid_syncer' );
 			}
-			$response = $this->upload( $file, $newfile );
-
-			if ( $response->get_status() ) {
-				$this->db->update_image(
-					array(
-						'ID'                => $image->ID,
-						'image_url'         => $response->get_url(),
-						'provider_image_id' => $response->get_provider_image_id(),
-						'is_uploaded'       => true,
-						'updated_at'        => current_time( 'mysql' ),
-					)
-				);
-
-				/**
-				 * Do actions after upload image to cloud success
-				 */
-				do_action( 'medoid_upload_cloud_image', $image, $response, $this );
-			} else {
-				$this->db->update_image(
-					array(
-						'ID'         => $image->ID,
-						'retry'      => (int) $image->retry + 1,
-						'updated_at' => current_time( 'mysql' ),
-					)
-				);
-			}
-		}
-	}
-
-	public function delete_file( $image ) {
-		if ( isset( $image->post_id ) ) {
-			wp_delete_attachment( $image->post_id, true );
 		}
 	}
 }
