@@ -77,8 +77,7 @@ class Medoid_Image {
 		$thumbnail    = $this->get_image_size( $attachment->ID, array( 150, 150 ) );
 
 		if ( $medoid_image ) {
-			$medoid_image_url = $medoid_image['image_url'];
-
+			$medoid_image_url  = $medoid_image['image_url'];
 			$response['url']   = $medoid_image_url;
 			$response['icon']  = $thumbnail['image_url'];
 			$response['sizes'] = array(
@@ -127,11 +126,9 @@ class Medoid_Image {
 				$image_url = $this->cdn->resize( wp_get_attachment_url( $attachment_id ), $sizes );
 			}
 		}
-
 		if ( $image_url ) {
 			return array( $image_url, $sizes['width'], $sizes['height'] );
 		}
-
 		return $image;
 	}
 
