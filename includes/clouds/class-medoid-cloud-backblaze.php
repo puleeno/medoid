@@ -27,7 +27,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
-			$resource       = fopen( $file, 'r' );
+			$resource = @fopen( $file, 'r' );
+			if ( $resource === false ) {
+				throw new Exception( sprintf( 'Can not open file %s', $file ) );
+			}
 			$backblaze_file = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,
@@ -94,7 +97,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 				$this->db->delete_image( $image->ID, false );
 				Medoid_Logger::debug(
 					sprintf(
-						'The image %d is marked delete flag',
+						'The image #%d is marked delete flag',
 						$image->ID,
 						array(
 							'cloud_id' => $image->cloud_id,
@@ -117,7 +120,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 				wp_delete_attachment( $image->post_id );
 				Medoid_Logger::debug(
 					sprintf(
-						'The image %d is deleted forever',
+						'The image #%d is deleted forever',
 						$image->ID,
 						array(
 							'cloud_id' => $image->cloud_id,

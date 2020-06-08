@@ -33,10 +33,10 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 		$images = $this->get_db()->get_images(
 			array(
 				'cloud_id'    => $this->get_id(),
-				'limit'       => 50,
+				'limit'       => $limit_items,
 				'is_uploaded' => false,
 				'is_deleted'  => false,
-				'orderby'     => 'updated_at DESC, retry DESC, post_id ASC',
+				'orderby'     => 'retry ASC, updated_at ASC, post_id ASC',
 			)
 		);
 
@@ -74,8 +74,8 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					 */
 					do_action( 'medoid_upload_cloud_image', $image, $response, $this );
 
-					Medoid_Loggerr::info(
-						sprintf( 'The image %d(%s) is uploaded successful', $image->ID, $image->image_url ),
+					Medoid_Logger::info(
+						sprintf( 'The image #%d(%s) to %s is uploaded successful', $image->ID, $image->image_url, $this->get_name() ),
 						$response
 					);
 				} else {
@@ -87,8 +87,14 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 						)
 					);
 
-					Medoid_Loggerr::warning(
-						sprintf( 'Upload image %d(%s) is failed', $image->ID, $image->image_url ),
+					Medoid_Logger::warning(
+						sprintf(
+							'Upload image #%d(%s) to %s is failed: %s',
+							$image->ID,
+							$image->image_url,
+							$this->get_name(),
+							$response->get_error_message()
+						),
 						$response
 					);
 				}
