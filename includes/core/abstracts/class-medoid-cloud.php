@@ -73,6 +73,11 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					 * Do actions after upload image to cloud success
 					 */
 					do_action( 'medoid_upload_cloud_image', $image, $response, $this );
+
+					Medoid_Loggerr::info(
+						sprintf( 'The image %d(%s) is uploaded successful', $image->ID, $image->image_url ),
+						$response
+					);
 				} else {
 					$this->db->update_image(
 						array(
@@ -80,6 +85,11 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 							'retry'      => (int) $image->retry + 1,
 							'updated_at' => current_time( 'mysql' ),
 						)
+					);
+
+					Medoid_Loggerr::warning(
+						sprintf( 'Upload image %d(%s) is failed', $image->ID, $image->image_url ),
+						$response
 					);
 				}
 			} catch ( Exception $e ) {
