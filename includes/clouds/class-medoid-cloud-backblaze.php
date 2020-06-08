@@ -74,7 +74,6 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		if ( is_numeric( $image ) ) {
 			$image = $this->db->get_image( $image );
 		}
-
 		if ( empty( $image ) || $image->cloud_id != $this->get_id() ) {
 			$image->current_cloud_id = $this->get_id();
 
@@ -104,11 +103,11 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					)
 				);
 			} else {
-				if ( empty( $image->provider_image_id ) ) {
-					Medoid_Logger::warning( 'Provider image ID is not exists so can not delete it', $image );
-				} else {
+				if ( ! empty( $image->provider_image_id ) ) {
 					// Delete file on Backblaze via FileID
 					$this->client->deleteFile( array( 'FileId' => $image->provider_image_id ) );
+				} elseif ( (bool) $image->is_uploaded ) {
+					Medoid_Logger::warning( 'Provider image ID is not exists so can not delete it', $image );
 				}
 
 				// Delete Medoid image from database
@@ -130,5 +129,12 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		} catch ( Exception $e ) {
 			Medoid_Logger::warning( $e->getMessage(), $image );
 		}
+	}
+
+	public function make_unique_file_name( $file, $medoid_image ) {
+		return apply_filters_ref_array(
+			'medoid_create_file_name_unique',
+			array( basename( $file ), $medoid_image, &$this )
+		);
 	}
 }

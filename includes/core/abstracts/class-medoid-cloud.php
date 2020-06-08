@@ -35,7 +35,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				'cloud_id'    => $this->get_id(),
 				'is_uploaded' => false,
 				'limit'       => 50,
-				'orderby'     => 'retry DESC, post_id ASC',
+				'orderby'     => 'updated_at DESC, retry DESC, post_id ASC',
 			)
 		);
 
@@ -53,10 +53,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				continue;
 			}
 			$file    = get_attached_file( $image->post_id, true );
-			$newfile = apply_filters_ref_array(
-				'medoid_create_file_name_unique',
-				array( basename( $file ), $image, &$this )
-			);
+			$newfile = $this->make_unique_file_name( $file, $image );
 
 			try {
 				$response = $this->upload( $file, $newfile );
