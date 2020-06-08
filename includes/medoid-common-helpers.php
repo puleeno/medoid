@@ -99,3 +99,24 @@ function medoid_create_parent_prefix_from_post( $post ) {
 
 	return $current_slug;
 }
+
+function update_image_guid_after_upload_success( $image, $response, $cloud ) {
+}
+add_action( 'medoid_upload_cloud_image', 'update_image_guid_after_upload_success', 10, 3 );
+
+
+function delete_image_files_after_upload( $image, $response, $cloud ) {
+	if ( empty( $image->delete_local_file ) ) {
+		return;
+	}
+
+	if ( $image->post_id > 0 ) {
+		$attachment_id = $image->post_id;
+		$meta          = wp_get_attachment_metadata( $attachment_id );
+		$backup_sizes  = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
+		$file          = get_attached_file( $attachment_id );
+
+		wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
+	}
+}
+add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
