@@ -43,7 +43,7 @@ final class Medoid_Logger {
 	}
 
 	public static function __callStatic( $name, $args ) {
-		$args = $args + array( '', [], false, 'medoid' );
+		$args = $args + array( '', array(), false, 'medoid' );
 		list($message, $data, $cron_mode, $logger_name) = $args;
 
 		$medoid_logger = self::instance( $logger_name );

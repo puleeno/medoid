@@ -33,13 +33,14 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 		$images = $this->get_db()->get_images(
 			array(
 				'cloud_id'    => $this->get_id(),
-				'is_uploaded' => false,
 				'limit'       => 50,
+				'is_uploaded' => false,
+				'is_deleted'  => false,
 				'orderby'     => 'updated_at DESC, retry DESC, post_id ASC',
 			)
 		);
 
-		Medoid_Logger::debug( 'Load images from database to sync to ' . $this->get_name(), [ 'total_images' => count( $images ) ] );
+		Medoid_Logger::debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
 		if ( empty( $images ) ) {
 			return;
 		}

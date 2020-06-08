@@ -74,6 +74,7 @@ class Medoid_Install {
 			'file_type'         => 'VARCHAR(255)',
 			'mime_type'         => 'VARCHAR(255)',
 			'file_size'         => 'BIGINT',
+			'is_deleted'        => 'TINYINT DEFAULT 0',
 			'delete_local_file' => 'TINYINT DEFAULT 0',
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',

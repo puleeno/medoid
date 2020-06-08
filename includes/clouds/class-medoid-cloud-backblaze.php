@@ -85,10 +85,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			if ( $soft_delete ) {
 				if ( $delete_attachment ) {
 					wp_update_post(
-						[
+						array(
 							'ID'          => $image->post_id,
 							'post_status' => 'trash',
-						]
+						)
 					);
 				}
 				$this->db->delete_image( $image->ID, false );
@@ -96,10 +96,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					sprintf(
 						'The image %d is marked delete flag',
 						$image->ID,
-						[
+						array(
 							'cloud_id' => $image->cloud_id,
 							'post_id'  => $image->post_id,
-						]
+						)
 					)
 				);
 			} else {
@@ -119,10 +119,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					sprintf(
 						'The image %d is deleted forever',
 						$image->ID,
-						[
+						array(
 							'cloud_id' => $image->cloud_id,
 							'post_id'  => $image->post_id,
-						]
+						)
 					)
 				);
 			}
