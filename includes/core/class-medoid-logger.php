@@ -33,7 +33,7 @@ final class Medoid_Logger {
 	}
 
 	public function setup_logger( $name ) {
-		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/errors.log', Logger::WARNING ) );
+		$this->log->pushHandler( new StreamHandler( WP_CONTENT_DIR . '/medoid/logs/errors.log', Logger::ERROR ) );
 
 		do_action( 'medoid_setup_logger', $this->log, $this->getLogger(), $name );
 	}
