@@ -103,6 +103,7 @@ function medoid_create_parent_prefix_from_post( $post ) {
 function update_image_guid_after_upload_success( $image, $response, $cloud ) {
 	global $wpdb;
 	if ( $wpdb->update( $wpdb->posts, array( 'guid' => $response->get_url() ), array( 'ID' => $image->post_id ) ) ) {
+		delete_post_meta( $image->post_id, '_wp_attached_file' );
 		Medoid_Logger::debug(
 			sprintf( 'Update attachment #%d with value "%s" is successful', $image->post_id, $response->get_url() )
 		);
