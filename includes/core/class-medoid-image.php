@@ -37,7 +37,7 @@ class Medoid_Image {
 			$medoid_image['image_url'] = $this->cdn->delivery( $medoid_image['image_url'] );
 		}
 
-		return apply_filters( 'medoid_image', $medoid_image, $attachment, 'full', $cloud_id );
+		return apply_filters( 'medoid_image', $medoid_image, $attachment_id, 'full', $cloud_id );
 	}
 
 	public function get_image_size( $attachment_id, $size = 'thumbnail', $cloud_id = null ) {
@@ -54,7 +54,7 @@ class Medoid_Image {
 				$medoid_image['image_url'] = $this->cdn->resize( $medoid_image['image_url'], $sizes );
 				$medoid_image['sizes']     = $sizes;
 
-				return apply_filters( 'medoid_image', $medoid_image, $attachment, 'full', $cloud_id );
+				return apply_filters( 'medoid_image', $medoid_image, $attachment_id, 'full', $cloud_id );
 			}
 		}
 
