@@ -55,7 +55,7 @@ class Medoid_Core_Syncer {
 				continue;
 			}
 			$cloud_schedule = '3_minutes';
-			$limit_items    = 50;
+			$limit_items    = 20;
 			$cron_key       = sprintf( '%s_id%s_hook', $cloud::CLOUD_TYPE, $cloud_id );
 
 			add_action( $cron_key, array( $this, 'syncer' ) );
