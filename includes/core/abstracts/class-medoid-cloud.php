@@ -103,4 +103,11 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			}
 		}
 	}
+
+	public function make_unique_file_name( $file, $medoid_image ) {
+		return apply_filters_ref_array(
+			'medoid_create_file_name_unique',
+			array( basename( $file ), $medoid_image, &$this )
+		);
+	}
 }
