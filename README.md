@@ -4,7 +4,8 @@ Medoid
 The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
 
 # Main Features
-- [ ] Replace WordPress media and use thirdparty cloud platform
+- [x] Replace WordPress media and use thirdparty cloud platform
+- [x] Support CDN processing via thirdparty
 - [ ] Support multi clouds
 - [ ] Folder management for WordPress Media
 
@@ -12,5 +13,5 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 - [ ] Amazon S3
 - [ ] Google Cloud Storage
 - [ ] Imgur
-- [ ] Backblaze
+- [x] Backblaze
 - [ ] imagekit.io
