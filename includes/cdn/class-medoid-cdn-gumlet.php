@@ -1,6 +1,8 @@
 <?php
 
 class Medoid_CDN_Gumlet extends Medoid_CDN {
+	const TYPE_NAME = 'gumlet';
+
 	protected $processing = true;
 
 	protected $support_url         = false;
@@ -21,6 +23,10 @@ class Medoid_CDN_Gumlet extends Medoid_CDN {
 				'width'  => 'w',
 			)
 		);
+	}
+
+	public function get_name() {
+		return 'Gumlet';
 	}
 
 	protected function create_url( $url, $sizes = array() ) {

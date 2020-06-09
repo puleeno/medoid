@@ -1,6 +1,8 @@
 <?php
 
 abstract class Medoid_CDN implements Medoid_CDN_Interface {
+	const TYPE_NAME = null;
+
 	protected $options;
 	protected $processing = false;
 

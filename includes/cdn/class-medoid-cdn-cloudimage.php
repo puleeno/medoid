@@ -1,5 +1,7 @@
 <?php
 class Medoid_CDN_CloudImage extends Medoid_CDN {
+	const TYPE_NAME = 'cloudimage';
+
 	protected $processing = true;
 
 	protected $support_url         = true;
@@ -19,6 +21,10 @@ class Medoid_CDN_CloudImage extends Medoid_CDN {
 			array_get( $options, 'cloudimage_token', null ),
 			$options
 		);
+	}
+
+	public function get_name() {
+		return 'Cloudimage';
 	}
 
 	protected function create_url( $url, $sizes = array() ) {
