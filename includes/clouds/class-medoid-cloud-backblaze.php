@@ -133,11 +133,4 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			Medoid_Logger::warning( $e->getMessage(), $image );
 		}
 	}
-
-	public function make_unique_file_name( $file, $medoid_image ) {
-		return apply_filters_ref_array(
-			'medoid_create_file_name_unique',
-			array( basename( $file ), $medoid_image, &$this )
-		);
-	}
 }
