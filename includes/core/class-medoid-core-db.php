@@ -204,12 +204,11 @@ class Medoid_Core_Db {
 			return;
 		}
 
+		$this->delete_image_sizes( $image_id, $cloud_id );
 		$this->wpdb->delete(
 			$this->image_db_table,
 			$deleted_image
 		);
-
-		$this->delete_image_sizes( $image_id, $cloud_id );
 	}
 
 	public function delete_image_sizes( $image_id, $cloud_id = null ) {
@@ -228,5 +227,12 @@ class Medoid_Core_Db {
 	}
 
 	public function delete_image_size( $image_size_id ) {
+	}
+
+	public function delete_image_from_attachment( $attachment_id ) {
+		$image = $this->get_image_by_attachment_id( $attachment_id );
+		if ( ! empty( $image ) ) {
+			$this->delete_image( $image['ID'], null, true );
+		}
 	}
 }

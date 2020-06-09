@@ -21,6 +21,9 @@ class Medoid_Image {
 		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
 		add_action( 'image_downsize', array( $this, 'resize_image' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'image_src' ), 99, 3 );
+
+		// Hook actions to delete WordPress media
+		add_action( 'delete_attachment', array( $this, 'delete_image' ) );
 	}
 
 	public function get_image( $attachment_id, $cloud_id = null ) {
@@ -139,6 +142,10 @@ class Medoid_Image {
 		 $dev_domain = constant( 'MEDOID_DEBUG_DOMAIN' );
 
 		 return str_replace( site_url(), $dev_domain, $image_url );
+	}
+
+	public function delete_image( $attachment_id ) {
+		$this->db->delete_image_from_attachment( $attachment_id );
 	}
 }
 
