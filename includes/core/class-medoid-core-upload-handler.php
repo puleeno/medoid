@@ -52,12 +52,15 @@ class Medoid_Core_Upload_Handler {
 			return;
 		};
 
+		$delete_local_file = apply_filters( 'medoid_delete_local_file', true );
+
 		$image_data = array(
-			'post_id'   => $attachment_id,
-			'image_url' => $this->result['url'],
-			'file_size' => filesize( $this->result['file'] ),
-			'file_name' => str_replace( ABSPATH, '', $this->result['file'] ),
-			'mime_type' => $this->result['type'],
+			'post_id'           => $attachment_id,
+			'image_url'         => $this->result['url'],
+			'file_size'         => filesize( $this->result['file'] ),
+			'file_name'         => str_replace( ABSPATH, '', $this->result['file'] ),
+			'mime_type'         => $this->result['type'],
+			'delete_local_file' => $delete_local_file,
 		);
 
 		foreach ( array_keys( $clouds ) as $cloud_id ) {
