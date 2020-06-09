@@ -50,7 +50,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			if ( empty( $attachment ) ) {
 				$this->delete_image( $image, true, false );
 
-				Medoid_Logger::debug( 'Delete the image not exists in WordPress', $image, false, 'Medoid_Core_Syncer' );
+				Medoid_Logger::debug( 'Delete the image not exists in WordPress', $image, false, 'medoid_syncer' );
 				continue;
 			}
 			$file    = get_attached_file( $image->post_id, true );
@@ -99,7 +99,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					);
 				}
 			} catch ( Exception $e ) {
-				Medoid_Logger::error( $e->getMessage(), $image, false, 'Medoid_Core_Syncer' );
+				Medoid_Logger::error( $e->getMessage(), $image, false, 'medoid_syncer' );
 			}
 		}
 	}
