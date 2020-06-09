@@ -101,9 +101,18 @@ function medoid_create_parent_prefix_from_post( $post ) {
 }
 
 function update_image_guid_after_upload_success( $image, $response, $cloud ) {
+	global $wpdb;
+	if ( $wpdb->update( $wpdb->posts, array( 'guid' => $response->get_url() ), array( 'ID' => $image->post_id ) ) ) {
+		Medoid_Logger::debug(
+			sprintf( 'Update attachment #%d with value "%s" is successful', $image->post_id, $response->get_url() )
+		);
+	} else {
+		Medoid_Logger::debug(
+			sprintf( 'Update attachment #%d with value "%s" is failed', $image->post_id, $response->get_url() )
+		);
+	}
 }
 add_action( 'medoid_upload_cloud_image', 'update_image_guid_after_upload_success', 10, 3 );
-
 
 function delete_image_files_after_upload( $image, $response, $cloud ) {
 	if ( empty( $image->delete_local_file ) ) {
@@ -117,6 +126,10 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 		$file          = get_attached_file( $attachment_id );
 
 		wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
+
+		// Delete attachment sizes meta
+		unset( $meta['sizes'] );
+		wp_update_attachment_metadata( $attachment_id, $meta );
 	}
 }
 add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
