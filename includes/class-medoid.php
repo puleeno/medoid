@@ -80,7 +80,7 @@ final class Medoid {
 			 *
 			 * Reference: https://developer.wordpress.org/plugins/cron/
 			 */
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-syncer.php';
+			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-syncer.php';
 		}
 
 		/**

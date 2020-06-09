@@ -1,5 +1,5 @@
 <?php
-class Medoid_Syncer {
+class Medoid_Core_Syncer {
 	protected $upload_events = array();
 	protected $sync_events   = array();
 
@@ -91,4 +91,4 @@ class Medoid_Syncer {
 	}
 }
 
-new Medoid_Syncer();
+new Medoid_Core_Syncer();
