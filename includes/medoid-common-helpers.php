@@ -129,7 +129,9 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 		wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
 
 		// Delete attachment sizes meta
-		unset( $meta['sizes'] );
+		if ( isset( $meta['sizes'] ) ) {
+			unset( $meta['sizes'] );
+		}
 		wp_update_attachment_metadata( $attachment_id, $meta );
 	}
 }

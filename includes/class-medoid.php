@@ -18,7 +18,7 @@ final class Medoid {
 
 	public function define_constants() {
 		$this->define( 'MEDOID_ABSPATH', dirname( MEDOID_PLUGIN_FILE ) );
-		$this->define( 'MEDOID_CLOUDS_DIR', MEDOID_ABSPATH . '/includes/clouds' );
+		$this->define( 'MEDOID_INC_DIR', MEDOID_ABSPATH . '/includes' );
 	}
 
 	private function define( $name, $value ) {
@@ -62,7 +62,6 @@ final class Medoid {
 
 		if ( ! $this->is_request( 'cron' ) ) {
 			// Added medoid flow via WordPress Native upload Flow
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
 			// Customize WordPress load the images
@@ -82,6 +81,9 @@ final class Medoid {
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
+
+		// Only require classes when necessary
+		spl_autoload_register( array( $this, 'autoload_medoid_classes' ) );
 	}
 
 	private function is_request( $type ) {
@@ -113,5 +115,18 @@ final class Medoid {
 
 	public static function is_active() {
 		return true;
+	}
+
+	public function autoload_medoid_classes( $cls ) {
+		if ( ! preg_match( '/^Medoid_/', $cls ) ) {
+			return;
+		}
+		// Generate file name from class name
+		$file_name = sprintf( '%s/classes/class-%s.php', MEDOID_INC_DIR, str_replace( '_', '-', strtolower( $cls ) ) );
+
+		// Check class file is exists and require
+		if ( file_exists( $file_name ) ) {
+			require_once $file_name;
+		}
 	}
 }

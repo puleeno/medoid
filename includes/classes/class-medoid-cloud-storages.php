@@ -5,13 +5,6 @@ class Medoid_Cloud_Storages {
 	protected $query;
 	protected $db;
 
-	public function includes() {
-		$clouds = glob( MEDOID_CLOUDS_DIR . '/class-medoid-cloud*.php' );
-		foreach ( $clouds as $cloud ) {
-			require_once $cloud;
-		}
-	}
-
 	public function init() {
 		$this->db = Medoid_Core_Db::instance();
 	}

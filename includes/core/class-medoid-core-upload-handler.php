@@ -18,12 +18,7 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function init() {
-		if ( ! class_exists( 'Medoid_Cloud_Storages' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cloud-storages.php';
-		}
-
-		$this->db  = Medoid_Core_Db::instance();
-		$this->cdn = Medoid_Core_CDN_Integration::instance();
+		$this->db = Medoid_Core_Db::instance();
 	}
 
 	public function initHooks() {
@@ -35,15 +30,7 @@ class Medoid_Core_Upload_Handler {
 		$cloud_storage = new Medoid_Cloud_Storages();
 		$cloud_storage->init();
 
-		$this->cdn_support_resize = $this->cdn->is_enabled() && $this->cdn->get_provider()->is_support( 'resize' );
-
-		if ( $this->cdn_support_resize ) {
-			add_filter( 'intermediate_image_sizes', '__return_empty_array' );
-			add_filter( 'wp_update_attachment_metadata', '__return_null' );
-		}
-
-		$this->result = $result;
-		return $result;
+		return $this->result = $result;
 	}
 
 	public function insert_temporary_cloud_image( $attachment_id ) {
