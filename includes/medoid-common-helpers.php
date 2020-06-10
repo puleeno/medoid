@@ -13,6 +13,10 @@ if ( ! function_exists( 'array_get' ) ) {
 	}
 }
 
+function is_medoid_debug() {
+	return defined( 'MEDOID_DEBUG' ) && MEDOID_DEBUG;
+}
+
 function medoid_get_wp_image_sizes( $size ) {
 	$sizes                        = array();
 	$wp_additional_image_sizes    = wp_get_additional_image_sizes();

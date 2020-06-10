@@ -8,57 +8,15 @@ class Medoid_Image {
 
 	public function __construct() {
 		$this->db = Medoid_Core_Db::instance();
-
-		add_action( 'init', array( $this, 'init_hooks' ) );
-
-		if ( defined( 'MEDOID_DEBUG' ) && MEDOID_DEBUG ) {
-			add_filter( 'wp_get_attachment_image_src', array( $this, 'image_dev_url' ), 5 );
-		}
 	}
 
 	public function init_hooks() {
 		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
-		add_action( 'image_downsize', array( $this, 'resize_image' ), 10, 3 );
-		add_filter( 'wp_get_attachment_image_src', array( $this, 'image_src' ), 99, 3 );
+		add_action( 'image_downsize', array( $this, 'image_downsize' ), 10, 3 );
+		add_filter( 'wp_get_attachment_image_src', array( $this, 'get_image_src' ), 99, 3 );
 
 		// Hook actions to delete WordPress media
 		add_action( 'delete_attachment', array( $this, 'delete_image' ) );
-	}
-
-	public function get_image( $attachment_id, $cloud_id = null ) {
-		$medoid_image = $this->db->get_image_by_attachment_id(
-			$attachment_id
-		);
-		if ( empty( $medoid_image ) ) {
-			return;
-		}
-
-		return apply_filters( 'medoid_image', $medoid_image, $attachment_id, 'full', $cloud_id );
-	}
-
-	public function get_image_size( $attachment_id, $size = 'thumbnail', $cloud_id = null ) {
-		$medoid_image = $this->db->get_image_by_attachment_id(
-			$attachment_id
-		);
-		if ( empty( $medoid_image ) ) {
-			return false;
-		}
-
-		if ( 'full' === $size ) {
-			return $this->get_image( $attachment_id, $cloud_id = null );
-		}
-
-		return apply_filters(
-			'medoid_image',
-			$this->db->get_image_size( $attachment_id, $size, $cloud_id = null ),
-			$attachment_id,
-			$size,
-			$cloud_id
-		);
-	}
-
-	public function resize_image( $downsize, $id, $size ) {
-		return $downsize;
 	}
 
 	public function prepare_json( $response, $attachment, $meta ) {
@@ -88,52 +46,36 @@ class Medoid_Image {
 		return $response;
 	}
 
-	public function image_src( $image, $attachment_id, $size ) {
-		if ( empty( $image ) ) {
-			$meta = wp_get_attachment_metadata( $attachment_id );
-
-			$image = array(
-				wp_get_attachment_url( $attachment_id ),
-				$meta['width'],
-				$meta['height'],
-			);
+	public function get_image( $attachment_id, $cloud_id = null ) {
+		$medoid_image = $this->db->get_image_by_attachment_id(
+			$attachment_id
+		);
+		if ( empty( $medoid_image ) ) {
+			return;
 		}
 
-		$sizes = medoid_get_image_sizes( $size );
-		if ( ! isset( $sizes['width'], $sizes['height'] ) ) {
-			return $image;
-		}
-
-		try {
-			$str_size   = sprintf( '%sx%s', $sizes['width'], $sizes['height'] );
-			$image_size = $this->db->get_image_size_by_attachment_id( $attachment_id, $str_size );
-			if ( $image_size ) {
-				$image[0] = $image_size;
-				return $image;
-			}
-
-			$image_url = '';
-			if ( $image_url ) {
-				return array( $image_url, $sizes['width'], $sizes['height'] );
-			}
-		} catch ( Exception $e ) {
-			Medoid_Logger::error( $e->getMessage() );
-		}
-		return $image;
+		return apply_filters( 'medoid_image', $medoid_image, $attachment_id, 'full', $cloud_id );
 	}
 
-	public function image_dev_url( $image_url ) {
-		if ( ! defined( 'MEDOID_DEBUG_DOMAIN' ) ) {
-			return $image_url;
-		}
-		 $dev_domain = constant( 'MEDOID_DEBUG_DOMAIN' );
+	public function image_downsize( $downsize, $id, $size ) {
+		return array(
+			'wordpress_image' => $downsize,
+			'processed'       => true,
+		);
+	}
 
-		 return str_replace( site_url(), $dev_domain, $image_url );
+
+	public function get_image_src( $medoid_image, $attachment_id, $size ) {
+		if ( ! isset( $medoid_image['processed'] ) ) {
+			return $medoid_image;
+		}
+
+		if ( $medoid_image['processed'] ) {
+			return $medoid_image['wordpress_image'];
+		}
 	}
 
 	public function delete_image( $attachment_id ) {
 		$this->db->delete_image_from_attachment( $attachment_id );
 	}
 }
-
-new Medoid_Image();

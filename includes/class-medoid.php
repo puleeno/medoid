@@ -18,7 +18,6 @@ final class Medoid {
 
 	public function define_constants() {
 		$this->define( 'MEDOID_ABSPATH', dirname( MEDOID_PLUGIN_FILE ) );
-		$this->define( 'MEDOID_INC_DIR', MEDOID_ABSPATH . '/includes' );
 	}
 
 	private function define( $name, $value ) {
@@ -60,14 +59,11 @@ final class Medoid {
 		// Load medoid helpers
 		require_once MEDOID_ABSPATH . '/includes/medoid-common-helpers.php';
 
-		if ( ! $this->is_request( 'cron' ) ) {
-			// Added medoid flow via WordPress Native upload Flow
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
-
-			// Customize WordPress load the images
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image-proxy.php';
-		} else {
+		// Load Medoid Admin
+		if ( $this->is_request( 'admin' ) ) {
+			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
+		}
+		if ( $this->is_request( 'cron' ) ) {
 			/**
 			 * Load the Medoid syncer
 			 * The image will be upload to Cloud Store via WordPress Cronjob
@@ -77,13 +73,14 @@ final class Medoid {
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-syncer.php';
 		}
 
-		// Load Medoid Admin
-		if ( $this->is_request( 'admin' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
-		}
-
 		// Only require classes when necessary
 		spl_autoload_register( array( $this, 'autoload_medoid_classes' ) );
+
+		// Added medoid flow via WordPress Native upload Flow
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
+
+		// Customize WordPress load the images
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
 	}
 
 	private function is_request( $type ) {
@@ -105,6 +102,21 @@ final class Medoid {
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
 
 		add_filter( 'medoid_create_file_name_unique', 'medoid_create_file_name_unique', 10, 3 );
+
+		$medoid_image = new Medoid_Image();
+		add_action( 'init', array( $medoid_image, 'init_hooks' ) );
+
+		if ( $this->is_request( 'cron' ) ) {
+			$medoid_syncer = new Medoid_Core_Syncer();
+			$medoid_syncer->includes();
+
+			add_filter( 'cron_schedules', array( $medoid_syncer, 'schedules' ) );
+			/**
+			 * Setup WordPress cron via action hooks
+			 */
+			add_action( 'init', array( $medoid_syncer, 'setup_cron' ), 20 );
+			add_action( 'init', array( $medoid_syncer, 'run_cron' ), 30 );
+		}
 	}
 
 	public function composer_not_found() {
@@ -122,7 +134,7 @@ final class Medoid {
 			return;
 		}
 		// Generate file name from class name
-		$file_name = sprintf( '%s/classes/class-%s.php', MEDOID_INC_DIR, str_replace( '_', '-', strtolower( $cls ) ) );
+		$file_name = sprintf( '%s/includes/classes/class-%s.php', MEDOID_ABSPATH, str_replace( '_', '-', strtolower( $cls ) ) );
 
 		// Check class file is exists and require
 		if ( file_exists( $file_name ) ) {
