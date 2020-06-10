@@ -6,6 +6,7 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 # Main Features
 - [x] Replace WordPress media and use thirdparty cloud platform
 - [x] Support CDN processing via thirdparty
+- [ ] Processing image by WordPress
 - [ ] Support multi clouds
 - [ ] Folder management for WordPress Media
 
