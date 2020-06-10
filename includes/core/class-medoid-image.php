@@ -103,8 +103,13 @@ class Medoid_Image {
 	}
 
 	public function image_src( $image, $attachment_id, $size ) {
-		if ( empty( $image[0] ) ) {
-			$image[0] = wp_get_attachment_url( $attachment_id );
+		if ( empty( $image ) ) {
+			$meta  = wp_get_attachment_metadata( $attachment_id );
+			$image = array(
+				wp_get_attachment_url( $attachment_id ),
+				$meta['width'],
+				$meta['height'],
+			);
 		}
 
 		$sizes = medoid_get_image_sizes( $size );
