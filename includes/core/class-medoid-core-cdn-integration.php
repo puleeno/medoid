@@ -19,7 +19,7 @@ class Medoid_Core_CDN_Integration {
 
 	public function __construct() {
 		$this->includes();
-		$this->setup_cdn();
+		add_action( 'init', array( $this, 'setup_cdn' ) );
 	}
 
 	public function includes() {
@@ -29,18 +29,18 @@ class Medoid_Core_CDN_Integration {
 
 	public function setup_cdn() {
 		$this->cdns = array(
-			'gumlet'     => Medoid_CDN_Gumlet::class,
-			'cloudimage' => Medoid_CDN_CloudImage::class,
+			Medoid_CDN_Gumlet::TYPE_NAME     => Medoid_CDN_Gumlet::class,
+			Medoid_CDN_CloudImage::TYPE_NAME => Medoid_CDN_CloudImage::class,
 		);
 
-		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns['gumlet'] );
+		$cdn_provider = apply_filters( 'medoid_apply_cdn_provider', $this->cdns[ Medoid_CDN_CloudImage::TYPE_NAME ] );
 
 		/**
 		 * Create CDN Provider via class name
 		 */
 		$this->cdn_provider = new $cdn_provider( array() );
 		if ( ! ( $this->cdn_provider instanceof Medoid_CDN ) ) {
-			error_log( sprintf( '%s must be a instance of %s', $cdn_provider, Medoid_CDN::class ) );
+			Medoid_Logger::error( sprintf( '%s must be a instance of %s', $cdn_provider, Medoid_CDN::class ) );
 		}
 	}
 

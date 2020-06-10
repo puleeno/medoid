@@ -41,36 +41,31 @@ final class Medoid {
 		 */
 		require_once $composer;
 
-		/**
-		 * Require the interfaces and abstracts
-		 */
+		// Require the Medoid interfaces
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cloud-interface.php';
 		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
+		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-processing.php';
+
+		// Require the Medoid abstracts
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
 		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-logger.php';
 
-		/**
-		 * Install Medoid
-		 */
+		// Load Medoid core
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-logger.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
+
+		// Install Medoid
 		require_once MEDOID_ABSPATH . '/includes/class-medoid-install.php';
 
-		/**
-		 * Load medoid helpers
-		 */
+		// Load medoid helpers
 		require_once MEDOID_ABSPATH . '/includes/medoid-common-helpers.php';
 
 		if ( ! $this->is_request( 'cron' ) ) {
-			/**
-			 * Added medoid flow via WordPress Native upload Flow
-			 */
+			// Added medoid flow via WordPress Native upload Flow
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-cdn-integration.php';
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
-			/**
-			 * Customize WordPress load the images
-			 */
+			// Customize WordPress load the images
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image-proxy.php';
 		} else {
@@ -83,9 +78,7 @@ final class Medoid {
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-syncer.php';
 		}
 
-		/**
-		 * Load Medoid Admin
-		 */
+		// Load Medoid Admin
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}

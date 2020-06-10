@@ -1,5 +1,5 @@
 <?php
-class Medoid_CDN_CloudImage extends Medoid_CDN {
+class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing {
 	const TYPE_NAME = 'cloudimage';
 
 	protected $processing = true;
