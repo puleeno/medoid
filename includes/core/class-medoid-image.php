@@ -46,17 +46,6 @@ class Medoid_Image {
 		return $response;
 	}
 
-	public function get_image( $attachment_id, $cloud_id = null ) {
-		$medoid_image = $this->db->get_image_by_attachment_id(
-			$attachment_id
-		);
-		if ( empty( $medoid_image ) ) {
-			return;
-		}
-
-		return apply_filters( 'medoid_image', $medoid_image, $attachment_id, 'full', $cloud_id );
-	}
-
 	public function image_downsize( $downsize, $id, $size ) {
 		return array(
 			'wordpress_image' => $downsize,
