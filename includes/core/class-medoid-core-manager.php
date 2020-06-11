@@ -12,10 +12,10 @@ class Medoid_Core_Manager {
 
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
 		}
-	}
 
-	protected function __construct() {
+		return self::$instance;
 	}
 
 	/**
@@ -28,7 +28,11 @@ class Medoid_Core_Manager {
 			$default_clouds        = array(
 				Medoid_Cloud_Backblaze::CLOUD_TYPE => Medoid_Cloud_Backblaze::class,
 			);
-			$this->cloud_providers = apply_filters( 'medoid_cloud_storage_providers', $this->cloud_providers + $default_cloud );
+
+			$this->cloud_providers = apply_filters(
+				'medoid_cloud_storage_providers',
+				$this->cloud_providers + $default_cloud
+			);
 		}
 
 		return $this->cloud_providers;
@@ -52,11 +56,13 @@ class Medoid_Core_Manager {
 	}
 
 	public function get_active_cloud() {
+		return new Medoid_Cloud_Backblaze( 1 );
 	}
 
 	public function get_all_cdn() {
 	}
 
 	public function get_active_cdn() {
+		return Medoid_CDN_CloudImage::class;
 	}
 }

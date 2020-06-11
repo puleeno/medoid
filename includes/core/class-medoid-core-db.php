@@ -105,19 +105,18 @@ class Medoid_Core_Db {
 		return $this->wpdb->get_results( $sql );
 	}
 
-	public function get_image_by_attachment_id( $attatchment_id, $cloud_id = 0, $output = 'ARRAY_A' ) {
+	public function get_image_by_attachment_id( $attatchment_id, $cloud_id = 0 ) {
 		$sql = "SELECT * FROM {$this->image_db_table} WHERE post_id=%d AND is_deleted=0";
 
 		return $this->wpdb->get_row(
-			$this->wpdb->prepare( $sql, $attatchment_id ),
-			$output
+			$this->wpdb->prepare( $sql, $attatchment_id )
 		);
 	}
 
 	public function get_image_size( $image_id, $size ) {
 	}
 
-	public function get_image_size_by_attachment_id( $attachment_id, $size ) {
+	public function get_image_size_by_attachment_id( $attachment_id, $size, $cloud_id = 0 ) {
 		$sql = $this->wpdb->prepare(
 			"SELECT s.*
 			FROM {$this->image_size_db_table} s
