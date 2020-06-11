@@ -134,5 +134,3 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		}
 	}
 }
-
-return Medoid_Cloud_Backblaze::class;

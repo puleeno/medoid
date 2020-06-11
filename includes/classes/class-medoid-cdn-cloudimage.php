@@ -17,5 +17,3 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 		return 'Cloudimage';
 	}
 }
-
-return Medoid_CDN_CloudImage::class;

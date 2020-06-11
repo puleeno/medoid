@@ -63,6 +63,13 @@ final class Medoid {
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
+
+		// Only require classes when necessary
+		spl_autoload_register( array( $this, 'autoload_medoid_classes' ) );
+
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-manager.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
+
 		if ( $this->is_request( 'cron' ) ) {
 			/**
 			 * Load the Medoid syncer
@@ -72,12 +79,6 @@ final class Medoid {
 			 */
 			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-syncer.php';
 		}
-
-		// Only require classes when necessary
-		spl_autoload_register( array( $this, 'autoload_medoid_classes' ) );
-
-		// Added medoid flow via WordPress Native upload Flow
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
 
 		// Customize WordPress load the images
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
