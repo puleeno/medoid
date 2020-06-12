@@ -25,7 +25,7 @@ class Medoid_Core_Manager {
 	 */
 	public function get_cloud_providers( $refresh = false ) {
 		if ( empty( $this->cloud_providers ) || $refresh ) {
-			$default_clouds        = array(
+			$default_clouds = array(
 				Medoid_Cloud_Backblaze::CLOUD_TYPE => Medoid_Cloud_Backblaze::class,
 			);
 

@@ -12,9 +12,9 @@ class Medoid_Image {
 	}
 
 	public function init_hooks() {
-		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
 		add_action( 'image_downsize', array( $this, 'image_downsize' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'get_image_src' ), 99, 3 );
+		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
 
 		// Hook actions to delete WordPress media
 		add_action( 'delete_attachment', array( $this, 'delete_image' ) );
@@ -47,11 +47,10 @@ class Medoid_Image {
 	}
 
 	public function image_downsize( $downsize, $id, $size ) {
+		$numeric_size = medoid_get_image_sizes( $size );
 		$active_cloud = $this->manager->get_active_cloud();
 		if ( empty( $downsize ) ) {
-			$image_size   = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
-			$numeric_size = medoid_get_image_sizes( $size );
-
+			$image_size = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
 			if ( empty( $image_size ) ) {
 				$medoid_image = $this->db->get_image_by_attachment_id( $id, $active_cloud->get_id() );
 				if ( empty( $medoid_image ) ) {
@@ -65,7 +64,11 @@ class Medoid_Image {
 
 		$cdn_class = $this->manager->get_active_cdn();
 		if ( $cdn_class ) {
-			$downsize[0] = new $cdn_class( $downsize[0], $active_cloud, empty( $image_size ) );
+			$cdn_image = new $cdn_class( $downsize[0], $active_cloud, empty( $image_size ) );
+			if ( $cdn_image->is_support( 'resize' ) ) {
+				$cdn_image->resize( $numeric_size );
+			}
+			$downsize[0] = $cdn_image;
 		}
 
 		return array(
@@ -79,9 +82,7 @@ class Medoid_Image {
 			return $medoid_image;
 		}
 
-		if ( $medoid_image['processed'] ) {
-			return $medoid_image['wordpress_image'];
-		}
+		return $medoid_image['wordpress_image'];
 	}
 
 	public function delete_image( $attachment_id ) {
