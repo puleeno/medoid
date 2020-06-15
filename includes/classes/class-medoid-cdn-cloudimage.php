@@ -9,11 +9,27 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 	protected $image_url;
 	protected $cloud;
 
-	// Processing properties
-	protected $sizes;
+	protected $sizes = array();
 
 	public function __toString() {
-		return $this->image_url;
+		$cloudimage_url = $this->get_url();
+		$query_args     = array();
+
+		if ( ! empty( $this->sizes ) ) {
+			if ( $this->sizes['width'] > 0 ) {
+				$query_args['w'] = $this->sizes['width'];
+			}
+			if ( $this->sizes['height'] > 0 ) {
+				$query_args['h'] = $this->sizes['height'];
+			}
+		}
+
+		$ret = $cloudimage_url . $this->image_url;
+		if ( ! empty( $query_args ) ) {
+			$ret .= '?' . http_build_query( $query_args );
+		}
+
+		return apply_filters( 'medoid_cdn_image_url_output', $ret, $this );
 	}
 
 	public function get_name() {
@@ -22,12 +38,16 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 
 	public function get_url() {
 		return sprintf(
-			'https://%s.cloudimg.io/%s',
+			'https://%s.cloudimg.io/%s/',
 			$this->cloudimage_token,
 			self::VERSION
 		);
 	}
 
-	public function resize( $size ) {
+	public function resize( $width, $height = false ) {
+		$this->sizes = array(
+			'width'  => $width,
+			'height' => $height,
+		);
 	}
 }

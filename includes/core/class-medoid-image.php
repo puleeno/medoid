@@ -69,7 +69,7 @@ class Medoid_Image {
 			$cdn_classname = $active_cdn_info['class_name'];
 			$cdn_image = new $cdn_classname( $downsize[0], $active_cloud, empty( $image_size ), $active_cdn_info );
 			if ( $cdn_image->is_support( 'resize' ) ) {
-				$cdn_image->resize( $numeric_size );
+				$cdn_image->resize( $numeric_size['width'], $numeric_size['height'] );
 			}
 			$downsize[0] = $cdn_image;
 		}
