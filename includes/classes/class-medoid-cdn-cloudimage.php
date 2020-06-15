@@ -9,6 +9,9 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 	protected $image_url;
 	protected $cloud;
 
+	// Processing properties
+	protected $sizes;
+
 	public function __toString() {
 		return $this->image_url;
 	}

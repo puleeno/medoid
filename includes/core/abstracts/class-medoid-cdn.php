@@ -5,10 +5,12 @@ abstract class Medoid_CDN implements Medoid_CDN_Interface {
 
 	protected $image_url;
 	protected $cloud;
+	protected $options;
 
-	public function __construct( $image_url, $cloud, $is_original = true ) {
+	public function __construct( $image_url, $cloud, $is_original = true, &$options ) {
 		$this->image_url = $image_url;
 		$this->cloud     = $cloud;
+		$this->options   = $options;
 	}
 
 	public function is_support( $feature ) {

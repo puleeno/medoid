@@ -10,12 +10,23 @@ class Medoid_Core_Manager {
 	protected $active_cloud;
 	protected $active_cdn;
 
+	protected $cdn_options;
+
 	public static function get_instance() {
 		if ( is_null( self::$instance ) ) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
+	}
+
+	private function __construct() {
+		$this->cdns = array(
+			Medoid_CDN_CloudImage::TYPE_NAME . '_1' => array(
+				'class_name' => Medoid_CDN_CloudImage::class,
+			),
+		);
+		$this->active_cdn = Medoid_CDN_CloudImage::TYPE_NAME . '_1';
 	}
 
 	/**
@@ -60,9 +71,17 @@ class Medoid_Core_Manager {
 	}
 
 	public function get_all_cdn() {
+
 	}
 
-	public function get_active_cdn() {
-		return Medoid_CDN_CloudImage::class;
+
+
+	public function get_cdn($key_name = null) {
+		if (is_null($key_name)) {
+			$key_name = $this->active_cdn;
+		}
+		$cdn_infos = $this->cdns[$key_name];
+
+		return apply_filters("medoid_cdn_{$key_name}_options", $cdn_infos);
 	}
 }

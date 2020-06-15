@@ -21,24 +21,26 @@ class Medoid_Image {
 	}
 
 	public function prepare_json( $response, $attachment, $meta ) {
-		$medoid_image = $this->get_image( $attachment->ID );
-		$thumbnail    = $this->get_image_size( $attachment->ID, array( 150, 150 ) );
+		$thumbnail_size = array( 150, 150 );
+		$meta           = wp_get_attachment_metadata( $attachment->ID );
+
+		$image     = wp_get_attachment_url( $attachment->ID );
+		$thumbnail = get_post_thumbnail( $attachment->ID, $thumbnail_size );
 
 		if ( $medoid_image ) {
-			$medoid_image_url  = $medoid_image['image_url'];
-			$response['url']   = $medoid_image_url;
-			$response['icon']  = $thumbnail['image_url'];
+			$response['url']   = $image;
+			$response['icon']  = $thumbnail;
 			$response['sizes'] = array(
 				'thumbnail' => array(
-					'height'      => 150,
-					'width'       => 150,
-					'url'         => $thumbnail['image_url'],
+					'width'       => $thumbnail_size[0],
+					'height'      => $thumbnail_size[1],
+					'url'         => $thumbnail,
 					'orientation' => 'landscape',
 				),
 				'full'      => array(
-					'height'      => 200,
-					'width'       => 200,
-					'url'         => $medoid_image_url,
+					'height'      => $meta['height'],
+					'width'       => $meta['width'],
+					'url'         => $image,
 					'orientation' => 'landscape',
 				),
 			);
@@ -62,9 +64,10 @@ class Medoid_Image {
 			$downsize[2] = $numeric_size['height'];
 		}
 
-		$cdn_class = $this->manager->get_active_cdn();
-		if ( $cdn_class ) {
-			$cdn_image = new $cdn_class( $downsize[0], $active_cloud, empty( $image_size ) );
+		$active_cdn_info = $this->manager->get_cdn();
+		if ( isset($active_cdn_info['class_name']) && class_exists($active_cdn_info['class_name']) ) {
+			$cdn_classname = $active_cdn_info['class_name'];
+			$cdn_image = new $cdn_classname( $downsize[0], $active_cloud, empty( $image_size ), $active_cdn_info );
 			if ( $cdn_image->is_support( 'resize' ) ) {
 				$cdn_image->resize( $numeric_size );
 			}
