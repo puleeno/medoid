@@ -3,7 +3,6 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 	const TYPE_NAME = 'cloudimage';
 	const VERSION   = 'v7';
 
-	protected $cloudimage_token;
 	protected $cloudimage_output;
 
 	protected $image_url;
@@ -39,7 +38,7 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 	public function get_url() {
 		return sprintf(
 			'https://%s.cloudimg.io/%s/',
-			$this->cloudimage_token,
+			$this->options['account_id'],
 			self::VERSION
 		);
 	}

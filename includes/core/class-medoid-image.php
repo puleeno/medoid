@@ -65,9 +65,9 @@ class Medoid_Image {
 		}
 
 		$active_cdn_info = $this->manager->get_cdn();
-		if ( isset($active_cdn_info['class_name']) && class_exists($active_cdn_info['class_name']) ) {
+		if ( isset( $active_cdn_info['class_name'] ) && class_exists( $active_cdn_info['class_name'] ) ) {
 			$cdn_classname = $active_cdn_info['class_name'];
-			$cdn_image = new $cdn_classname( $downsize[0], $active_cloud, empty( $image_size ), $active_cdn_info );
+			$cdn_image     = new $cdn_classname( $downsize[0], $active_cloud, empty( $image_size ), $active_cdn_info );
 			if ( $cdn_image->is_support( 'resize' ) ) {
 				$cdn_image->resize( $numeric_size['width'], $numeric_size['height'] );
 			}
