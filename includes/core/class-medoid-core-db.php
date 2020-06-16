@@ -117,6 +117,9 @@ class Medoid_Core_Db {
 	}
 
 	public function get_image_size_by_attachment_id( $attachment_id, $size, $cloud_id = 0 ) {
+		if ( is_array( $size ) ) {
+			$size = implode( 'x', $size );
+		}
 		$sql = $this->wpdb->prepare(
 			"SELECT s.*
 			FROM {$this->image_size_db_table} s
