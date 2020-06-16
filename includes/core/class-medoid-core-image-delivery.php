@@ -21,30 +21,19 @@ class Medoid_Core_Image_Delivery {
 	}
 
 	public function prepare_json( $response, $attachment, $meta ) {
-		$thumbnail_size = array( 150, 150 );
-		$meta           = wp_get_attachment_metadata( $attachment->ID );
+		$thumbnail = wp_get_attachment_image_src( $attachment->ID, array( 150, 150 ) );
 
-		$image     = wp_get_attachment_url( $attachment->ID );
-		$thumbnail = get_post_thumbnail( $attachment->ID, $thumbnail_size );
-
-		if ( $medoid_image ) {
-			$response['url']   = $image;
-			$response['icon']  = $thumbnail;
-			$response['sizes'] = array(
-				'thumbnail' => array(
-					'width'       => $thumbnail_size[0],
-					'height'      => $thumbnail_size[1],
-					'url'         => $thumbnail,
-					'orientation' => 'landscape',
-				),
-				'full'      => array(
-					'height'      => $meta['height'],
-					'width'       => $meta['width'],
-					'url'         => $image,
-					'orientation' => 'landscape',
-				),
+		if ( $thumbnail ) {
+			$thumbnail_url                  = (string) $thumbnail[0];
+			$response['icon']               = $thumbnail_url;
+			$response['sizes']['thumbnail'] = array(
+				'url'         => $thumbnail_url,
+				'width'       => $thumbnail[1],
+				'height'      => $thumbnail[2],
+				'orientation' => 'landscape',
 			);
 		}
+
 		return $response;
 	}
 
@@ -62,6 +51,9 @@ class Medoid_Core_Image_Delivery {
 			} else {
 				$downsize[3] = true;
 			}
+		}
+		// Set image size after downsize
+		if ( isset( $downsize[0] ) ) {
 			$downsize[1] = $numeric_size['width'];
 			$downsize[2] = $numeric_size['height'];
 		}
@@ -73,6 +65,7 @@ class Medoid_Core_Image_Delivery {
 		if ( isset( $image[3] ) && $image[3] ) {
 			return $image;
 		}
+
 		$numeric_size    = medoid_get_image_sizes( $size );
 		$active_cloud    = $this->manager->get_active_cloud();
 		$active_cdn_info = $this->manager->get_cdn();
@@ -83,6 +76,10 @@ class Medoid_Core_Image_Delivery {
 				$cdn_image->resize( $numeric_size['width'], $numeric_size['height'] );
 			}
 			$image[0] = $cdn_image;
+		}
+		if ( is_null( $image[1] ) ) {
+			$image[1] = $numeric_size['width'];
+			$image[2] = $numeric_size['height'];
 		}
 
 		return $image;
