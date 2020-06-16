@@ -52,40 +52,40 @@ class Medoid_Image {
 		$numeric_size = medoid_get_image_sizes( $size );
 		$active_cloud = $this->manager->get_active_cloud();
 		if ( empty( $downsize ) ) {
-			$image_size = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
-			if ( empty( $image_size ) ) {
+			$medoid_image = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
+			if ( empty( $medoid_image ) ) {
 				$medoid_image = $this->db->get_image_by_attachment_id( $id, $active_cloud->get_id() );
 				if ( empty( $medoid_image ) ) {
 					return $downsize;
 				}
 				$downsize[0] = $medoid_image->image_url;
+			} else {
+				$downsize[3] = true;
 			}
 			$downsize[1] = $numeric_size['width'];
 			$downsize[2] = $numeric_size['height'];
 		}
 
+		return $downsize;
+	}
+
+	public function get_image_src( $image, $attachment_id, $size ) {
+		if ( isset( $image[3] ) && $image[3] ) {
+			return $image;
+		}
+		$numeric_size    = medoid_get_image_sizes( $size );
+		$active_cloud    = $this->manager->get_active_cloud();
 		$active_cdn_info = $this->manager->get_cdn();
 		if ( isset( $active_cdn_info['class_name'] ) && class_exists( $active_cdn_info['class_name'] ) ) {
 			$cdn_classname = $active_cdn_info['class_name'];
-			$cdn_image     = new $cdn_classname( $downsize[0], $active_cloud, empty( $image_size ), $active_cdn_info );
+			$cdn_image     = new $cdn_classname( $image[0], $active_cloud, empty( $image_size ), $active_cdn_info );
 			if ( $cdn_image->is_support( 'resize' ) ) {
 				$cdn_image->resize( $numeric_size['width'], $numeric_size['height'] );
 			}
-			$downsize[0] = $cdn_image;
+			$image[0] = $cdn_image;
 		}
 
-		return array(
-			'wordpress_image' => $downsize,
-			'processed'       => true,
-		);
-	}
-
-	public function get_image_src( $medoid_image, $attachment_id, $size ) {
-		if ( ! isset( $medoid_image['processed'] ) ) {
-			return $medoid_image;
-		}
-
-		return $medoid_image['wordpress_image'];
+		return $image;
 	}
 
 	public function delete_image( $attachment_id ) {
