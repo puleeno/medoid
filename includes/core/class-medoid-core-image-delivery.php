@@ -2,7 +2,7 @@
 /**
  * This is the main gate to public image and delivery to your users.
  */
-class Medoid_Image {
+class Medoid_Core_Image_Delivery {
 	protected $db;
 	protected $cdn;
 
