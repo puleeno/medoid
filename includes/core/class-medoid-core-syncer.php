@@ -39,7 +39,7 @@ class Medoid_Core_Syncer {
 			if ( empty( $cloud::CLOUD_TYPE ) ) {
 				continue;
 			}
-			$cloud_schedule = '3_minutes';
+			$cloud_schedule = '3minutes';
 			$limit_items    = 20;
 			$cron_key       = sprintf( '%s_id%s_hook', $cloud::CLOUD_TYPE, $cloud_id );
 
