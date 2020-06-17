@@ -83,10 +83,8 @@ class Medoid_Install {
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_size_id'     => 'BIGINT NOT NULL AUTO_INCREMENT',
 			'image_id'          => 'BIGINT',
-			'cloud_id'          => 'BIGINT',
 			'image_size'        => 'VARCHAR(255)',
 			'image_url'         => 'TEXT NULL',
-			'post_id'           => 'BIGINT NULL', // This field is used when use WordPress Native processing
 			'provider_image_id' => 'TEXT NULL', // This field is used when use WordPress Native processing
 			'is_uploaded'       => 'TINYINT DEFAULT 0', // This field is used when use WordPress Native processing
 			'retry'             => 'INT DEFAULT 0', // This field is used when use WordPress Native processing
