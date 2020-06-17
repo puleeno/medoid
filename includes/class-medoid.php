@@ -81,6 +81,7 @@ final class Medoid {
 		}
 
 		// Customize WordPress load the images
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-image-delivery.php';
 	}
 
