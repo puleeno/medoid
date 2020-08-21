@@ -4,26 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8a30379921d4b3b642eeea0cbedd989",
+    "content-hash": "2b1091922e690e1b6333f544d8a9bb66",
     "packages": [
         {
             "name": "medoid/backblaze-b2",
-            "version": "dev-master",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medoid/backblaze-b2.git",
-                "reference": "0608ab7b0e230aa34506ee28d5e3e3080b2c7597"
+                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/0608ab7b0e230aa34506ee28d5e3e3080b2c7597",
-                "reference": "0608ab7b0e230aa34506ee28d5e3e3080b2c7597",
+                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/bd249505bba0df69b0a9134e62cc512e6c4932d6",
+                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "nesbot/carbon": "2.*",
-                "php": "^7.2",
+                "php": "^7.2.5",
                 "ramphor/guzzle": "*"
             },
             "require-dev": {
@@ -66,7 +66,7 @@
                 "filesystem",
                 "storage"
             ],
-            "time": "2020-07-21T02:45:03+00:00"
+            "time": "2020-08-20T01:07:25+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "afc1817c6bc9c5c82b4a2b8282461e00af4721e4"
+                "reference": "870ee2fb081954651d0d29de393a51c27aa26670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/afc1817c6bc9c5c82b4a2b8282461e00af4721e4",
-                "reference": "afc1817c6bc9c5c82b4a2b8282461e00af4721e4",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/870ee2fb081954651d0d29de393a51c27aa26670",
+                "reference": "870ee2fb081954651d0d29de393a51c27aa26670",
                 "shasum": ""
             },
             "require": {
@@ -94,7 +94,7 @@
                 "kylekatarnls/multi-tester": "^2.0",
                 "phpmd/phpmd": "^2.8",
                 "phpstan/extension-installer": "^1.0",
-                "phpstan/phpstan": "^0.12.30",
+                "phpstan/phpstan": "^0.12.35",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
@@ -155,7 +155,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-14T19:37:44+00:00"
+            "time": "2020-08-20T16:08:31+00:00"
         },
         {
             "name": "psr/log",
@@ -205,6 +205,45 @@
             "time": "2020-03-23T09:12:05+00:00"
         },
         {
+            "name": "ramphor/facades",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramphor/facades.git",
+                "reference": "7e4e8c1d209ded0de15a635776261acaf702e40d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramphor/facades/zipball/7e4e8c1d209ded0de15a635776261acaf702e40d",
+                "reference": "7e4e8c1d209ded0de15a635776261acaf702e40d",
+                "shasum": ""
+            },
+            "require": {
+                "ramphor/logger": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ramphor\\Facades\\": "src/"
+                },
+                "files": [
+                    "./resolver.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Ramphor Premium",
+                    "email": "puleeno@gmail.com"
+                }
+            ],
+            "description": "Make the Facades for Laravel lovers",
+            "time": "2020-08-10T09:53:15+00:00"
+        },
+        {
             "name": "ramphor/guzzle",
             "version": "dev-master",
             "source": {
@@ -250,12 +289,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramphor/logger.git",
-                "reference": "943fe7d252e67e2e471e9b825ac88e58e81b8776"
+                "reference": "59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramphor/logger/zipball/943fe7d252e67e2e471e9b825ac88e58e81b8776",
-                "reference": "943fe7d252e67e2e471e9b825ac88e58e81b8776",
+                "url": "https://api.github.com/repos/ramphor/logger/zipball/59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7",
+                "reference": "59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7",
                 "shasum": ""
             },
             "require": {
@@ -281,7 +320,7 @@
                 }
             ],
             "description": "Wrap the Monolog library for themes and plugins in WordPress",
-            "time": "2020-06-28T04:58:04+00:00"
+            "time": "2020-08-10T10:15:53+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -446,12 +485,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "a0485e88a72439c04c86e21e19e3f8540cc5898c"
+                "reference": "5ce4b8aa0450254c1aef7ff12c5a8e1545b291eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/a0485e88a72439c04c86e21e19e3f8540cc5898c",
-                "reference": "a0485e88a72439c04c86e21e19e3f8540cc5898c",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/5ce4b8aa0450254c1aef7ff12c5a8e1545b291eb",
+                "reference": "5ce4b8aa0450254c1aef7ff12c5a8e1545b291eb",
                 "shasum": ""
             },
             "require": {
@@ -530,7 +569,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-30T17:42:41+00:00"
+            "time": "2020-08-18T14:11:58+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -612,8 +651,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "ramphor/logger": 20,
-        "medoid/backblaze-b2": 20
+        "ramphor/facades": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
