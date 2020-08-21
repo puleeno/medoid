@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name: Medoid Cloud Storage
+ * Plugin Name: Medoid Cloud Media
  * Plugin URI: https://github.com/medoid/medoid
  * Author: Puleeno Nguyen
  * Author URI: https://puleeno.com
  * Version: 0.1.0
- * Description: The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
+ * Description: The media on the cloud replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
  * Tag: Media, Cloud, Storage
  */
 
