@@ -53,7 +53,8 @@ class Medoid_Core_Syncer {
 
 			$is_local2cloud = true;
 			if ( $is_local2cloud ) {
-				$sync_key                       = sprintf( '%s_id%d_to_cloud', $cloud::CLOUD_TYPE, $cloud_id );
+				// Generate medoid sync media keys
+				$sync_key = sprintf( '%s_id%d_to_cloud', $cloud::CLOUD_TYPE, $cloud_id );
 				$this->sync_events[ $sync_key ] = array(
 					'cloud_id' => $cloud_id,
 				);
@@ -65,7 +66,7 @@ class Medoid_Core_Syncer {
 		foreach ( $this->upload_events as $cron_hook => $cloud_event ) {
 			$args = array( $cloud_event );
 			if ( is_medoid_debug() ) {
-				do_action( $cron_hook );
+				$this->syncer( $cloud_event );
 				continue;
 			}
 
