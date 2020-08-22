@@ -201,7 +201,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				'created_at'        => current_time( 'mysql' ),
 				'updated_at'        => current_time( 'mysql' ),
 			);
-			$new_id     = $this->db->insert_image( $image_data );
+			$new_id     = $this->get_db()->insert_image( $image_data );
 		}
 	}
 
