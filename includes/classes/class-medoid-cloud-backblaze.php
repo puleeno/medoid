@@ -16,6 +16,18 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		if ( is_null( $this->client ) ) {
 			$accountId      = MEDOID_BACKBLAZE_APP_KEY_ID;
 			$applicationKey = MEDOID_BACKBLAZE_APP_MASTER_KEY;
+			Logger::get( 'medoid' )->debug(
+				sprintf(
+					'Init the Backlaze client %s',
+					var_export(
+						array(
+							'account_id'      => $accountId,
+							'application_key' => $applicationKey,
+						),
+						true
+					)
+				)
+			);
 
 			$this->bucket_name = MEDOID_BACKBLAZE_DEFAULT_BUCKET_NAME;
 			$this->client      = new Client( $accountId, $applicationKey );
@@ -56,9 +68,26 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			$response->set( 'file_size', $file_size );
 
 			$response->set_status( true );
-		} catch ( \Exception $e ) {
+
+			Logger::get( 'medoid' )->info(
+				sprintf(
+					'The attachment #%d is uploaded successfully with new URL is "%s"',
+					$image->post_id,
+					$url
+				)
+			);
+		} catch ( Exception $e ) {
 			$response->set_status( false );
 			$response->set_error( $e );
+
+			Logger::get( 'medoid' )->warning(
+				sprintf(
+					"%s\n%s",
+					$e->getMessage(),
+					var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true )
+				),
+				(array) $image
+			);
 		}
 
 		return $response;
@@ -80,7 +109,14 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		if ( empty( $image ) || $image->cloud_id != $this->get_id() ) {
 			$image->current_cloud_id = $this->get_id();
 
-			Logger::get( 'medoid' )->debug( 'The delete action is skipped', $image );
+			Logger::get( 'medoid' )->warning(
+				sprintf(
+					'The delete action for image #%d - %s is skipped',
+					$image->post_id,
+					$image->image_url,
+				),
+				(array) $image
+			);
 			return;
 		}
 
@@ -95,14 +131,14 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					);
 				}
 				$this->db->delete_image( $image->ID, false );
-				Logger::get( 'medoid' )->debug(
+				Logger::get( 'medoid' )->notice(
 					sprintf(
 						'The image #%d is marked delete flag',
-						$image->ID,
-						array(
-							'cloud_id' => $image->cloud_id,
-							'post_id'  => $image->post_id,
-						)
+						$image->ID
+					),
+					array(
+						'cloud_id' => $image->cloud_id,
+						'post_id'  => $image->post_id,
 					)
 				);
 			} else {
@@ -110,7 +146,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					// Delete file on Backblaze via FileID
 					$this->client->deleteFile( array( 'FileId' => $image->provider_image_id ) );
 				} elseif ( (bool) $image->is_uploaded ) {
-					Logger::get( 'medoid' )->warning( 'Provider image ID is not exists so can not delete it', $image );
+					Logger::get( 'medoid' )->warning(
+						'Provider image ID is not exists so can not delete it',
+						(array) $image
+					);
 				}
 
 				// Delete Medoid image from database
@@ -121,16 +160,22 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 				Logger::get( 'medoid' )->debug(
 					sprintf(
 						'The image #%d is deleted forever',
-						$image->ID,
-						array(
-							'cloud_id' => $image->cloud_id,
-							'post_id'  => $image->post_id,
-						)
+						$image->ID
+					),
+					array(
+						'cloud_id' => $image->cloud_id,
+						'post_id'  => $image->post_id,
 					)
 				);
 			}
 		} catch ( Exception $e ) {
-			Logger::get( 'medoid' )->warning( $e->getMessage(), $image );
+			Logger::get( 'medoid' )->warning(
+				sprintf(
+					"%s\n\%s",
+					$e->getMessage(),
+					var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true )
+				)
+			);
 		}
 	}
 }

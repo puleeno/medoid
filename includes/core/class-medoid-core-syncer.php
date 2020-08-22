@@ -22,14 +22,27 @@ class Medoid_Core_Syncer {
 
 	public function syncer( $args ) {
 		if ( empty( $args['cloud_id'] ) ) {
+			Logger::get( 'medoid' )->warning(
+				sprintf(
+					'The cloud ID is not found to sync image to clouds: %s',
+					var_export( $args, true )
+				)
+			);
 			return;
 		}
 
 		try {
 			$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
 			$cloud->sync_to_cloud( $args['limit_items'] );
-		} catch ( Exception $e ) {
-			Logger::get( 'medoid' )->error( $e->getMessage(), $this );
+		} catch ( Throwable $e ) {
+			Logger::get( 'medoid' )->error(
+				sprintf(
+					"%s\n%s",
+					$e->getMessage(),
+					var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true )
+				),
+				debug_backtrace()
+			);
 		}
 	}
 
@@ -53,7 +66,9 @@ class Medoid_Core_Syncer {
 
 			$is_local2cloud = true;
 			if ( $is_local2cloud ) {
-				$sync_key                       = sprintf( '%s_id%d_to_cloud', $cloud::CLOUD_TYPE, $cloud_id );
+				// Generate medoid sync media keys
+				$sync_key = sprintf( '%s_id%d_to_cloud', $cloud::CLOUD_TYPE, $cloud_id );
+
 				$this->sync_events[ $sync_key ] = array(
 					'cloud_id' => $cloud_id,
 				);
@@ -65,7 +80,7 @@ class Medoid_Core_Syncer {
 		foreach ( $this->upload_events as $cron_hook => $cloud_event ) {
 			$args = array( $cloud_event );
 			if ( is_medoid_debug() ) {
-				do_action( $cron_hook );
+				$this->syncer( $cloud_event );
 				continue;
 			}
 
