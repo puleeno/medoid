@@ -40,7 +40,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			)
 		);
 
-		$notify_key = sprintf( 'medoid_cloud_%s_notified', $this->get_name(), $this->get_id() );
+		$notify_key = sprintf( 'medoid_cloud_%s_notified', $this->get_id() );
 		$notified   = get_option( $notify_key, false );
 		if ( empty( $images ) ) {
 			if ( ! $notified ) {
@@ -183,10 +183,10 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 		}
 
 		foreach ( $images as $image ) {
-			$attachment_meta = wp_get_attachment_metadata( $image->ID );
-			$file            = sprintf( '%swp-content/uploads/%s', ABSPATH, $attachment_meta['file'] );
-			$file_size       = file_exists( $file ) ? filesize( $file ) : 0;
-			$mime_type       = file_exists( $file ) ? mime_content_type( $file ) : 'image/jpeg';
+			$file_name = str_replace( site_url( '/' ), '', $image->guid );
+			$file_path = sprintf( '%s%s', ABSPATH, $file_name );
+			$file_size = file_exists( $file_path ) ? filesize( $file_path ) : 0;
+			$mime_type = file_exists( $file_path ) ? mime_content_type( $file_path ) : 'image/jpeg';
 
 			$image_data = array(
 				'cloud_id'          => $this->get_id(),
@@ -195,7 +195,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				'is_uploaded'       => 0,
 				'is_deleted'        => 0,
 				'delete_local_file' => 1,
-				'file_name'         => array_get( $attachment_meta, 'file' ),
+				'file_name'         => $file_name,
 				'mime_type'         => $mime_type,
 				'file_size'         => $file_size,
 				'created_at'        => current_time( 'mysql' ),
