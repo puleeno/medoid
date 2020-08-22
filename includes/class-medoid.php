@@ -23,10 +23,11 @@ final class Medoid {
 			apply_filters( 'medoid_logs_file_path', $logsfile ),
 			Monolog::DEBUG
 		);
+		$logger  = new Monolog( 'MEDOID' );
+		$logger->pushHandler( $handler );
 
 		// Get ramphor logger instance
 		$ramphor_logger = Logger::instance();
-		$logger         = new Monolog( 'medoid' );
 		$ramphor_logger->registerLogger( 'medoid', $logger );
 
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
