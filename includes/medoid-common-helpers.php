@@ -108,11 +108,11 @@ function update_image_guid_after_upload_success( $image, $response, $cloud ) {
 	global $wpdb;
 	if ( $wpdb->update( $wpdb->posts, array( 'guid' => $response->get_url() ), array( 'ID' => $image->post_id ) ) ) {
 		delete_post_meta( $image->post_id, '_wp_attached_file' );
-		Logger::debug(
+		Logger::get( 'medoid' )->debug(
 			sprintf( 'Update attachment #%d with value "%s" is successful', $image->post_id, $response->get_url() )
 		);
 	} else {
-		Logger::debug(
+		Logger::get( 'medoid' )->debug(
 			sprintf( 'Update attachment #%d with value "%s" is failed', $image->post_id, $response->get_url() )
 		);
 	}
@@ -140,3 +140,7 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 	}
 }
 add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
+
+function medoid_remove_accents_file_name( $filename ) {
+	return $filename;
+}
