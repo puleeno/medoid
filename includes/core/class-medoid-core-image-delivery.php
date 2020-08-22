@@ -74,7 +74,7 @@ class Medoid_Core_Image_Delivery {
 			}
 			$image[0] = $cdn_image;
 		}
-		if ( !isset( $image[1] ) ) {
+		if ( ! isset( $image[1] ) ) {
 			$image[1] = $numeric_size['width'];
 			$image[2] = $numeric_size['height'];
 		}
