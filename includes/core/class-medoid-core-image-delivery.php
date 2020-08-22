@@ -42,12 +42,34 @@ class Medoid_Core_Image_Delivery {
 
 		if ( empty( $downsize ) ) {
 			$medoid_image = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
+			if ( $medoid_image ) {
+				$downsize[0] = new Medoid_Image( $id, $medoid_image, $numeric_size );
+			}
 		}
 
 		return $downsize;
 	}
 
 	public function get_image_src( $image, $attachment_id, $size ) {
+		if ( false === array_get( $image, 3, false ) ) {
+			$numeric_size = medoid_get_image_sizes( $size );
+			$active_cloud = $this->manager->get_active_cloud();
+			$medoid_image = $this->db->get_image_by_attachment_id(
+				$attachment_id,
+				$active_cloud->get_id()
+			);
+
+			if ( $medoid_image ) {
+				$image[0] = new Medoid_Image( $attachment_id, $medoid_image, $numeric_size );
+			} else {
+				$attachment = get_post( $attachment_id );
+				$image[0]   = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size );
+			}
+			// Override image sizes
+			$image[1] = $numeric_size['width'];
+			$image[2] = $numeric_size['height'];
+		}
+
 		return $image;
 	}
 }
