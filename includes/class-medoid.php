@@ -100,6 +100,10 @@ final class Medoid {
 		// Customize WordPress load the images
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-image-delivery.php';
+
+		if ( apply_filters( 'medoid_make_pretty_image_url_with_php_proxy', true ) ) {
+			require_once MEDOID_ABSPATH . '/boots/proxy.php';
+		}
 	}
 
 	private function is_request( $type ) {
