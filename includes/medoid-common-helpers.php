@@ -119,25 +119,46 @@ function update_image_guid_after_upload_success( $image, $response, $cloud ) {
 }
 add_action( 'medoid_upload_cloud_image', 'update_image_guid_after_upload_success', 10, 3 );
 
+function medoid_update_attachment_metadata($image, $response, $cloud) {
+	if ( $image->post_id <= 0 ) {
+		Logger::get('medoid')->warning(
+			sprintf('The medoid image is not contains post_id: %s', var_export($image, true)),
+			(array) $image
+		);
+		return;
+	}
+	$attachment_id = $image->post_id;
+	$meta          = wp_get_attachment_metadata( $attachment_id );
+
+	// Delete attachment sizes meta
+	if ( isset( $meta['sizes'] ) ) {
+		unset( $meta['sizes'] );
+	}
+	wp_update_attachment_metadata( $attachment_id, $meta );
+}
+add_action( 'medoid_upload_cloud_image', 'medoid_update_attachment_metadata', 10, 3 );
+
+function medoid_check_can_delete_image_files_on_local( $attachment_id ) {
+}
+
 function delete_image_files_after_upload( $image, $response, $cloud ) {
-	if ( empty( $image->delete_local_file ) ) {
+	if ( empty( $image->delete_local_file ) || $image->post_id <= 0 ) {
 		return;
 	}
 
-	if ( $image->post_id > 0 ) {
-		$attachment_id = $image->post_id;
-		$meta          = wp_get_attachment_metadata( $attachment_id );
-		$backup_sizes  = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
-		$file          = get_attached_file( $attachment_id );
-
-		wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
-
-		// Delete attachment sizes meta
-		if ( isset( $meta['sizes'] ) ) {
-			unset( $meta['sizes'] );
-		}
-		wp_update_attachment_metadata( $attachment_id, $meta );
+	$attachment_id = $image->post_id;
+	if (!medoid_check_can_delete_image_files_on_local($attachment_id)) {
+		Logger::get('medoid')->debug(sprintf(
+			'The attachment #%d is used on other cloud so it can not delete',
+			$attachment_id
+		));
+		return;
 	}
+
+	$backup_sizes = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
+	$file         = get_attached_file( $attachment_id );
+
+	wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
 }
 add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
 
