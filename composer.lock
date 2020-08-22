@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b1091922e690e1b6333f544d8a9bb66",
+    "content-hash": "9251dc0550be76c60d84e66c5c42b0fe",
     "packages": [
         {
             "name": "medoid/backblaze-b2",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medoid/backblaze-b2.git",
-                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6"
+                "reference": "1ae76684a2285c96b06fa8b5afe03bf6b860aebd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/bd249505bba0df69b0a9134e62cc512e6c4932d6",
-                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6",
+                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/1ae76684a2285c96b06fa8b5afe03bf6b860aebd",
+                "reference": "1ae76684a2285c96b06fa8b5afe03bf6b860aebd",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
                 "filesystem",
                 "storage"
             ],
-            "time": "2020-08-20T01:07:25+00:00"
+            "time": "2020-08-22T10:31:03+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -144,16 +144,6 @@
                 "date",
                 "datetime",
                 "time"
-            ],
-            "funding": [
-                {
-                    "url": "https://opencollective.com/Carbon",
-                    "type": "open_collective"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/nesbot/carbon",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-08-20T16:08:31+00:00"
         },
@@ -383,20 +373,6 @@
                 "portable",
                 "shim"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-14T12:35:20+00:00"
         },
         {
@@ -462,20 +438,6 @@
                 "polyfill",
                 "portable",
                 "shim"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-07-14T12:35:20+00:00"
         },
@@ -555,20 +517,6 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-08-18T14:11:58+00:00"
         },
         {
@@ -630,20 +578,6 @@
                 "interoperability",
                 "standards"
             ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-07-06T13:23:11+00:00"
         }
     ],
@@ -656,6 +590,5 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
