@@ -72,8 +72,8 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 
 			Logger::get( 'medoid' )->info(
 				sprintf(
-					'The attachment #%d is uploaded successfully with new URL is "%s"',
-					$image->post_id,
+					'The attachment %s is uploaded successfully with new URL is "%s"',
+					$file,
 					$url
 				)
 			);
