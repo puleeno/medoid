@@ -33,6 +33,7 @@ class Medoid_Core_Syncer {
 
 		try {
 			$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
+			$cloud->clone_attachments();
 			$cloud->sync_to_cloud( $args['limit_items'] );
 		} catch ( Throwable $e ) {
 			Logger::get( 'medoid' )->error(

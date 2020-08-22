@@ -40,7 +40,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			)
 		);
 
-		$notify_key = sprintf( 'medoid_%s_%s_notified', $this->get_name(), $this->get_id() );
+		$notify_key = sprintf( 'medoid_cloud_%s_notified', $this->get_name(), $this->get_id() );
 		$notified   = get_option( $notify_key, false );
 		if ( empty( $images ) ) {
 			if ( ! $notified ) {
@@ -142,6 +142,66 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					$image
 				);
 			}
+		}
+	}
+
+	protected function get_old_wordpress_images() {
+		$not_sync_att_sql = DB::prepare(
+			'SELECT `ID`, `guid` FROM '
+				. DB::get_table( 'posts' )
+			. ' WHERE ID NOT IN (
+				SELECT post_id FROM '
+					. DB::get_table( 'medoid_images' )
+				. ' WHERE cloud_id=%d
+			) AND post_type=%s',
+			$this->get_id(),
+			'attachment'
+		);
+		return DB::get_results( $not_sync_att_sql );
+	}
+
+	public function clone_attachments() {
+		$synced_old_image_key = sprintf(
+			'medoid_sync_old_image_to_cloud_%d',
+			$this->get_id()
+		);
+		$is_synced            = get_option( $synced_old_image_key, false );
+		if ( $is_synced ) {
+			return;
+		}
+		$images = $this->get_old_wordpress_images();
+		if ( count( $images ) < 1 ) {
+			Logger::get( 'medoid' )->notice(
+				sprintf(
+					'Sync old images to Medoid %s #%d is completed',
+					$this->get_name(),
+					$this->get_id()
+				)
+			);
+			update_option( $synced_old_image_key, true );
+			return;
+		}
+
+		foreach ( $images as $image ) {
+			$attachment_meta = wp_get_attachment_metadata( $image->ID );
+			$file            = sprintf( '%swp-content/uploads/%s', ABSPATH, $attachment_meta['file'] );
+			$file_size       = file_exists( $file ) ? filesize( $file ) : 0;
+			$mime_type       = file_exists( $file ) ? mime_content_type( $file ) : 'image/jpeg';
+
+			$image_data = array(
+				'cloud_id'          => $this->get_id(),
+				'post_id'           => (int) $image->ID,
+				'image_url'         => $image->guid,
+				'is_uploaded'       => 0,
+				'is_deleted'        => 0,
+				'delete_local_file' => 1,
+				'file_name'         => array_get( $attachment_meta, 'file' ),
+				'mime_type'         => $mime_type,
+				'file_size'         => $file_size,
+				'created_at'        => current_time( 'mysql' ),
+				'updated_at'        => current_time( 'mysql' ),
+			);
+			$new_id     = $this->db->insert_image( $image_data );
 		}
 	}
 
