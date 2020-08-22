@@ -16,7 +16,7 @@ class Medoid_Image {
 
 		$this->image_url = is_object( $medoid_image )
 			? $this->convert_medoid_image( $medoid_image )
-			: $image_url;
+			: $medoid_image;
 
 		// Convert image size to medoid sizes;
 		$this->produce_image_size( $image_size );

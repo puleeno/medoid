@@ -63,11 +63,16 @@ class Medoid_Core_Image_Delivery {
 				$image[0] = new Medoid_Image( $attachment_id, $medoid_image, $numeric_size );
 			} else {
 				$attachment = get_post( $attachment_id );
-				$image[0]   = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size );
+				if ( $attachment ) {
+					$image[0] = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size );
+				}
 			}
+
 			// Override image sizes
-			$image[1] = $numeric_size['width'];
-			$image[2] = $numeric_size['height'];
+			if ( isset( $image[0] ) ) {
+				$image[1] = $numeric_size['width'];
+				$image[2] = $numeric_size['height'];
+			}
 		}
 
 		return $image;

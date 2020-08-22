@@ -2,7 +2,6 @@
 class Medoid_Core_Upload_Handler {
 	public static $current_post;
 	protected $db;
-	protected $cdn;
 	protected $result;
 
 	public static function set_current_post( $post ) {
@@ -64,7 +63,7 @@ class Medoid_Core_Upload_Handler {
 			$this->db->insert_image( $image_data );
 		}
 
-		if ( $this->cdn_support_resize ) {
+		if ( $this->cdn_support_resize = false ) {
 			remove_filter( 'intermediate_image_sizes', '__return_empty_array' );
 			remove_filter( 'wp_update_attachment_metadata', '__return_null' );
 		}
