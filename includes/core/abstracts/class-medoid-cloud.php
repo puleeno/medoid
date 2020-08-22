@@ -51,6 +51,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 						$this->get_name()
 					)
 				);
+				update_option( $notify_key, true );
 			}
 			return;
 		} elseif ( ! $notified ) {
