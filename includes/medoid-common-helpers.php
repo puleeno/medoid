@@ -141,6 +141,12 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 }
 add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
 
+// Convert file name to ASCII characters
 function medoid_remove_accents_file_name( $filename ) {
-	return $filename;
+	$extension = pathinfo( $filename, PATHINFO_EXTENSION );
+	if ( $extension ) {
+		$filename = str_replace( '.' . $extension, '', $filename );
+		return sprint( '%s.%s', remove_accents( $filename ), $extension );
+	}
+	return remove_accents( $filename );
 }
