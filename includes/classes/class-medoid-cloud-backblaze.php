@@ -39,10 +39,11 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
-			$resource = @fopen( $file, 'r' );
-			if ( $resource === false ) {
+			if (!file_exists($file)) {
 				throw new Exception( sprintf( 'Can not open file %s', $file ) );
 			}
+
+			$resource = @fopen( $file, 'r' );
 			$backblaze_file = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,
@@ -71,8 +72,8 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 
 			Logger::get( 'medoid' )->info(
 				sprintf(
-					'The attachment #%d is uploaded successfully with new URL is "%s"',
-					$image->post_id,
+					'The attachment %s is uploaded successfully with new URL is "%s"',
+					$file,
 					$url
 				)
 			);
@@ -86,7 +87,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					$e->getMessage(),
 					var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ), true )
 				),
-				(array) $image
+				array(
+					'file'     => $file,
+					'new_file' => $new_file,
+				)
 			);
 		}
 

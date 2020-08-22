@@ -139,7 +139,7 @@ class Medoid_Core_Db {
 			return new WP_Error( 'empty_data', __( 'The image data is empty', 'medoid' ) );
 		}
 		try {
-			$this->wpdb->insert( $this->image_db_table, $image_data, $format );
+			return $this->wpdb->insert( $this->image_db_table, $image_data, $format );
 		} catch ( \Exception $e ) {
 			return new WP_Error( 'sql_error', $e->getMessage() );
 		}
