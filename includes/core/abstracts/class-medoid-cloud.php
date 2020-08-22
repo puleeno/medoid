@@ -46,7 +46,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			if ( ! $notified ) {
 				Logger::get( 'medoid' )->notice(
 					sprintf(
-						'The %s(#%s) sync process is maybe completed.',
+						'The (#%s)%s cloud sync process is maybe completed.',
 						$this->get_name(),
 						$this->get_id()
 					)
