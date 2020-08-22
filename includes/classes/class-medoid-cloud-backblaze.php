@@ -34,7 +34,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			$backblaze_file = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,
-					'FileName'   => ltrim( $new_file, '/' ),
+					'FileName'   => medoid_remove_accents_file_name( ltrim( $new_file, '/' ) ),
 					'Body'       => $resource,
 				)
 			);
@@ -80,7 +80,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 		if ( empty( $image ) || $image->cloud_id != $this->get_id() ) {
 			$image->current_cloud_id = $this->get_id();
 
-			Logger::debug( 'The delete action is skipped', $image );
+			Logger::get( 'medoid' )->debug( 'The delete action is skipped', $image );
 			return;
 		}
 
@@ -95,7 +95,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					);
 				}
 				$this->db->delete_image( $image->ID, false );
-				Logger::debug(
+				Logger::get( 'medoid' )->debug(
 					sprintf(
 						'The image #%d is marked delete flag',
 						$image->ID,
@@ -110,7 +110,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					// Delete file on Backblaze via FileID
 					$this->client->deleteFile( array( 'FileId' => $image->provider_image_id ) );
 				} elseif ( (bool) $image->is_uploaded ) {
-					Logger::warning( 'Provider image ID is not exists so can not delete it', $image );
+					Logger::get( 'medoid' )->warning( 'Provider image ID is not exists so can not delete it', $image );
 				}
 
 				// Delete Medoid image from database
@@ -118,7 +118,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 
 				// Delete WordPress attachment
 				wp_delete_attachment( $image->post_id );
-				Logger::debug(
+				Logger::get( 'medoid' )->debug(
 					sprintf(
 						'The image #%d is deleted forever',
 						$image->ID,
@@ -130,7 +130,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 				);
 			}
 		} catch ( Exception $e ) {
-			Logger::warning( $e->getMessage(), $image );
+			Logger::get( 'medoid' )->warning( $e->getMessage(), $image );
 		}
 	}
 }

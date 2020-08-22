@@ -1,4 +1,8 @@
 <?php
+use Ramphor\Logger\Logger;
+use Monolog\Logger as Monolog;
+use Monolog\Handler\StreamHandler;
+
 final class Medoid {
 	protected static $instance;
 
@@ -12,6 +16,18 @@ final class Medoid {
 	public function __construct() {
 		$this->define_constants();
 		$this->includes();
+
+		// Create stream handler for logger
+		$logsfile = sprintf( '%s/medoid.log', WP_CONTENT_DIR );
+		$handler  = new StreamHandler(
+			apply_filters( 'medoid_logs_file_path', $logsfile ),
+			Monolog::DEBUG
+		);
+
+		// Get ramphor logger instance
+		$ramphor_logger = Logger::instance();
+		$logger         = new Monolog( 'medoid' );
+		$ramphor_logger->registerLogger( 'medoid', $logger );
 
 		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
 		add_action( 'plugins_loaded', array( $this, 'init_hooks' ) );
