@@ -40,34 +40,62 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			)
 		);
 
-		Logger::get( 'medoid' )->debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
+		$notify_key = sprintf( 'medoid_%s_%s_notified', $this->get_name(), $this->get_id() );
+		$notified   = get_option( $notify_key, false );
 		if ( empty( $images ) ) {
+			if ( ! $notified ) {
+				Logger::get( 'medoid' )->notice(
+					sprintf(
+						'The %s(#%s) sync process is maybe completed.',
+						$this->get_name(),
+						$this->get_id()
+					)
+				);
+			}
 			return;
+		} elseif ( ! $notified ) {
+			update_option( $notify_key, true );
 		}
 
+		Logger::get( 'medoid' )->debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
 		foreach ( $images as $image ) {
 			$attachment = get_post( $image->post_id );
 			if ( empty( $attachment ) ) {
 				$this->delete_image( $image, true, false );
-
-				Logger::get( 'medoid' )->debug( 'Delete the image not exists in WordPress', $image, false, 'medoid_syncer' );
+				Logger::get( 'medoid' )->warning(
+					sprintf( 'The image #%d is not exists in WordPress so it can not delete', $image->post_id ),
+					(array) $image
+				);
 				continue;
 			}
 			$file    = get_attached_file( $image->post_id, true );
 			$newfile = $this->make_unique_file_name( $file, $image );
+			Logger::get( 'medoid' )->info(
+				sprintf(
+					'File %s is generated a new name: %s',
+					$file,
+					$newfile
+				)
+			);
 
 			try {
+				Logger::get( 'medoid' )->debug(
+					sprintf(
+						'The attachment #%d is uploading to the %s cloud',
+						$image->post_id,
+						$this->get_id()
+					)
+				);
 				$response = $this->upload( $file, $newfile );
 				if ( $response->get_status() ) {
-					$this->db->update_image(
-						array(
-							'ID'                => $image->ID,
-							'image_url'         => $response->get_url(),
-							'provider_image_id' => $response->get_provider_image_id(),
-							'is_uploaded'       => true,
-							'updated_at'        => current_time( 'mysql' ),
-						)
+					$image_info = array(
+						'ID'                => $image->ID,
+						'image_url'         => $response->get_url(),
+						'provider_image_id' => $response->get_provider_image_id(),
+						'is_uploaded'       => true,
+						'updated_at'        => current_time( 'mysql' ),
 					);
+					$this->db->update_image( $image_info );
 
 					/**
 					 * Do actions after upload image to cloud success
@@ -75,8 +103,13 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					do_action( 'medoid_upload_cloud_image', $image, $response, $this );
 
 					Logger::get( 'medoid' )->info(
-						sprintf( 'The image #%d(%s) to %s is uploaded successful', $image->ID, $image->image_url, $this->get_name() ),
-						$response
+						sprintf(
+							'The image #%d(%s) to %s is uploaded successful',
+							$image->ID,
+							$image->image_url,
+							$this->get_name()
+						),
+						(array) $response
 					);
 				} else {
 					$this->db->update_image(
@@ -95,11 +128,18 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 							$this->get_name(),
 							$response->get_error_message()
 						),
-						$response
+						(array) $response
 					);
 				}
 			} catch ( Exception $e ) {
-				Logger::get( 'medoid' )->error( $e->getMessage(), $image, false, 'medoid_syncer' );
+				Logger::get( 'medoid' )->error(
+					sprintf(
+						"%s\n%s",
+						$e->getMessage(),
+						var_export( debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS ) )
+					),
+					$image
+				);
 			}
 		}
 	}
