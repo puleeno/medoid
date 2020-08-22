@@ -29,7 +29,7 @@ class Medoid_Core_Syncer {
 			$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
 			$cloud->sync_to_cloud( $args['limit_items'] );
 		} catch ( Exception $e ) {
-			Logger::error( $e->getMessage(), $this );
+			Logger::get( 'medoid' )->error( $e->getMessage(), $this );
 		}
 	}
 
@@ -64,6 +64,11 @@ class Medoid_Core_Syncer {
 	public function run_cron() {
 		foreach ( $this->upload_events as $cron_hook => $cloud_event ) {
 			$args = array( $cloud_event );
+			if ( is_medoid_debug() ) {
+				do_action( $cron_hook );
+				continue;
+			}
+
 			if ( ! wp_next_scheduled( $cron_hook, $args ) ) {
 				wp_schedule_event(
 					time(),

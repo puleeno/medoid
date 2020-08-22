@@ -40,7 +40,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			)
 		);
 
-		Logger::debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
+		Logger::get( 'medoid' )->debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
 		if ( empty( $images ) ) {
 			return;
 		}
@@ -50,7 +50,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			if ( empty( $attachment ) ) {
 				$this->delete_image( $image, true, false );
 
-				Logger::debug( 'Delete the image not exists in WordPress', $image, false, 'medoid_syncer' );
+				Logger::get( 'medoid' )->debug( 'Delete the image not exists in WordPress', $image, false, 'medoid_syncer' );
 				continue;
 			}
 			$file    = get_attached_file( $image->post_id, true );
@@ -74,7 +74,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					 */
 					do_action( 'medoid_upload_cloud_image', $image, $response, $this );
 
-					Logger::info(
+					Logger::get( 'medoid' )->info(
 						sprintf( 'The image #%d(%s) to %s is uploaded successful', $image->ID, $image->image_url, $this->get_name() ),
 						$response
 					);
@@ -87,7 +87,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 						)
 					);
 
-					Logger::warning(
+					Logger::get( 'medoid' )->warning(
 						sprintf(
 							'Upload image #%d(%s) to %s is failed: %s',
 							$image->ID,
@@ -99,7 +99,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					);
 				}
 			} catch ( Exception $e ) {
-				Logger::error( $e->getMessage(), $image, false, 'medoid_syncer' );
+				Logger::get( 'medoid' )->error( $e->getMessage(), $image, false, 'medoid_syncer' );
 			}
 		}
 	}
