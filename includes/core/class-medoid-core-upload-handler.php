@@ -14,16 +14,19 @@ class Medoid_Core_Upload_Handler {
 
 	public function __construct() {
 		$this->init();
-		$this->initHooks();
+		$this->init_hooks();
 	}
 
 	public function init() {
 		$this->db = Medoid_Core_Db::instance();
 	}
 
-	public function initHooks() {
+	public function init_hooks() {
 		add_action( 'wp_handle_upload', array( $this, 'get_upload_result' ), 10 );
 		add_action( 'add_attachment', array( $this, 'insert_temporary_cloud_image' ) );
+
+		// Hook actions to delete WordPress media
+		add_action( 'delete_attachment', array( $this, 'delete_image' ) );
 	}
 
 	public function get_upload_result( $result ) {
@@ -65,6 +68,10 @@ class Medoid_Core_Upload_Handler {
 			remove_filter( 'intermediate_image_sizes', '__return_empty_array' );
 			remove_filter( 'wp_update_attachment_metadata', '__return_null' );
 		}
+	}
+
+	public function delete_image( $attachment_id ) {
+		$this->db->delete_image_from_attachment( $attachment_id );
 	}
 }
 

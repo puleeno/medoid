@@ -15,9 +15,6 @@ class Medoid_Core_Image_Delivery {
 		add_action( 'image_downsize', array( $this, 'image_downsize' ), 10, 3 );
 		add_filter( 'wp_get_attachment_image_src', array( $this, 'get_image_src' ), 99, 3 );
 		add_action( 'wp_prepare_attachment_for_js', array( $this, 'prepare_json' ), 10, 3 );
-
-		// Hook actions to delete WordPress media
-		add_action( 'delete_attachment', array( $this, 'delete_image' ) );
 	}
 
 	public function prepare_json( $response, $attachment, $meta ) {
@@ -77,15 +74,11 @@ class Medoid_Core_Image_Delivery {
 			}
 			$image[0] = $cdn_image;
 		}
-		if ( is_null( $image[1] ) ) {
+		if ( !isset( $image[1] ) ) {
 			$image[1] = $numeric_size['width'];
 			$image[2] = $numeric_size['height'];
 		}
 
 		return $image;
-	}
-
-	public function delete_image( $attachment_id ) {
-		$this->db->delete_image_from_attachment( $attachment_id );
 	}
 }
