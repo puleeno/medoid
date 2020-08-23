@@ -69,7 +69,7 @@ class Medoid_Core_Image_Delivery {
 			}
 
 			// Override image sizes
-			if ( isset( $image[0] ) ) {
+			if ( isset( $image[0] ) && is_array( $numeric_size ) ) {
 				$image[1] = $numeric_size['width'];
 				$image[2] = $numeric_size['height'];
 			}
