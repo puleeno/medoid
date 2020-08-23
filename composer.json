@@ -11,7 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "medoid/backblaze-b2": "1.4.1",
+        "medoid/backblaze-b2": "1.4.2",
         "ramphor/facades": "dev-master"
     }
 }
