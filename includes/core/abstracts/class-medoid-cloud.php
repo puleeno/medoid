@@ -146,7 +146,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 						(array) $response
 					);
 				}
-			} catch ( Exception $e ) {
+			} catch ( Throwable $e ) {
 				Logger::get( 'medoid' )->error(
 					sprintf(
 						"%s\n%s",

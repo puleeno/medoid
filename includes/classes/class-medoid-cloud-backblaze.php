@@ -77,7 +77,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 					$url
 				)
 			);
-		} catch ( Exception $e ) {
+		} catch ( Throwable $e ) {
 			$response->set_status( false );
 			$response->set_error( $e );
 
