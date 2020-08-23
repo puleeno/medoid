@@ -119,10 +119,21 @@ function update_image_guid_after_upload_success( $image, $response, $cloud ) {
 }
 add_action( 'medoid_upload_cloud_image', 'update_image_guid_after_upload_success', 10, 3 );
 
-function medoid_update_attachment_metadata($image, $response, $cloud) {
+function medoid_check_can_delete_image_files_on_local( $attachment_id, $current_medoid_id ) {
+	$sql = DB::prepare(
+		'SELECT COUNT(ID)
+		FROM ' . DB::get_table( 'medoid_images' ) . '
+		WHERE (is_uploaded=0 OR cloud_id=0) AND ID <> %d AND post_id=%d',
+		$current_medoid_id,
+		$attachment_id
+	);
+	return (int) DB::get_var( $sql ) <= 0;
+}
+
+function medoid_update_attachment_metadata( $image, $response, $cloud ) {
 	if ( $image->post_id <= 0 ) {
-		Logger::get('medoid')->warning(
-			sprintf('The medoid image is not contains post_id: %s', var_export($image, true)),
+		Logger::get( 'medoid' )->warning(
+			sprintf( 'The medoid image is not contains post_id: %s', var_export( $image, true ) ),
 			(array) $image
 		);
 		return;
@@ -130,35 +141,53 @@ function medoid_update_attachment_metadata($image, $response, $cloud) {
 	$attachment_id = $image->post_id;
 	$meta          = wp_get_attachment_metadata( $attachment_id );
 
+	if ( ! metadata_exists( 'post', $attachment_id, 'medoid_backup_metadata' ) ) {
+		update_post_meta( $attachment_id, 'medoid_backup_metadata', $meta );
+	}
+
 	// Delete attachment sizes meta
 	if ( isset( $meta['sizes'] ) ) {
 		unset( $meta['sizes'] );
 	}
 	wp_update_attachment_metadata( $attachment_id, $meta );
+	Logger::get( 'medoid' )->debug( 'The attachment metadata of #%d is deleted', $attachment_id );
 }
 add_action( 'medoid_upload_cloud_image', 'medoid_update_attachment_metadata', 10, 3 );
 
-function medoid_check_can_delete_image_files_on_local( $attachment_id ) {
-}
-
 function delete_image_files_after_upload( $image, $response, $cloud ) {
-	if ( empty( $image->delete_local_file ) || $image->post_id <= 0 ) {
+	if ( empty( $image->delete_local_file ) ) {
+		return;
+	}
+	if ( $image->post_id <= 0 ) {
+		Logger::get( 'medoid' )->warning(
+			sprintf( 'The medoid image is not contains post_id: %s', var_export( $image, true ) ),
+			(array) $image
+		);
 		return;
 	}
 
 	$attachment_id = $image->post_id;
-	if (!medoid_check_can_delete_image_files_on_local($attachment_id)) {
-		Logger::get('medoid')->debug(sprintf(
-			'The attachment #%d is used on other cloud so it can not delete',
-			$attachment_id
-		));
+	if ( ! medoid_check_can_delete_image_files_on_local( $attachment_id, $image->ID ) ) {
+		Logger::get( 'medoid' )->debug(
+			sprintf(
+				'The attachment #%d is used on other cloud so it can not delete',
+				$attachment_id
+			)
+		);
 		return;
 	}
-
+	$meta = get_post_meta( $attachment_id, 'medoid_backup_metadata', true );
+	if ( ! $meta ) {
+		$meta = wp_get_attachment_metadata( $attachment_id );
+	}
 	$backup_sizes = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
 	$file         = get_attached_file( $attachment_id );
 
 	wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
+	Logger::get( 'medoid' )->debug( 'The attachment files of #%s is deleted', $attachment_id );
+
+	// Delete medoid_backup_metadata post meta when files are deleted
+	delete_post_meta( $attachment_id, 'medoid_backup_metadata' );
 }
 add_action( 'medoid_upload_cloud_image', 'delete_image_files_after_upload', 10, 3 );
 
@@ -167,7 +196,7 @@ function medoid_remove_accents_file_name( $filename ) {
 	$extension = pathinfo( $filename, PATHINFO_EXTENSION );
 	if ( $extension ) {
 		$filename = str_replace( '.' . $extension, '', $filename );
-		return sprint( '%s.%s', remove_accents( $filename ), $extension );
+		return sprintf( '%s.%s', remove_accents( $filename ), $extension );
 	}
 	return remove_accents( $filename );
 }

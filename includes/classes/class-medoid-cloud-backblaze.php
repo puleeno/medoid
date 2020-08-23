@@ -39,11 +39,11 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	public function upload( $file, $new_file ) {
 		$response = new Medoid_Response( $this->get_id() );
 		try {
-			if (!file_exists($file)) {
+			if ( ! file_exists( $file ) ) {
 				throw new Exception( sprintf( 'Can not open file %s', $file ) );
 			}
 
-			$resource = @fopen( $file, 'r' );
+			$resource       = @fopen( $file, 'r' );
 			$backblaze_file = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,

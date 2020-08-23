@@ -69,13 +69,15 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				);
 				continue;
 			}
-			$file    = get_attached_file( $image->post_id, true );
-			if (!file_exists($file)) {
-				Logger::get('medoid')->warning(sprintf(
-					'The attachment #%d is exists but the real file %s is not exists',
-					$image->post_id,
-					$file
-				));
+			$file = get_attached_file( $image->post_id, true );
+			if ( ! file_exists( $file ) ) {
+				Logger::get( 'medoid' )->warning(
+					sprintf(
+						'The attachment #%d is exists but the real file %s is not exists',
+						$image->post_id,
+						$file
+					)
+				);
 				continue;
 			}
 
@@ -162,7 +164,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				SELECT post_id FROM '
 					. DB::get_table( 'medoid_images' )
 				. ' WHERE cloud_id=%d
-			) AND post_type=%s',
+			) AND post_type=%s ORDER BY post_date ASC',
 			$this->get_id(),
 			'attachment'
 		);
