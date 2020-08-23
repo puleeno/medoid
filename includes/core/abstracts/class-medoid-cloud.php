@@ -58,7 +58,10 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 			update_option( $notify_key, true );
 		}
 
-		Logger::get( 'medoid' )->debug( 'Load images from database to sync to ' . $this->get_name(), array( 'total_images' => count( $images ) ) );
+		Logger::get( 'medoid' )->debug(
+			'Load images from database to sync to ' . $this->get_name(),
+			array( 'total_images' => count( $images ) )
+		);
 		foreach ( $images as $image ) {
 			$attachment = get_post( $image->post_id );
 			if ( empty( $attachment ) ) {

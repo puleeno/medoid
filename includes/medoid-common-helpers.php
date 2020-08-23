@@ -150,7 +150,12 @@ function medoid_update_attachment_metadata( $image, $response, $cloud ) {
 		unset( $meta['sizes'] );
 	}
 	wp_update_attachment_metadata( $attachment_id, $meta );
-	Logger::get( 'medoid' )->debug( 'The attachment metadata of #%d is deleted', $attachment_id );
+	Logger::get( 'medoid' )->debug(
+		sprintf(
+			'The attachment metadata of #%d is deleted',
+			$attachment_id
+		)
+	);
 }
 add_action( 'medoid_upload_cloud_image', 'medoid_update_attachment_metadata', 10, 3 );
 
@@ -184,7 +189,7 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 	$file         = get_attached_file( $attachment_id );
 
 	wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
-	Logger::get( 'medoid' )->debug( 'The attachment files of #%s is deleted', $attachment_id );
+	Logger::get( 'medoid' )->debug( sprintf( 'The attachment files of #%s is deleted', $attachment_id ) );
 
 	// Delete medoid_backup_metadata post meta when files are deleted
 	delete_post_meta( $attachment_id, 'medoid_backup_metadata' );
