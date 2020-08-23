@@ -210,16 +210,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramphor/facades.git",
-                "reference": "7e4e8c1d209ded0de15a635776261acaf702e40d"
+                "reference": "269b43be37f390e9f54b1e0103d274bf1fe7cba9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramphor/facades/zipball/7e4e8c1d209ded0de15a635776261acaf702e40d",
-                "reference": "7e4e8c1d209ded0de15a635776261acaf702e40d",
+                "url": "https://api.github.com/repos/ramphor/facades/zipball/269b43be37f390e9f54b1e0103d274bf1fe7cba9",
+                "reference": "269b43be37f390e9f54b1e0103d274bf1fe7cba9",
                 "shasum": ""
             },
             "require": {
-                "ramphor/logger": "dev-master"
+                "ramphor/logger": "~1.0.0"
             },
             "type": "library",
             "autoload": {
@@ -241,7 +241,7 @@
                 }
             ],
             "description": "Make the Facades for Laravel lovers",
-            "time": "2020-08-10T09:53:15+00:00"
+            "time": "2020-08-23T03:20:38+00:00"
         },
         {
             "name": "ramphor/guzzle",
@@ -285,16 +285,16 @@
         },
         {
             "name": "ramphor/logger",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramphor/logger.git",
-                "reference": "59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7"
+                "reference": "2f3933b74b84c2e9414f4bd7dab4ba2304f19e5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramphor/logger/zipball/59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7",
-                "reference": "59f38cec9af2445e3b84d3a6cd6b09dfb6d123d7",
+                "url": "https://api.github.com/repos/ramphor/logger/zipball/2f3933b74b84c2e9414f4bd7dab4ba2304f19e5d",
+                "reference": "2f3933b74b84c2e9414f4bd7dab4ba2304f19e5d",
                 "shasum": ""
             },
             "require": {
@@ -319,8 +319,8 @@
                     "email": "puleeno@gmail.com"
                 }
             ],
-            "description": "Wrap the Monolog library for themes and plugins in WordPress",
-            "time": "2020-08-10T10:15:53+00:00"
+            "description": "Wrap the Monolog library for WordPress themes and plugins",
+            "time": "2020-08-23T03:17:05+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
