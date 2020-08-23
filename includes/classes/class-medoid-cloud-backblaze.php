@@ -42,16 +42,16 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			if ( ! file_exists( $file ) ) {
 				throw new Exception( sprintf( 'Can not open file %s', $file ) );
 			}
-
-			$resource       = @fopen( $file, 'r' );
-			$backblaze_file = $this->get_client()->upload(
+			$new_file = preg_replace( '/\/{2,}/', '/', $new_file );
+			$resource = @fopen( $file, 'r' );
+			$b2_file  = $this->get_client()->upload(
 				array(
 					'BucketName' => $this->bucket_name,
 					'FileName'   => medoid_remove_accents_file_name( ltrim( $new_file, '/' ) ),
 					'Body'       => $resource,
 				)
 			);
-			$response->set_provider_image_id( $backblaze_file->getId() );
+			$response->set_provider_image_id( $b2_file->getId() );
 
 			$refClient          = new ReflectionClass( $this->client );
 			$downloadUrlRefProp = $refClient->getProperty( 'downloadUrl' );
@@ -62,10 +62,10 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			 *
 			 * https://<download_url>/file/<bucket_name>/<file_name>
 			 */
-			$url = sprintf( '%s/file/%s/%s', $downloadUrl, $this->bucket_name, $backblaze_file->getName() );
+			$url = sprintf( '%s/file/%s/%s', $downloadUrl, $this->bucket_name, $b2_file->getName() );
 			$response->set_url( $url );
 
-			$file_size = ! empty( $file['size'] ) ? $file['size'] : $backblaze_file->getSize();
+			$file_size = ! empty( $file['size'] ) ? $file['size'] : $b2_file->getSize();
 			$response->set( 'file_size', $file_size );
 
 			$response->set_status( true );
