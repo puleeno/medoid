@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b1091922e690e1b6333f544d8a9bb66",
+    "content-hash": "9251dc0550be76c60d84e66c5c42b0fe",
     "packages": [
         {
             "name": "medoid/backblaze-b2",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medoid/backblaze-b2.git",
-                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6"
+                "reference": "1ae76684a2285c96b06fa8b5afe03bf6b860aebd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/bd249505bba0df69b0a9134e62cc512e6c4932d6",
-                "reference": "bd249505bba0df69b0a9134e62cc512e6c4932d6",
+                "url": "https://api.github.com/repos/medoid/backblaze-b2/zipball/1ae76684a2285c96b06fa8b5afe03bf6b860aebd",
+                "reference": "1ae76684a2285c96b06fa8b5afe03bf6b860aebd",
                 "shasum": ""
             },
             "require": {
@@ -66,7 +66,7 @@
                 "filesystem",
                 "storage"
             ],
-            "time": "2020-08-20T01:07:25+00:00"
+            "time": "2020-08-22T10:31:03+00:00"
         },
         {
             "name": "nesbot/carbon",
