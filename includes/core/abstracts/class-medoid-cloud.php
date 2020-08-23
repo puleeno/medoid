@@ -72,28 +72,28 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 				);
 				continue;
 			}
-			$file = get_attached_file( $image->post_id, true );
-			if ( ! file_exists( $file ) ) {
-				Logger::get( 'medoid' )->warning(
-					sprintf(
-						'The attachment #%d is exists but the real file %s is not exists',
-						$image->post_id,
-						$file
-					)
-				);
-				continue;
-			}
-
-			$newfile = $this->make_unique_file_name( $file, $image );
-			Logger::get( 'medoid' )->info(
-				sprintf(
-					'File %s is generated a new name: %s',
-					$file,
-					$newfile
-				)
-			);
 
 			try {
+				$file = get_attached_file( $image->post_id, true );
+				if ( ! file_exists( $file ) ) {
+					throw new Exception(
+						sprintf(
+							'The attachment #%d is exists but the real file %s is not exists',
+							$image->post_id,
+							$file
+						)
+					);
+				}
+
+				$newfile = $this->make_unique_file_name( $file, $image );
+				Logger::get( 'medoid' )->info(
+					sprintf(
+						'File %s is generated a new name: %s',
+						$file,
+						$newfile
+					)
+				);
+
 				Logger::get( 'medoid' )->debug(
 					sprintf(
 						'The attachment #%d is uploading to the %s cloud',
