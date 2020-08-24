@@ -189,7 +189,7 @@ function delete_image_files_after_upload( $image, $response, $cloud ) {
 	$file         = get_attached_file( $attachment_id );
 
 	wp_delete_attachment_files( $attachment_id, $meta, $backup_sizes, $file );
-	Logger::get( 'medoid' )->notice( sprintf( 'The attachment files of #%s is deleted', $attachment_id ) );
+	Logger::get( 'medoid' )->notice( sprintf( 'The attachment files of #%s are deleted', $attachment_id ) );
 
 	// Delete medoid_backup_metadata post meta when files are deleted
 	delete_post_meta( $attachment_id, 'medoid_backup_metadata' );
