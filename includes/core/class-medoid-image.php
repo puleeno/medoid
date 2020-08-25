@@ -9,7 +9,6 @@ class Medoid_Image {
 	protected $image_cdn_url;
 	protected $image_proxy_url;
 
-	protected $image_size_text;
 	protected $image_size_array;
 
 	protected $cdn_provider;
@@ -25,8 +24,7 @@ class Medoid_Image {
 			$this->image_url = $medoid_image;
 		}
 
-		// Convert image size to medoid sizes;
-		$this->produce_image_size( $image_size );
+		$this->image_size_array = is_array( $image_size ) ? $image_size : false;
 	}
 
 	protected function check_cdn_activate() {
@@ -44,10 +42,6 @@ class Medoid_Image {
 
 	protected function check_medoid_proxy_is_active() {
 		return false;
-	}
-
-	protected function produce_image_size( $size ) {
-		return $size;
 	}
 
 	public function to_string() {
@@ -72,12 +66,21 @@ class Medoid_Image {
 			return $this->image_url;
 		}
 
-		return new $cdn_class(
+		$cdn_image = new $cdn_class(
 			$this->image_url,
 			isset( $this->medoid_image ) ? $this->medoid_image->cloud_id : null,
 			! $this->is_resize,
 			$this->cdn_options,
 		);
+
+		if ( $this->image_size_array ) {
+			$cdn_image->resize(
+				array_get( $this->image_size_array, 'width' ),
+				array_get( $this->image_size_array, 'height', false )
+			);
+		}
+
+		return $cdn_image;
 	}
 
 	public function get_proxy_image_url() {
