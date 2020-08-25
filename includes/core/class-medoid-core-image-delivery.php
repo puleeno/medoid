@@ -5,6 +5,7 @@
 class Medoid_Core_Image_Delivery {
 	protected $db;
 	protected $cdn;
+	protected $need_downsize = false;
 
 	public function __construct() {
 		$this->db      = Medoid_Core_Db::instance();
@@ -37,6 +38,9 @@ class Medoid_Core_Image_Delivery {
 	}
 
 	public function image_downsize( $downsize, $id, $size ) {
+		// Reset the need_downsize flag
+		$this->need_downsize = false;
+
 		$numeric_size = medoid_get_image_sizes( $size );
 		$active_cloud = $this->manager->get_active_cloud();
 
@@ -44,6 +48,8 @@ class Medoid_Core_Image_Delivery {
 			$medoid_image = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
 			if ( $medoid_image ) {
 				$downsize[0] = new Medoid_Image( $id, $medoid_image, $numeric_size );
+			} else {
+				$this->need_downsize = true;
 			}
 		}
 
@@ -60,11 +66,11 @@ class Medoid_Core_Image_Delivery {
 			);
 
 			if ( $medoid_image ) {
-				$image[0] = new Medoid_Image( $attachment_id, $medoid_image, $numeric_size );
+				$image[0] = new Medoid_Image( $attachment_id, $medoid_image, $numeric_size, $this->need_downsize );
 			} else {
 				$attachment = get_post( $attachment_id );
 				if ( $attachment ) {
-					$image[0] = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size );
+					$image[0] = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size, $this->need_downsize );
 				}
 			}
 

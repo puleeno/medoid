@@ -32,8 +32,8 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 			try {
 				$this->bucket_name = MEDOID_BACKBLAZE_DEFAULT_BUCKET_NAME;
 				$this->client      = new Client( $accountId, $applicationKey );
-			} catch (Throwable $e) {
-				Logger::get( 'medoid' )->error($e->getMessage());
+			} catch ( Throwable $e ) {
+				Logger::get( 'medoid' )->error( $e->getMessage() );
 			}
 		}
 
