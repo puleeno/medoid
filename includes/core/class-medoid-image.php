@@ -17,8 +17,13 @@ class Medoid_Image {
 
 	public function __construct( $attachment_id, $medoid_image, $image_size = null, $is_resize = false ) {
 		$this->attachment_id = $attachment_id;
-		$this->medoid_image  = $medoid_image;
-		$this->image_url     = $medoid_image->image_url;
+
+		if ( is_object( $medoid_image ) ) {
+			$this->image_url    = $medoid_image->image_url;
+			$this->medoid_image = $medoid_image;
+		} else {
+			$this->image_url = $medoid_image;
+		}
 
 		// Convert image size to medoid sizes;
 		$this->produce_image_size( $image_size );
@@ -29,7 +34,7 @@ class Medoid_Image {
 		if ( ! $cdn_options || ! is_array( $cdn_options ) ) {
 			return false;
 		}
-		$is_active = array_get( $cdn_options, 'is_activate', false );
+		$is_active = array_get( $cdn_options, 'is_active', false );
 
 		$this->active_cdn_provider = array_get( $cdn_options, 'cdn_provider' );
 		$this->cdn_options         = (array) array_get( $cdn_options, 'options', array() );
@@ -51,7 +56,7 @@ class Medoid_Image {
 		}
 		$this->image_cdn_url = (string) $this->get_cdn_image_url();
 		if ( ! $this->check_medoid_proxy_is_active() ) {
-			return $this->get_cdn_image_url;
+			return $this->image_cdn_url;
 		}
 		return $this->get_proxy_image_url();
 	}
@@ -63,12 +68,13 @@ class Medoid_Image {
 
 	public function get_cdn_image_url() {
 		$cdn_provider = Medoid_Core_Manager::get_instance()->get_cdn( $this->cdn_provider );
-		if ( ! $cdn_provider ) {
+		if ( ! $cdn_provider || ! ( $cdn_class = array_get( $cdn_provider, 'class_name' ) ) ) {
 			return $this->image_url;
 		}
-		return new $cdn_provider(
+
+		return new $cdn_class(
 			$this->image_url,
-			$this->medoid_image->cloud_id,
+			isset( $this->medoid_image ) ? $this->medoid_image->cloud_id : null,
 			! $this->is_resize,
 			$this->cdn_options,
 		);
