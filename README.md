@@ -10,9 +10,13 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 - [ ] Support multi clouds
 - [ ] Folder management for WordPress Media
 
-# The Cloud Platforms is supported:
+# The Cloud Platforms are supported:
 - [ ] Amazon S3
 - [ ] Google Cloud Storage
 - [ ] Imgur
 - [x] Backblaze
 - [ ] imagekit.io
+
+# CDNs are supported
+
+- [x] [Cloudimage](https://www.cloudimage.io)
