@@ -1,4 +1,4 @@
-Medoid
+Medoid Cloud Media
 =
 
 The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more
@@ -9,6 +9,7 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 - [ ] Processing image by WordPress
 - [ ] Support multi clouds
 - [ ] Folder management for WordPress Media
+- [x] Delete image files after upload
 
 # The Cloud Platforms are supported:
 - [ ] Amazon S3
