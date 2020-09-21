@@ -234,7 +234,7 @@ class Medoid_Core_Db {
 	public function delete_image_from_attachment( $attachment_id ) {
 		$image = $this->get_image_by_attachment_id( $attachment_id );
 		if ( ! empty( $image ) ) {
-			$this->delete_image( $image['ID'], null, true );
+			$this->delete_image( $image->ID, null, true );
 		}
 	}
 }
