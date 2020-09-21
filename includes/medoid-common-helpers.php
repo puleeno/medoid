@@ -18,7 +18,7 @@ function is_medoid_debug() {
 }
 
 function medoid_get_wp_image_sizes( $size ) {
-	if ( in_array( $size, array( 'thumbnail', 'medium', 'large' ) ) ) {
+	if ( in_array( $size, array( 'thumbnail', 'medium', 'medium_large', 'large' ) ) ) {
 		return array(
 			'width'  => get_option( $size . '_size_w' ),
 			'height' => get_option( $size . '_size_h' ),
