@@ -20,10 +20,10 @@ class Medoid_Core_Image_Delivery {
 
 	public function prepare_json( $response, $attachment, $meta ) {
 		$thumbnail = wp_get_attachment_image_src( $attachment->ID, array( 150, 150 ) );
-		$full_url  = wp_get_attachment_image_src( $attachment->ID);
+		$full_url  = wp_get_attachment_image_src( $attachment->ID, 'full' );
 
-		if (isset($full_url[0])  && is_a($full_url[0], Medoid_Image::class)) {
-			$response['url'] = (string)$full_url[0]->to_string();
+		if ( isset( $full_url[0] ) && is_a( $full_url[0], Medoid_Image::class ) ) {
+			$response['url'] = (string) $full_url[0]->to_string();
 		}
 
 		if ( $thumbnail ) {
