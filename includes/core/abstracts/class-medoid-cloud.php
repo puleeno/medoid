@@ -94,6 +94,13 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 					)
 				);
 
+				if ( false === $newfile ) {
+					Logger::get( 'medoid' )->debug(
+						'Has error when genrate file name. This process for this file is stopping...'
+					);
+					continue;
+				}
+
 				Logger::get( 'medoid' )->debug(
 					sprintf(
 						'The attachment #%d is uploading to the %s cloud',

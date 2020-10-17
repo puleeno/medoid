@@ -71,8 +71,13 @@ function medoid_create_file_name_unique( $new_file, $image, $medoid_cloud ) {
 		}
 		$ret = sprintf( '%s%s', $prefix, $new_file );
 
-		if ( ! $medoid_cloud instanceof Medoid_Cloud || $medoid_cloud->is_exists( $ret ) ) {
-			$ret = sprintf( '%s/%s-%s', $prefix, date( 'Y-m-d-His' ), $new_file );
+		try {
+			if ( ! $medoid_cloud instanceof Medoid_Cloud || $medoid_cloud->is_exists( $ret ) ) {
+				$ret = sprintf( '%s/%s-%s', $prefix, date( 'Y-m-d-His' ), $new_file );
+			}
+		} catch(Exception $e) {
+			Logger::get('medoid')->error($e->getMessage());
+			return false;
 		}
 
 		return $ret;
