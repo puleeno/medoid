@@ -104,8 +104,8 @@ class Medoid_Image {
 		}
 		return site_url(sprintf(
 			'images/%sx%s/%s',
-			$this->image_size_array['height'],
 			$this->image_size_array['width'],
+			$this->image_size_array['height'],
 			$this->medoid_image->alias
 		));
 	}

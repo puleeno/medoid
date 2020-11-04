@@ -62,7 +62,7 @@ class Medoid_Proxy {
 		if (!is_array($image_size)) {
 			return;
 		}
-		$db_image = $this->db->get_image_size_by_alias($alias, array($image_size['height'], $image_size['width']));
+		$db_image = $this->db->get_image_size_by_alias($alias, array($image_size['width'], $image_size['height']));
 		if ($db_image) {
 			return new Medoid_Image($db_image->post_id, $db_image, explode('x', $size));
 		}
