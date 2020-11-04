@@ -53,12 +53,18 @@ class Medoid_Image {
 		}
 
 		$this->image_cdn_url = (string) $this->get_cdn_image_url();
-		return $this->image_cdn_url;
+		if ($this->image_cdn_url) {
+			return $this->image_cdn_url;
+		}
 	}
 
 	// Create magic method to cast medoid image to string
 	public function __toString() {
-		return $this->to_string();
+		$ret = $this->to_string();
+		if (is_null($ret)) {
+			return '';
+		}
+		return $ret;
 	}
 
 	public function get_cdn_image_url() {
@@ -88,5 +94,8 @@ class Medoid_Image {
 	}
 
 	public static function getImageFromAlias( $alias ) {
+	}
+
+	public static function getImageSizeFromAlias( $alias, $image_size ) {
 	}
 }
