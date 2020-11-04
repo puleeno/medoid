@@ -41,18 +41,19 @@ class Medoid_Image {
 	}
 
 	protected function check_medoid_proxy_is_active() {
-		return false;
+		return true;
 	}
 
 	public function to_string() {
 		if ( ! $this->check_cdn_activate() ) {
 			return $this->image_url;
 		}
-		$this->image_cdn_url = (string) $this->get_cdn_image_url();
-		if ( ! $this->check_medoid_proxy_is_active() ) {
-			return $this->image_cdn_url;
+		if ( $this->check_medoid_proxy_is_active() ) {
+			return $this->get_proxy_image_url();
 		}
-		return $this->get_proxy_image_url();
+
+		$this->image_cdn_url = (string) $this->get_cdn_image_url();
+		return $this->image_cdn_url;
 	}
 
 	// Create magic method to cast medoid image to string
