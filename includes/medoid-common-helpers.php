@@ -41,6 +41,9 @@ function medoid_get_image_sizes( $size ) {
 	if ( empty( $size ) ) {
 		return false;
 	}
+	if (is_string($size) && preg_match('/\d{1,}x{1,}/', $size)) {
+		$size = explode('x', $size);
+	}
 
 	$height = 0;
 	$width  = 0;
