@@ -26,6 +26,8 @@ class Medoid_Install {
 
 		$installer->load_db_fields();
 		$installer->create_tables();
+
+		flush_rewrite_rules();
 	}
 
 	public function init_tables() {
