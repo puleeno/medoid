@@ -86,4 +86,7 @@ class Medoid_Image {
 
 	public function get_proxy_image_url() {
 	}
+
+	public static function getImageFromAlias( $alias ) {
+	}
 }
