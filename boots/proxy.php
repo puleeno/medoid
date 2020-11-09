@@ -92,8 +92,8 @@ class Medoid_Proxy {
 			return;
 		}
 		$medoid_image->create_proxy_image_content();
-
-		$image_file = download_url( (string)$medoid_image );
+		$image_url = (string)$medoid_image;
+		$image_file = download_url( $image_url );
 		header( 'Content-Type: ' . mime_content_type( $image_file ) );
 		header( 'Cache-control: max-age=' . ( 60 * 60 * 24 * 365 ) );
 		header( 'Expires: ' . gmdate( DATE_RFC1123, time() + 60 * 60 * 24 * 365 ) );
