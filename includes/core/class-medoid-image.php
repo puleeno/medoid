@@ -46,6 +46,7 @@ class Medoid_Image {
 	}
 
 	protected function check_medoid_proxy_is_active() {
+		return false;
 		if ($this->create_proxy_content) {
 			return false;
 		}
