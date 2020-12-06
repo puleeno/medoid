@@ -6,9 +6,30 @@
  */
 class Medoid_Ngx_PHP {
 	protected $image_url;
+	protected $conn;
 
 	// Load WordPress
 	public function __construct() {
+		// Load WordPress constants
+		$wp_config = sprintf( '%s/wp-config.php', ngx_request_document_root() );
+		if ( ! file_exists( $wp_config ) ) {
+			return;
+		}
+		require_once $wp_config;
+
+		$servername = constant( 'DB_HOST' );
+		$username   = constant( 'DB_USER' );
+		$password   = constant( 'DB_PASSWORD' );
+		$dbname     = constant( 'DB_NAME' );
+
+		try {
+			$conn = new PDO( "mysql:host=$servername;dbname=$dbname", $username, $password );
+			// set the PDO error mode to exception
+			$conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+			echo 'Connected successfully';
+		} catch ( PDOException $e ) {
+			echo 'Connection failed: ' . $e->getMessage();
+		}
 	}
 
 	public function load_image_url_from_database() {
