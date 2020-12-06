@@ -6,7 +6,7 @@ if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 
 if (!function_exists('ngx_request_uri')) {
 	function ngx_request_uri() {
-		return '/images/puleeno-ng-md2020-test000000001.jpg';
+		return '/image/test';
 	}
 }
 
