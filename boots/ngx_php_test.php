@@ -6,7 +6,7 @@ if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 
 if (!function_exists('ngx_request_uri')) {
 	function ngx_request_uri() {
-		return '/images/md2020-test000000001.jpg';
+		return '/images/puleeno-ng-md2020-test000000001.jpg';
 	}
 }
 
@@ -37,7 +37,7 @@ require_once dirname( __FILE__ ) . '/ngx_php.php';
 
 $ngx_php = new Medoid_Ngx_PHP();
 $ngx_php->load_image_url_from_database();
-$ngx_php->set_image_url('http://ae01.alicdn.com/kf/H3dd3c4f96caa46f890cc319ef4c6467eS.jpg');
+$ngx_php->set_image_url();
 
 var_dump( 'Is exit:' . $is_exit );
 var_dump( 'Variables:', var_export( ngx_var::$vars, true ) );

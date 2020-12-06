@@ -23,8 +23,12 @@ class Medoid_Ngx_PHP {
 
 	public function load_image_url_from_database() {
 		$request_uri = ngx_request_uri();
-		echo $request_uri;
-		die;
+
+		if ($request_uri === '/images/puleeno-ng-md2020-test000000001.jpg') {
+			$this->image_url = 'http://images.pexels.com/photos/4275889/pexels-photo-4275889.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500';
+			return;
+		}
+
 
 		$servername = constant( 'DB_HOST' );
 		$username   = constant( 'DB_USER' );
