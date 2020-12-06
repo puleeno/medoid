@@ -4,6 +4,9 @@
  *
  * @link https://github.com/rryqszq4/ngx_php7
  */
+if ( ! class_exists( 'Medoid_Boots_Image_Function' ) ) {
+	require_once dirname( __FILE__ ) . '/image-function.php';
+}
 
 class Medoid_Ngx_PHP extends Medoid_Boots_Image_Function {
 	protected $image_url;
