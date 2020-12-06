@@ -6,7 +6,7 @@ if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 
 if ( ! function_exists( 'ngx_request_document_root' ) ) {
 	function ngx_request_document_root() {
-		return realpath( '../../../../' );
+		return realpath( dirname(__FILE__) . '/../../../..'  );
 	}
 }
 

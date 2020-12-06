@@ -12,7 +12,6 @@ class Medoid_Ngx_PHP {
 	public function __construct() {
 		// Load WordPress constants
 		$wp_config = sprintf( '%s/wp-config.php', ngx_request_document_root() );
-		var_dump($wp_config);
 		if ( ! file_exists( $wp_config ) ) {
 			return;
 		}
@@ -24,8 +23,6 @@ class Medoid_Ngx_PHP {
 		$username   = constant( 'DB_USER' );
 		$password   = constant( 'DB_PASSWORD' );
 		$dbname     = constant( 'DB_NAME' );
-
-		var_dump($servername);
 
 		// Create connection
 		$this->conn = mysqli_connect($servername, $username, $password);
