@@ -23,10 +23,10 @@ class Medoid_Ngx_PHP {
 		$dbname     = constant( 'DB_NAME' );
 
 		// Create connection
-		$conn = mysqli_connect($servername, $username, $password);
+		$this->conn = mysqli_connect($servername, $username, $password);
 
 		// Check connection
-		if (!$conn) {
+		if (!$this->conn) {
 			echo "Connection failed: " . mysqli_connect_error();
 			exit();
 		}
@@ -34,6 +34,8 @@ class Medoid_Ngx_PHP {
 	}
 
 	public function load_image_url_from_database() {
+		var_dump($this->conn);
+		die;
 	}
 
 	public function set_image_url() {
