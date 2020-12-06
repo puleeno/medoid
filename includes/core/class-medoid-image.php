@@ -46,11 +46,11 @@ class Medoid_Image {
 	}
 
 	protected function check_medoid_proxy_is_active() {
-		return false;
+		$is_active = true;
 		if ( $this->create_proxy_content ) {
 			return false;
 		}
-		return true;
+		return apply_filters( 'medoid_enable_proxy_url', $is_active );
 	}
 
 	public function to_string() {
