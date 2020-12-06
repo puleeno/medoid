@@ -2,7 +2,11 @@
 /**
  * This file best working in case web has proxy CDN like CloudFlare
  */
-class Medoid_Proxy {
+if ( ! class_exists( 'Medoid_Boots_Image_Function' ) ) {
+	require_once dirname( __FILE__ ) . '/image-function.php';
+}
+
+class Medoid_Proxy extends Medoid_Boots_Image_Function {
 	protected static $instance;
 
 	protected $db;
@@ -50,27 +54,14 @@ class Medoid_Proxy {
 		return $query_vars;
 	}
 
-	public function get_image_from_alias($alias) {
-		$db_image = $this->db->get_image_by_alias($alias);
-		if ($db_image) {
-			return new Medoid_Image($db_image->post_id, $db_image);
+	public function get_image_from_alias( $alias ) {
+		$db_image = $this->db->get_image_by_alias( $alias );
+		if ( $db_image ) {
+			return new Medoid_Image( $db_image->post_id, $db_image );
 		}
 	}
 
-	public function get_image_size_from_alias($alias, $size) {
-		$image_size = medoid_get_image_sizes($size);
-		if (!is_array($image_size)) {
-			return;
-		}
-		$db_image = $this->db->get_image_size_by_alias($alias, array($image_size['width'], $image_size['height']));
-		if ($db_image) {
-			return new Medoid_Image($db_image->post_id, $db_image, explode('x', $size));
-		}
-		$db_image = $this->db->get_image_by_alias($alias);
-		if ($db_image) {
-			return new Medoid_Image($db_image->post_id, $db_image, $image_size, true);
-		}
-	}
+
 
 	public function show_image_content() {
 		if ( ( $medoid_action = get_query_var( 'medoid' ) ) == '' ) {
@@ -92,7 +83,7 @@ class Medoid_Proxy {
 			return;
 		}
 		$medoid_image->create_proxy_image_content();
-		$image_url = (string)$medoid_image;
+		$image_url  = (string) $medoid_image;
 		$image_file = download_url( $image_url );
 		header( 'Content-Type: ' . mime_content_type( $image_file ) );
 		header( 'Cache-control: max-age=' . ( 60 * 60 * 24 * 365 ) );
