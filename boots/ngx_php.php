@@ -10,17 +10,18 @@ if ( ! class_exists( 'Medoid_Boots_Image_Function' ) ) {
 
 class Medoid_Ngx_PHP extends Medoid_Boots_Image_Function {
 	protected $image_url;
+	protected $db;
 
 	// Load WordPress
 	public function __construct() {
 		define( 'WP_USE_THEMES', false );
 		require_once ngx_request_document_root() . '/wp-blog-header.php';
+
+		$this->db = Medoid_Core_Db::instance();
 	}
 
 	public function load_image_url_from_database() {
-		$medoid_db = Medoid_Core_Db::instance();
-		var_dump( $medoid_db );
-		die;
+		var_dump($this->db);
 	}
 
 	public function set_image_url() {
