@@ -15,6 +15,9 @@ class Medoid_Ngx_PHP {
 		if ( ! file_exists( $wp_config ) ) {
 			return;
 		}
+		if (!defined('WP_CONTENT_DIR')) {
+			define('WP_CONTENT_DIR', sprintf('%s/wp-content/', ngx_request_document_root()));
+		}
 		require_once $wp_config;
 	}
 
