@@ -29,7 +29,6 @@ class Medoid_Ngx_PHP {
 			return;
 		}
 
-
 		$servername = constant( 'DB_HOST' );
 		$username   = constant( 'DB_USER' );
 		$password   = constant( 'DB_PASSWORD' );
