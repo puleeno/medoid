@@ -16,26 +16,20 @@ class Medoid_Ngx_PHP {
 			return;
 		}
 		require_once $wp_config;
+	}
 
+	public function load_image_url_from_database() {
 		$servername = constant( 'DB_HOST' );
 		$username   = constant( 'DB_USER' );
 		$password   = constant( 'DB_PASSWORD' );
 		$dbname     = constant( 'DB_NAME' );
 
+		var_dump($servername);
+
 		// Create connection
 		$this->conn = mysqli_connect($servername, $username, $password);
 
-		// Check connection
-		if (!$this->conn) {
-			echo "Connection failed: " . mysqli_connect_error();
-			exit();
-		}
-		echo "Connected successfully";
-	}
-
-	public function load_image_url_from_database() {
-		var_dump($this->conn);
-		die;
+		var_dump($this->conn);die;
 	}
 
 	public function set_image_url() {
