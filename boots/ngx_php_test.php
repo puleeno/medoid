@@ -1,6 +1,6 @@
 <?php
 global $is_exit;
-if ( defined( 'NGX_HTTP_NOT_FOUND' ) ) {
+if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 	define( 'NGX_HTTP_NOT_FOUND', 'NGX_HTTP_NOT_FOUND' );
 }
 
@@ -33,6 +33,5 @@ $ngx_php = new Medoid_Ngx_PHP();
 $ngx_php->load_image_url_from_database();
 $ngx_php->set_image_url();
 
-var_dump( 'Image URL:' . $image_url );
 var_dump( 'Is exit:' . $is_exit );
 var_dump( 'Variables:', var_export( ngx_var::$vars, true ) );
