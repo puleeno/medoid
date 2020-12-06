@@ -2,7 +2,7 @@
 class Medoid_Image {
 	protected $attachment_id;
 	protected $medoid_image;
-	protected $is_resize = false;
+	protected $is_resize            = false;
 	protected $create_proxy_content = false;
 
 	protected $image_url;
@@ -47,7 +47,7 @@ class Medoid_Image {
 
 	protected function check_medoid_proxy_is_active() {
 		return false;
-		if ($this->create_proxy_content) {
+		if ( $this->create_proxy_content ) {
 			return false;
 		}
 		return true;
@@ -62,7 +62,7 @@ class Medoid_Image {
 		}
 
 		$this->image_cdn_url = (string) $this->get_cdn_image_url();
-		if ($this->image_cdn_url) {
+		if ( $this->image_cdn_url ) {
 			return $this->image_cdn_url;
 		}
 	}
@@ -70,7 +70,7 @@ class Medoid_Image {
 	// Create magic method to cast medoid image to string
 	public function __toString() {
 		$ret = $this->to_string();
-		if (is_null($ret)) {
+		if ( is_null( $ret ) ) {
 			return '';
 		}
 		return $ret;
@@ -100,14 +100,16 @@ class Medoid_Image {
 	}
 
 	public function get_proxy_image_url() {
-		if (!$this->image_size_array) {
-			return site_url('images/' . $this->medoid_image->alias);
+		if ( ! $this->image_size_array ) {
+			return site_url( 'images/' . $this->medoid_image->alias );
 		}
-		return site_url(sprintf(
-			'images/%sx%s/%s',
-			$this->image_size_array['width'],
-			$this->image_size_array['height'],
-			$this->medoid_image->alias
-		));
+		return site_url(
+			sprintf(
+				'images/%sx%s/%s',
+				$this->image_size_array['width'],
+				$this->image_size_array['height'],
+				$this->medoid_image->alias
+			)
+		);
 	}
 }

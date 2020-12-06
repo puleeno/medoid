@@ -121,11 +121,11 @@ class Medoid_Core_Db {
 		);
 	}
 
-	public function get_image_size_by_alias($alias, $image_size = array(), $cloud_id = 0) {
+	public function get_image_size_by_alias( $alias, $image_size = array(), $cloud_id = 0 ) {
 		$sql = "SELECT * FROM {$this->image_size_db_table} WHERE alias=%s AND image_size=%s";
 
 		return $this->wpdb->get_row(
-			$this->wpdb->prepare( $sql, $alias, implode('x', $image_size) )
+			$this->wpdb->prepare( $sql, $alias, implode( 'x', $image_size ) )
 		);
 	}
 
