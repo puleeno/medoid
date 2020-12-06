@@ -68,6 +68,9 @@ class Medoid_Ngx_PHP {
 		}
 		// Perform an SQL query
 		$stmt = $this->conn->prepare($sql);
+		if (!$stmt) {
+			return;
+		}
 
 		$stmt->bind_param("s", $image_info['alias']);
 		$stmt->execute();
