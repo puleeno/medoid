@@ -27,7 +27,8 @@ class Medoid_Ngx_PHP {
 
 		// Check connection
 		if (!$conn) {
-			die("Connection failed: " . mysqli_connect_error());
+			echo "Connection failed: " . mysqli_connect_error();
+			exit();
 		}
 		echo "Connected successfully";
 	}
