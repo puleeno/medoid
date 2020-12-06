@@ -22,6 +22,10 @@ class Medoid_Ngx_PHP {
 	}
 
 	public function load_image_url_from_database() {
+		$request_uri = ngx_request_uri();
+		echo $request_uri;
+		die;
+
 		$servername = constant( 'DB_HOST' );
 		$username   = constant( 'DB_USER' );
 		$password   = constant( 'DB_PASSWORD' );
@@ -29,8 +33,6 @@ class Medoid_Ngx_PHP {
 
 		// Create connection
 		$this->conn = mysqli_connect($servername, $username, $password);
-
-		var_dump($this->conn);die;
 	}
 
 	public function set_image_url() {
