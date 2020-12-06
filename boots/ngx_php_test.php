@@ -6,6 +6,12 @@ if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 
 if (!function_exists('ngx_request_uri')) {
 	function ngx_request_uri() {
+		if (isset($_SERVER['argv'])) {
+			array_shift($_SERVER['argv']);
+			if (!empty($_SERVER['argv'])) {
+				return $_SERVER['argv'][0];
+			}
+		}
 		return '/image/test';
 	}
 }
