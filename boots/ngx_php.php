@@ -92,6 +92,12 @@ class Medoid_Ngx_PHP {
 		$stmt->close();
 	}
 
+	public function convert_url_image_https_to_http() {
+		if ($this->image_url) {
+			$this->image_url = preg_replace('/^https\:/', 'http:', $this->image_url);
+		}
+	}
+
 	public function set_image_url() {
 		if ( empty( $this->image_url ) ) {
 			ngx_exit( NGX_HTTP_NOT_FOUND );
