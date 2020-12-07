@@ -193,7 +193,6 @@ class Medoid_Core_Db {
 			'image_url'       => $image_url,
 			'cdn_image_url'   => $cdn_image_url,
 			'proxy_image_url' => $proxy_image_url,
-			'is_uploaded'     => $cdn_image_url || $proxy_image_url,
 			'created_at'      => $current_time,
 			'updated_at'      => $$current_time,
 		);
