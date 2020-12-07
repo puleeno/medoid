@@ -194,7 +194,7 @@ class Medoid_Core_Db {
 			'cdn_image_url'   => $cdn_image_url,
 			'proxy_image_url' => $proxy_image_url,
 			'created_at'      => $current_time,
-			'updated_at'      => $$current_time,
+			'updated_at'      => $current_time,
 		);
 
 		try {
