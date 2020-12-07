@@ -24,9 +24,9 @@ class Medoid_Image {
 		$this->attachment_id = $attachment_id;
 
 		if ( is_object( $medoid_image ) ) {
-			$this->image_url    = $medoid_image->image_url;
-			$this->image_id     = $medoid_image->ID;
-			$this->alias        = $medoid_image->alias;
+			$this->image_url = $medoid_image->image_url;
+			$this->image_id  = $medoid_image->ID;
+			$this->alias     = $medoid_image->alias;
 
 			$this->medoid_image = $medoid_image;
 		} else {
@@ -72,7 +72,6 @@ class Medoid_Image {
 			return $this->image_proxy_url;
 		}
 
-		$this->image_cdn_url = (string) $this->get_cdn_image_url();
 		if ( $this->image_cdn_url ) {
 			return $this->image_cdn_url;
 		}
@@ -145,18 +144,20 @@ class Medoid_Image {
 		}
 
 		$this->flag_proxy_url_is_generated = true;
-		if ( ! $this->image_size_array ) {
-			$this->image_proxy_url = site_url( 'images/' . $this->medoid_image->alias );
-		}
-		$this->image_proxy_url = site_url(
-			sprintf(
-				'images/%sx%s/%s',
-				$this->image_size_array['width'],
-				$this->image_size_array['height'],
-				$this->medoid_image->alias
-			)
-		);
 
-		return $this->image_proxy_url;
+		if ( ! $this->is_resize || ! $this->image_size_array ) {
+			$this->image_proxy_url = site_url( 'images/' . $this->medoid_image->alias );
+		} else {
+			$this->image_proxy_url = site_url(
+				sprintf(
+					'images/%sx%s/%s',
+					$this->image_size_array['width'],
+					$this->image_size_array['height'],
+					$this->medoid_image->alias
+				)
+			);
+		}
+
+		return apply_filters( 'medoid_proxy_image_url', $this->image_proxy_url );
 	}
 }

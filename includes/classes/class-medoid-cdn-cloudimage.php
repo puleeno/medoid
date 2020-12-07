@@ -7,6 +7,7 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 
 	protected $image_url;
 	protected $cloud;
+	protected $is_original_image;
 
 	protected $sizes = array();
 
@@ -14,7 +15,7 @@ class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing 
 		$cloudimage_url = $this->get_url();
 		$query_args     = array();
 
-		if ( ! empty( $this->sizes ) ) {
+		if ( ! $this->is_original_image && ! empty( $this->sizes ) ) {
 			if ( $this->sizes['width'] > 0 ) {
 				$query_args['w'] = $this->sizes['width'];
 			}
