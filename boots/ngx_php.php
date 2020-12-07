@@ -103,6 +103,11 @@ class Medoid_Ngx_PHP {
 			ngx_exit( NGX_HTTP_NOT_FOUND );
 		}
 		ngx_var::set( 'image_url', $this->image_url );
+
+		// Close MySQL connection
+		if ($this->conn) {
+			$this->conn->close();
+		}
 	}
 
 	public function get_image_url_from_result( $image ) {
