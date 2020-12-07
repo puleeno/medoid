@@ -54,7 +54,7 @@ class Medoid_Core_Image_Delivery {
 			if ( $medoid_image ) {
 				$downsize[0] = new Medoid_Image( $id, $medoid_image, $numeric_size );
 			} else {
-				$this->need_downsize = true;
+				$this->need_downsize = ! ( is_string( $size ) && in_array( $size, array( null, 'full' ) ) );
 			}
 		}
 

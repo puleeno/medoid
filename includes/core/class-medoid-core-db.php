@@ -26,7 +26,7 @@ class Medoid_Core_Db {
 	}
 
 	public function __construct() {
-		$this->wpdb = $GLOBALS['wpdb'];
+		$this->wpdb = &$GLOBALS['wpdb'];
 		$this->init_tables();
 	}
 
@@ -180,12 +180,7 @@ class Medoid_Core_Db {
 	public function delete_image_by_attachment_id( $attachment_id ) {
 	}
 
-	public function insert_image_size( $attachment_id, $image_size, $image_url, $cloud_id = 1, $proxy_image_url = null ) {
-		$image = $this->get_image_by_attachment_id( $attachment_id );
-		if ( empty( $image ) ) {
-			return;
-		}
-		$image_id     = $image->ID;
+	public function insert_image_size( $image_id, $image_size, $alias, $image_url, $cdn_image_url = null, $proxy_image_url = null ) {
 		$current_time = time();
 		if ( is_array( $image_size ) ) {
 			$image_size = implode( 'x', $image_size );
@@ -193,10 +188,12 @@ class Medoid_Core_Db {
 
 		$image_size_data = array(
 			'image_id'        => $image_id,
-			'cloud_id'        => $cloud_id,
+			'alias'           => $alias,
 			'image_size'      => $image_size,
 			'image_url'       => $image_url,
+			'cdn_image_url'   => $cdn_image_url,
 			'proxy_image_url' => $proxy_image_url,
+			'is_uploaded'     => $cdn_image_url || $proxy_image_url,
 			'created_at'      => $current_time,
 			'updated_at'      => $$current_time,
 		);
@@ -206,6 +203,21 @@ class Medoid_Core_Db {
 		} catch ( \Exception $e ) {
 			return new WP_Error( 'sql_error', $e->getMessage() );
 		}
+	}
+
+	public function insert_image_size_from_attachment( $attachment_id, $image_size, $alias, $image_url, $cdn_image_url = null, $proxy_image_url = null ) {
+		$image = $this->get_image_by_attachment_id( $attachment_id );
+		if ( empty( $image ) ) {
+			return;
+		}
+		$this->insert_image_size(
+			$image->ID,
+			$image_size,
+			$alias,
+			$image_url,
+			$cdn_image_url,
+			$proxy_image_url
+		);
 	}
 
 	public function delete_image( $image_id, $cloud_id = null, $force_delete = true ) {

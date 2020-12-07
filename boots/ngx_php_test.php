@@ -1,14 +1,14 @@
 <?php
 global $is_exit;
-if ( !defined( 'NGX_HTTP_NOT_FOUND' ) ) {
+if ( ! defined( 'NGX_HTTP_NOT_FOUND' ) ) {
 	define( 'NGX_HTTP_NOT_FOUND', 'NGX_HTTP_NOT_FOUND' );
 }
 
-if (!function_exists('ngx_request_uri')) {
+if ( ! function_exists( 'ngx_request_uri' ) ) {
 	function ngx_request_uri() {
-		if (isset($_SERVER['argv'])) {
-			array_shift($_SERVER['argv']);
-			if (!empty($_SERVER['argv'])) {
+		if ( isset( $_SERVER['argv'] ) ) {
+			array_shift( $_SERVER['argv'] );
+			if ( ! empty( $_SERVER['argv'] ) ) {
 				return $_SERVER['argv'][0];
 			}
 		}
@@ -18,7 +18,7 @@ if (!function_exists('ngx_request_uri')) {
 
 if ( ! function_exists( 'ngx_request_document_root' ) ) {
 	function ngx_request_document_root() {
-		return realpath( dirname(__FILE__) . '/../../../..'  );
+		return realpath( dirname( __FILE__ ) . '/../../../..' );
 	}
 }
 

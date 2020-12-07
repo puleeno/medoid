@@ -1,10 +1,12 @@
 <?php
 class Medoid_Image {
 	protected $attachment_id;
+	protected $image_id;
 	protected $medoid_image;
 	protected $is_resize            = false;
 	protected $create_proxy_content = false;
 
+	protected $alias;
 	protected $image_url;
 	protected $image_resize_url;
 	protected $image_cdn_url;
@@ -15,17 +17,23 @@ class Medoid_Image {
 	protected $cdn_provider;
 	protected $cdn_options = array();
 
+	protected $flag_cdn_url_is_generated   = false;
+	protected $flag_proxy_url_is_generated = false;
+
 	public function __construct( $attachment_id, $medoid_image, $image_size = null, $is_resize = false ) {
 		$this->attachment_id = $attachment_id;
 
 		if ( is_object( $medoid_image ) ) {
 			$this->image_url    = $medoid_image->image_url;
+			$this->image_id     = $medoid_image->ID;
+			$this->alias        = $medoid->alias;
 			$this->medoid_image = $medoid_image;
 		} else {
 			$this->image_url = $medoid_image;
 		}
 
 		$this->image_size_array = is_array( $image_size ) ? $image_size : false;
+		$this->is_resize        = $is_resize;
 	}
 
 	public function create_proxy_image_content() {
@@ -42,7 +50,7 @@ class Medoid_Image {
 		$this->active_cdn_provider = array_get( $cdn_options, 'cdn_provider' );
 		$this->cdn_options         = (array) array_get( $cdn_options, 'options', array() );
 
-		return $is_active;
+		return apply_filters( 'medoid_cdn_active_status', $is_active );
 	}
 
 	protected function check_medoid_proxy_is_active() {
@@ -57,8 +65,10 @@ class Medoid_Image {
 		if ( ! $this->check_cdn_activate() ) {
 			return $this->image_url;
 		}
+
 		if ( $this->check_medoid_proxy_is_active() ) {
-			return $this->get_proxy_image_url();
+			$this->image_proxy_url = $this->get_proxy_image_url();
+			return $this->image_proxy_url;
 		}
 
 		$this->image_cdn_url = (string) $this->get_cdn_image_url();
@@ -73,10 +83,36 @@ class Medoid_Image {
 		if ( is_null( $ret ) ) {
 			return '';
 		}
+
+		$image_size_str = implode(
+			'x',
+			array(
+				array_get( $this->image_size_array, 'width', 0 ),
+				array_get( $this->image_size_array, 'height', 0 ),
+			)
+		);
+
+		if ( $this->is_resize ) {
+			$db            = Medoid_Core_Db::instance();
+			$cdn_image_url = $this->get_cdn_image_url();
+
+			$db->insert_image_size(
+				$this->image_id,
+				$image_size_str,
+				sprintf( '%s/%s', $image_size_str, $this->alias ),
+				$cdn_image_url != '' ? null : $this->image_url,
+				$cdn_image_url,
+				$this->get_proxy_image_url()
+			);
+		}
 		return $ret;
 	}
 
 	public function get_cdn_image_url() {
+		if ( $this->flag_cdn_url_is_generated ) {
+			return $this->image_cdn_url;
+		}
+
 		$cdn_provider = Medoid_Core_Manager::get_instance()->get_cdn( $this->cdn_provider );
 		if ( ! $cdn_provider || ! ( $cdn_class = array_get( $cdn_provider, 'class_name' ) ) ) {
 			return $this->image_url;
@@ -96,14 +132,22 @@ class Medoid_Image {
 			);
 		}
 
-		return $cdn_image;
+		$this->flag_cdn_url_is_generated = true;
+		$this->image_cdn_url             = (string) $cdn_image;
+
+		return $this->image_cdn_url;
 	}
 
 	public function get_proxy_image_url() {
-		if ( ! $this->image_size_array ) {
-			return site_url( 'images/' . $this->medoid_image->alias );
+		if ( $this->flag_proxy_url_is_generated ) {
+			return $this->image_proxy_url;
 		}
-		return site_url(
+
+		$this->flag_proxy_url_is_generated = true;
+		if ( ! $this->image_size_array ) {
+			$this->image_proxy_url = site_url( 'images/' . $this->medoid_image->alias );
+		}
+		$this->image_proxy_url = site_url(
 			sprintf(
 				'images/%sx%s/%s',
 				$this->image_size_array['width'],
@@ -111,5 +155,7 @@ class Medoid_Image {
 				$this->medoid_image->alias
 			)
 		);
+
+		return $this->image_proxy_url;
 	}
 }
