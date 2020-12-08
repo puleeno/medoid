@@ -91,9 +91,12 @@ class Medoid_Proxy {
 			// When the image is invalid return WordPress response
 			return;
 		}
+		$retry_times = 3;
 		$medoid_image->create_proxy_image_content();
 		$image_url  = (string) $medoid_image;
-		$image_file = download_url( $image_url );
+		while (is_wp_error($image_file = download_url( $image_url )) && $retry_times >= 0) {
+			$retry_times -= 1;
+		}
 
 		header( 'Content-Type: ' . mime_content_type( $image_file ) );
 		header( 'Cache-control: max-age=' . ( 60 * 60 * 24 * 365 ) );
