@@ -63,12 +63,13 @@ class Medoid_Image {
 	}
 
 	public function to_string() {
+		$cdn_active_status = $this->check_cdn_activate();
+
 		if ( $this->check_medoid_proxy_is_active() ) {
 			$this->image_proxy_url = $this->get_proxy_image_url();
 			return $this->image_proxy_url;
 		}
-
-		if ( $this->check_cdn_activate() ) {
+		if ( $cdn_active_status ) {
 			return $this->get_cdn_image_url();
 		}
 
