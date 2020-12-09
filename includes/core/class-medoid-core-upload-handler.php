@@ -95,7 +95,7 @@ class Medoid_Core_Upload_Handler {
 		if ( is_null( $medoid_image ) ) {
 			return $filename;
 		}
-		return sprintf( '%s-%s', time(), $filename );
+		return sprintf( '%s-%s', date("YmdHis"), $filename );
 	}
 }
 
