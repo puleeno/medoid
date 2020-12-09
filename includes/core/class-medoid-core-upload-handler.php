@@ -45,20 +45,20 @@ class Medoid_Core_Upload_Handler {
 
 		$delete_local_file = apply_filters( 'medoid_delete_local_file', true );
 
-		$abspath   = constant( 'ABSPATH' );
-		$file_name = str_replace( '\\', '/', $this->result['file'] );
-
+		$upload_dir = wp_upload_dir();
+		$upload_dir = $upload_dir['basedir'] . '/';
+		$file_name  = str_replace( '\\', '/', $this->result['file'] );
 		if ( PHP_OS === 'WINNT' ) {
-			$abspath = str_replace( '\\', '/', $abspath );
+			$upload_dir = str_replace( '\\', '/', $upload_dir );
 		}
-		$file_name = str_replace( $abspath, '', $file_name );
+		$file_name = str_replace( $upload_dir, '', $file_name );
 
 		$image_data = array(
 			'post_id'           => $attachment_id,
 			'image_url'         => $this->result['url'],
 			'file_size'         => filesize( $this->result['file'] ),
-			'file_name'         => ltrim( $file_name, '/' ),
-			'alias'             => ltrim( $file_name, '/' ),
+			'file_name'         => $file_name,
+			'alias'             => $file_name,
 			'mime_type'         => $this->result['type'],
 			'delete_local_file' => $delete_local_file,
 		);
@@ -95,7 +95,7 @@ class Medoid_Core_Upload_Handler {
 		if ( is_null( $medoid_image ) ) {
 			return $filename;
 		}
-		return sprintf( '%s-%s', date("YmdHis"), $filename );
+		return sprintf( '%s-%s', date( 'YmdHis' ), $filename );
 	}
 }
 
