@@ -62,13 +62,13 @@ class Medoid_Install {
 		);
 		$this->create_tables[ $this->image_db_table ]      = array(
 			'ID'                => 'BIGINT NOT NULL AUTO_INCREMENT',
+			'alias'             => 'TEXT',
 			'cloud_id'          => 'BIGINT',
 			'post_id'           => 'BIGINT NOT NULL',
 			'provider_image_id' => 'TEXT NULL',
 			'image_url'         => 'TEXT NULL',
 			'is_uploaded'       => 'TINYINT DEFAULT 0',
 			'retry'             => 'INT DEFAULT 0',
-			'alias'             => 'TEXT NULL',
 			'proxy_image_url'   => 'TEXT NULL',
 			'cdn_image_url'     => 'TEXT NULL',
 			'file_name'         => 'VARCHAR(255)',
@@ -82,16 +82,17 @@ class Medoid_Install {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(ID)',
+			'UNIQUE KEY'        => 'image_alias_index (alias(500))',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_size_id'     => 'BIGINT NOT NULL AUTO_INCREMENT',
+			'alias'             => 'TEXT',
 			'image_id'          => 'BIGINT',
 			'image_size'        => 'VARCHAR(255)',
 			'image_url'         => 'TEXT NULL',
 			'provider_image_id' => 'TEXT NULL', // This field is used when use WordPress Native processing
 			'is_uploaded'       => 'TINYINT DEFAULT 0', // This field is used when use WordPress Native processing
 			'retry'             => 'INT DEFAULT 0', // This field is used when use WordPress Native processing
-			'alias'             => 'TEXT NULL',
 			'proxy_image_url'   => 'LONGTEXT',
 			'cdn_image_url'     => 'TEXT NULL',
 			'height'            => 'INT DEFAULT 0',
@@ -99,6 +100,7 @@ class Medoid_Install {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(image_size_id)',
+			'UNIQUE KEY'        => 'image_size_alias_index (alias(500))',
 		);
 	}
 

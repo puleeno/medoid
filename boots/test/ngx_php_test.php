@@ -18,7 +18,7 @@ if ( ! function_exists( 'ngx_request_uri' ) ) {
 
 if ( ! function_exists( 'ngx_request_document_root' ) ) {
 	function ngx_request_document_root() {
-		return realpath( dirname( __FILE__ ) . '/../../../..' );
+		return realpath( dirname( __DIR__ ) . '/../../../..' );
 	}
 }
 
@@ -39,7 +39,7 @@ if ( ! class_exists( 'ngx_var' ) ) {
 	}
 }
 
-require_once dirname( __FILE__ ) . '/ngx_php.php';
+require_once dirname( __DIR__ ) . '/ngx_php.php';
 
 $ngx_php = new Medoid_Ngx_PHP();
 $ngx_php->load_image_url_from_database();

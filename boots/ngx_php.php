@@ -6,10 +6,15 @@
  */
 class Medoid_Ngx_PHP {
 	protected $image_url;
+	protected $db_prefix;
 	protected $conn;
 
 	// Load WordPress
 	public function __construct() {
+		define('MEDOID_LOAD_CONFIG', true);
+
+		global $table_prefix;
+
 		// Load WordPress constants
 		$wp_config = sprintf( '%s/wp-config.php', ngx_request_document_root() );
 		if ( ! file_exists( $wp_config ) ) {
@@ -18,7 +23,12 @@ class Medoid_Ngx_PHP {
 		if ( ! defined( 'WP_CONTENT_DIR' ) ) {
 			define( 'WP_CONTENT_DIR', sprintf( '%s/wp-content/', ngx_request_document_root() ) );
 		}
+
+
+
 		require_once $wp_config;
+
+		$this->db_prefix = $table_prefix;
 	}
 
 	protected function detect_image_alias( $uri ) {
@@ -54,17 +64,19 @@ class Medoid_Ngx_PHP {
 		// Create connection
 		$this->conn = mysqli_connect( $servername, $username, $password, $dbname );
 
+
 		if ( $this->conn->connect_errno ) {
 			error_log( $mysqli->connect_error );
 			return;
 		}
+		mysqli_report(MYSQLI_REPORT_ALL);
 
-		global $table_prefix;
+
 
 		if ( $image_info['is_crop_image'] ) {
-			$sql = "SELECT * FROM {$table_prefix}medoid_image_sizes WHERE alias=? LIMIT 1";
+			$sql = "SELECT * FROM {$this->db_prefix}medoid_image_sizes WHERE alias=? LIMIT 1";
 		} else {
-			$sql = "SELECT * FROM {$table_prefix}medoid_images WHERE alias=? LIMIT 1";
+			$sql = "SELECT * FROM {$this->db_prefix}medoid_images WHERE alias=? LIMIT 1";
 		}
 		// Perform an SQL query
 		$stmt = $this->conn->prepare( $sql );
@@ -76,6 +88,7 @@ class Medoid_Ngx_PHP {
 		$stmt->execute();
 
 		$result = $stmt->get_result();
+
 
 		if ( mysqli_num_rows( $result ) <= 0 ) {
 			$result->free_result();
