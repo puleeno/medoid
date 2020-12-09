@@ -113,8 +113,11 @@ class Medoid_Core_Db {
 		);
 	}
 
-	public function get_image_by_alias( $alias, $cloud_id = 0 ) {
-		$sql = "SELECT * FROM {$this->image_db_table} WHERE alias=%s AND is_deleted=0";
+	public function get_image_by_alias( $alias, $fields = '*', $cloud_id = 0 ) {
+		if ( is_array( $fields ) ) {
+			$fields = implode( ', ', $fields );
+		}
+		$sql = "SELECT {$fields} FROM {$this->image_db_table} WHERE alias=%s AND is_deleted=0 LIMIT 1";
 
 		return $this->wpdb->get_row(
 			$this->wpdb->prepare( $sql, $alias )

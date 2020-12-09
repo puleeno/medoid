@@ -18,6 +18,8 @@ class Medoid_Core_Upload_Handler {
 
 	public function init() {
 		$this->db = Medoid_Core_Db::instance();
+
+		add_filter( 'wp_unique_filename', array( $this, 'check_and_create_new_unique_filename' ), 10, 3 );
 	}
 
 	public function init_hooks() {
@@ -43,11 +45,20 @@ class Medoid_Core_Upload_Handler {
 
 		$delete_local_file = apply_filters( 'medoid_delete_local_file', true );
 
+		$abspath   = constant( 'ABSPATH' );
+		$file_name = str_replace( '\\', '/', $this->result['file'] );
+
+		if ( PHP_OS === 'WINNT' ) {
+			$abspath = str_replace( '\\', '/', $abspath );
+		}
+		$file_name = str_replace( $abspath, '', $file_name );
+
 		$image_data = array(
 			'post_id'           => $attachment_id,
 			'image_url'         => $this->result['url'],
 			'file_size'         => filesize( $this->result['file'] ),
-			'file_name'         => str_replace( ABSPATH, '', $this->result['file'] ),
+			'file_name'         => ltrim( $file_name, '/' ),
+			'alias'             => ltrim( $file_name, '/' ),
 			'mime_type'         => $this->result['type'],
 			'delete_local_file' => $delete_local_file,
 		);
@@ -71,6 +82,20 @@ class Medoid_Core_Upload_Handler {
 
 	public function delete_image( $attachment_id ) {
 		$this->db->delete_image_from_attachment( $attachment_id );
+	}
+
+	public function check_and_create_new_unique_filename( $filename, $ext, $dir ) {
+		$alias        = str_replace(
+			WP_CONTENT_DIR,
+			'',
+			sprintf( '%s/%s', $dir, $filename )
+		);
+		$alias        = rtrim( $alias, '/' );
+		$medoid_image = $this->db->get_image_by_alias( $alias, array( 'ID' ) );
+		if ( is_null( $medoid_image ) ) {
+			return $filename;
+		}
+		return sprintf( '%s-%s', time(), $filename );
 	}
 }
 

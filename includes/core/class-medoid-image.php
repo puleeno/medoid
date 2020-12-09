@@ -25,7 +25,7 @@ class Medoid_Image {
 
 		if ( is_object( $medoid_image ) ) {
 			$this->image_url = $medoid_image->image_url;
-			$this->image_id  = isset($medoid_image->image_id) ? $medoid_image->image_id : $medoid_image->ID;
+			$this->image_id  = isset( $medoid_image->image_id ) ? $medoid_image->image_id : $medoid_image->ID;
 			$this->alias     = $medoid_image->alias;
 
 			$this->medoid_image = $medoid_image;
