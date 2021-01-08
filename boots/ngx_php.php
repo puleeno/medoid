@@ -11,7 +11,7 @@ class Medoid_Ngx_PHP {
 
 	// Load WordPress
 	public function __construct() {
-		define('MEDOID_LOAD_CONFIG', true);
+		define( 'MEDOID_LOAD_CONFIG', true );
 
 		global $table_prefix;
 
@@ -23,8 +23,6 @@ class Medoid_Ngx_PHP {
 		if ( ! defined( 'WP_CONTENT_DIR' ) ) {
 			define( 'WP_CONTENT_DIR', sprintf( '%s/wp-content/', ngx_request_document_root() ) );
 		}
-
-
 
 		require_once $wp_config;
 
@@ -64,14 +62,11 @@ class Medoid_Ngx_PHP {
 		// Create connection
 		$this->conn = mysqli_connect( $servername, $username, $password, $dbname );
 
-
 		if ( $this->conn->connect_errno ) {
 			error_log( $mysqli->connect_error );
 			return;
 		}
-		mysqli_report(MYSQLI_REPORT_ALL);
-
-
+		mysqli_report( MYSQLI_REPORT_ALL );
 
 		if ( $image_info['is_crop_image'] ) {
 			$sql = "SELECT * FROM {$this->db_prefix}medoid_image_sizes WHERE alias=? LIMIT 1";
@@ -89,7 +84,6 @@ class Medoid_Ngx_PHP {
 
 		$result = $stmt->get_result();
 
-
 		if ( mysqli_num_rows( $result ) <= 0 ) {
 			$result->free_result();
 			$stmt->close();
@@ -106,8 +100,8 @@ class Medoid_Ngx_PHP {
 	}
 
 	public function convert_url_image_https_to_http() {
-		if ($this->image_url) {
-			$this->image_url = preg_replace('/^https\:/', 'http:', $this->image_url);
+		if ( $this->image_url ) {
+			$this->image_url = preg_replace( '/^https\:/', 'http:', $this->image_url );
 		}
 	}
 
@@ -118,7 +112,7 @@ class Medoid_Ngx_PHP {
 		ngx_var::set( 'image_url', $this->image_url );
 
 		// Close MySQL connection
-		if ($this->conn) {
+		if ( $this->conn ) {
 			$this->conn->close();
 		}
 	}
