@@ -52,7 +52,8 @@ class Medoid_Core_Image_Delivery {
 		if ( empty( $downsize ) ) {
 			$medoid_image = $this->db->get_image_size_by_attachment_id( $id, $size, $active_cloud->get_id() );
 			if ( $medoid_image ) {
-				$downsize[0] = new Medoid_Image( $id, $medoid_image, $numeric_size );
+				$downsize[0] = Medoid_Image::create_image( $id, $medoid_image, $numeric_size );
+				$downsize[0]->set_resized( true );
 			} else {
 				$this->need_downsize = ! ( is_string( $size ) && in_array( $size, array( null, 'full' ) ) );
 			}
@@ -63,10 +64,10 @@ class Medoid_Core_Image_Delivery {
 
 	public function get_image_src( $image, $attachment_id, $size ) {
 		if ( false === array_get( $image, 3, false ) ) {
-			$cached_image_url = Medoid_Cache::get_image_cache($attachment_id, $size);
+			$cached_image_url = Medoid_Cache::get_image_cache( $attachment_id, $size );
 			$numeric_size     = medoid_get_image_sizes( $size );
 
-			if (!$cached_image_url) {
+			if ( ! $cached_image_url ) {
 				$active_cloud    = $this->manager->get_active_cloud();
 				$medoid_db_image = $this->db->get_image_by_attachment_id(
 					$attachment_id,
@@ -75,14 +76,14 @@ class Medoid_Core_Image_Delivery {
 
 				$medoid_image = false;
 				if ( $medoid_db_image ) {
-					$medoid_image = new Medoid_Image( $attachment_id, $medoid_db_image, $numeric_size, $this->need_downsize );
+					$medoid_image = Medoid_Image::create_image( $attachment_id, $medoid_db_image, $numeric_size, $this->need_downsize );
 				} else {
 					$attachment = get_post( $attachment_id );
 					if ( $attachment ) {
-						$medoid_image = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size, $this->need_downsize );
+						$medoid_image = Medoid_Image::create_image( $attachment_id, $attachment->guid, $numeric_size, $this->need_downsize );
 					}
 				}
-				if ($medoid_image) {
+				if ( $medoid_image ) {
 					$image[0] = $medoid_image;
 					Medoid_Cache::set_image_cache( $attachment_id, $size, $medoid_image );
 				}

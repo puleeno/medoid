@@ -53,7 +53,7 @@ class Medoid_Proxy {
 	public function get_image_from_alias( $alias ) {
 		$db_image = $this->db->get_image_by_alias( $alias );
 		if ( $db_image ) {
-			return new Medoid_Image( $db_image->post_id, $db_image );
+			return Medoid_Image::create_image( $db_image->post_id, $db_image );
 		}
 	}
 
@@ -64,11 +64,11 @@ class Medoid_Proxy {
 		}
 		$db_image = $this->db->get_image_size_by_alias( $alias, array( $image_size['width'], $image_size['height'] ) );
 		if ( $db_image ) {
-			return new Medoid_Image( $db_image->post_id, $db_image, explode( 'x', $size ) );
+			return Medoid_Image::create_image( $db_image->post_id, $db_image, explode( 'x', $size ) );
 		}
 		$db_image = $this->db->get_image_by_alias( $alias );
 		if ( $db_image ) {
-			return new Medoid_Image( $db_image->post_id, $db_image, $image_size, true );
+			return Medoid_Image::create_image( $db_image->post_id, $db_image, $image_size, true );
 		}
 	}
 
@@ -93,8 +93,8 @@ class Medoid_Proxy {
 		}
 		$retry_times = 3;
 		$medoid_image->create_proxy_image_content();
-		$image_url  = (string) $medoid_image;
-		while (is_wp_error($image_file = download_url( $image_url )) && $retry_times >= 0) {
+		$image_url = (string) $medoid_image;
+		while ( is_wp_error( $image_file = download_url( $image_url ) ) && $retry_times >= 0 ) {
 			$retry_times -= 1;
 		}
 

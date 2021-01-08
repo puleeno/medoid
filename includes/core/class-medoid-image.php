@@ -1,9 +1,12 @@
 <?php
 class Medoid_Image {
+	protected static $medoid_instances = array();
+
 	protected $attachment_id;
 	protected $image_id;
 	protected $medoid_image;
 	protected $is_resize            = false;
+	protected $is_resized           = false;
 	protected $create_proxy_content = false;
 
 	protected $alias;
@@ -20,7 +23,25 @@ class Medoid_Image {
 	protected $flag_cdn_url_is_generated   = false;
 	protected $flag_proxy_url_is_generated = false;
 
-	public function __construct( $attachment_id, $medoid_image, $image_size = null, $is_resize = false ) {
+	public static function create_image( $attachment_id, $medoid_image, $image_size = null, $is_resize = false ) {
+		$instance_key = static::create_instance_key( $image_size );
+
+		if ( isset( static::$medoid_instances[ $attachment_id ][ $instance_key ] ) ) {
+			return static::$medoid_instances[ $attachment_id ][ $instance_key ];
+		}
+
+		if ( ! isset( static::$medoid_instances[ $attachment_id ] ) ) {
+			static::$medoid_instances[ $attachment_id ] = array();
+		}
+		return static::$medoid_instances[ $attachment_id ][ $instance_key ] = new static(
+			$attachment_id,
+			$medoid_image,
+			$image_size,
+			$is_resize
+		);
+	}
+
+	private function __construct( $attachment_id, $medoid_image, $image_size = null, $is_resize = false ) {
 		$this->attachment_id = $attachment_id;
 
 		if ( is_object( $medoid_image ) ) {
@@ -35,6 +56,29 @@ class Medoid_Image {
 
 		$this->image_size_array = is_array( $image_size ) ? $image_size : false;
 		$this->is_resize        = $is_resize;
+	}
+
+	public static function create_instance_key( $image_size = null ) {
+		switch ( gettype( $image_size ) ) {
+			case 'string':
+				return $image_size;
+			case 'array':
+				if ( isset( $image_size['height'], $image_size['width'] ) ) {
+					return sprintf( '%sx%s', $image_size['width'], $image_size['height'] );
+				} elseif ( isset( $image_size[0], $image_size[1] ) ) {
+					return sprintf( '%sx%s', $image_size[0], $image_size[1] );
+				} elseif ( isset( $image_size['height'] ) ) {
+					return sprintf( 'h_%s', $image_size['height'] );
+				} else {
+					return sprintf( 'w_%s', $image_size['width'] );
+				}
+			default:
+				return sprintf( 's_%s', (string) $image_size );
+		}
+	}
+
+	public function set_resized( $resized = false ) {
+		$this->is_resized = $resized;
 	}
 
 	public function create_proxy_image_content() {
@@ -94,7 +138,7 @@ class Medoid_Image {
 			)
 		);
 
-		if ( $this->is_resize ) {
+		if ( $this->is_resize && ! $this->is_resized ) {
 			$db            = Medoid_Core_Db::instance();
 			$cdn_image_url = $this->get_cdn_image_url();
 
