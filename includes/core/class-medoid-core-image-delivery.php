@@ -63,20 +63,31 @@ class Medoid_Core_Image_Delivery {
 
 	public function get_image_src( $image, $attachment_id, $size ) {
 		if ( false === array_get( $image, 3, false ) ) {
-			$numeric_size = medoid_get_image_sizes( $size );
-			$active_cloud = $this->manager->get_active_cloud();
-			$medoid_image = $this->db->get_image_by_attachment_id(
-				$attachment_id,
-				$active_cloud->get_id()
-			);
+			$cached_image_url = Medoid_Cache::get_image_cache($attachment_id, $size);
+			$numeric_size     = medoid_get_image_sizes( $size );
 
-			if ( $medoid_image ) {
-				$image[0] = new Medoid_Image( $attachment_id, $medoid_image, $numeric_size, $this->need_downsize );
-			} else {
-				$attachment = get_post( $attachment_id );
-				if ( $attachment ) {
-					$image[0] = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size, $this->need_downsize );
+			if (!$cached_image_url) {
+				$active_cloud    = $this->manager->get_active_cloud();
+				$medoid_db_image = $this->db->get_image_by_attachment_id(
+					$attachment_id,
+					$active_cloud->get_id()
+				);
+
+				$medoid_image = false;
+				if ( $medoid_db_image ) {
+					$medoid_image = new Medoid_Image( $attachment_id, $medoid_db_image, $numeric_size, $this->need_downsize );
+				} else {
+					$attachment = get_post( $attachment_id );
+					if ( $attachment ) {
+						$medoid_image = new Medoid_Image( $attachment_id, $attachment->guid, $numeric_size, $this->need_downsize );
+					}
 				}
+				if ($medoid_image) {
+					$image[0] = $medoid_image;
+					Medoid_Cache::set_image_cache( $attachment_id, $size, $medoid_image );
+				}
+			} else {
+				$image[0] = $cached_image_url;
 			}
 
 			// Override image sizes

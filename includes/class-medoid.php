@@ -69,6 +69,7 @@ final class Medoid {
 
 		// Load Medoid core
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
+		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cache.php';
 
 		// Install Medoid
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-install.php';
