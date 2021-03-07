@@ -82,7 +82,6 @@ class Medoid_Install {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(ID)',
-			'UNIQUE KEY'        => 'image_alias_index (alias(500))',
 		);
 		$this->create_tables[ $this->image_size_db_table ] = array(
 			'image_size_id'     => 'BIGINT NOT NULL AUTO_INCREMENT',
@@ -100,7 +99,6 @@ class Medoid_Install {
 			'created_at'        => 'TIMESTAMP NULL',
 			'updated_at'        => 'TIMESTAMP NULL',
 			'PRIMARY KEY'       => '(image_size_id)',
-			'UNIQUE KEY'        => 'image_size_alias_index (alias(500))',
 		);
 	}
 
