@@ -1,5 +1,10 @@
 <?php
-class Medoid_CDN_CloudImage extends Medoid_CDN implements Medoid_CDN_Processing {
+namespace Medoid\CDN;
+
+use Medoid\Abstracts\CDN;
+use Medoid\Constracts\CDN\Processing;
+
+class CloudImage extends CDN implements Processing {
 	const TYPE_NAME = 'cloudimage';
 	const VERSION   = 'v7';
 

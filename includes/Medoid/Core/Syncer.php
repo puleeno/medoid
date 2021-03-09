@@ -1,12 +1,16 @@
 <?php
-class Medoid_Core_Syncer {
+namespace Medoid\Core;
+
+use Medoid\Manager\CloudStorageManager;
+
+class Syncer {
 	protected $upload_events = array();
 	protected $sync_events   = array();
 
 	public function includes() {
 		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-response.php';
 
-		$cloud_storage = new Medoid_Cloud_Storages();
+		$cloud_storage = new CloudStorageManager();
 		$cloud_storage->init();
 		$cloud_storage->setup_clouds();
 	}
@@ -32,7 +36,7 @@ class Medoid_Core_Syncer {
 		}
 
 		try {
-			$cloud = Medoid_Cloud_Storages::get_clouds( $args['cloud_id'] );
+			$cloud = CloudStorageManager::get_clouds( $args['cloud_id'] );
 			$cloud->clone_attachments();
 			$cloud->sync_to_cloud( $args['limit_items'] );
 		} catch ( Throwable $e ) {
@@ -48,7 +52,7 @@ class Medoid_Core_Syncer {
 	}
 
 	public function setup_cron() {
-		$clouds = Medoid_Cloud_Storages::get_clouds();
+		$clouds = CloudStorageManager::get_clouds();
 		foreach ( $clouds as $cloud_id => $cloud ) {
 			if ( empty( $cloud::CLOUD_TYPE ) ) {
 				continue;

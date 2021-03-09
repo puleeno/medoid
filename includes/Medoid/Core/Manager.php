@@ -1,6 +1,9 @@
 <?php
+namespace Medoid\Core;
 
-class Medoid_Core_Manager {
+use Medoid\CDN\CloudImage;
+
+class Manager {
 	protected static $instance;
 
 	protected $cloud_providers = array();
@@ -22,11 +25,11 @@ class Medoid_Core_Manager {
 
 	private function __construct() {
 		$this->cdns       = array(
-			Medoid_CDN_CloudImage::TYPE_NAME . '_1' => array(
-				'class_name' => Medoid_CDN_CloudImage::class,
+			CloudImage::TYPE_NAME . '_1' => array(
+				'class_name' => CloudImage::class,
 			),
 		);
-		$this->active_cdn = Medoid_CDN_CloudImage::TYPE_NAME . '_1';
+		$this->active_cdn = CloudImage::TYPE_NAME . '_1';
 	}
 
 	/**

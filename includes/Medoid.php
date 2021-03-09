@@ -2,6 +2,9 @@
 use Ramphor\Logger\Logger;
 use Monolog\Logger as Monolog;
 use Monolog\Handler\StreamHandler;
+use Medoid\Installer;
+use Medoid\Core\ImageDelivery;
+use Medoid\Core\Syncer;
 
 final class Medoid {
 	protected static $instance;
@@ -30,7 +33,7 @@ final class Medoid {
 		$ramphor_logger = Logger::instance();
 		$ramphor_logger->registerLogger( 'medoid', $logger );
 
-		register_activation_hook( MEDOID_PLUGIN_FILE, array( Medoid_Install::class, 'active' ) );
+		register_activation_hook( MEDOID_PLUGIN_FILE, array( Installer::class, 'active' ) );
 		add_action( 'plugins_loaded', array( $this, 'init_hooks' ) );
 	}
 
@@ -124,11 +127,11 @@ final class Medoid {
 	public function init_hooks() {
 		add_filter( 'medoid_create_file_name_unique', 'medoid_create_file_name_unique', 10, 3 );
 
-		$medoid_image = new Medoid_Core_Image_Delivery();
+		$medoid_image = new ImageDelivery();
 		add_action( 'init', array( $medoid_image, 'init_hooks' ) );
 
 		if ( $this->is_request( 'cron' ) ) {
-			$medoid_syncer = new Medoid_Core_Syncer();
+			$medoid_syncer = new Syncer();
 			$medoid_syncer->includes();
 
 			add_filter( 'cron_schedules', array( $medoid_syncer, 'schedules' ) );

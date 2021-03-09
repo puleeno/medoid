@@ -1,6 +1,7 @@
 <?php
+namespace Medoid\Core;
 
-class Medoid_Core_Db {
+class DB {
 	protected static $instance;
 	protected $wpdb;
 

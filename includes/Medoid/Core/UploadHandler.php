@@ -1,5 +1,10 @@
 <?php
-class Medoid_Core_Upload_Handler {
+namespace Medoid\Core;
+
+use Medoid\Manager\CloudStorageManager;
+use Medoid\DB;
+
+class UploadHandler {
 	public static $current_post;
 	protected $db;
 	protected $result;
@@ -17,7 +22,7 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function init() {
-		$this->db = Medoid_Core_Db::instance();
+		$this->db = DB::instance();
 
 		add_filter( 'wp_unique_filename', array( $this, 'check_and_create_new_unique_filename' ), 10, 3 );
 	}
@@ -31,14 +36,14 @@ class Medoid_Core_Upload_Handler {
 	}
 
 	public function get_upload_result( $result ) {
-		$cloud_storage = new Medoid_Cloud_Storages();
+		$cloud_storage = new CloudStorageManager();
 		$cloud_storage->init();
 
 		return $this->result = $result;
 	}
 
 	public function insert_temporary_cloud_image( $attachment_id ) {
-		$clouds = Medoid_Cloud_Storages::get_active_clouds();
+		$clouds = CloudStorageManager::get_active_clouds();
 		if ( ! Medoid::is_active() || empty( $clouds ) ) {
 			return;
 		};
@@ -99,4 +104,4 @@ class Medoid_Core_Upload_Handler {
 	}
 }
 
-new Medoid_Core_Upload_Handler();
+new UploadHandler();

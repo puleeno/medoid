@@ -16,7 +16,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Medoid\\": "includes/"
-        }
+            "Medoid\\": "includes/Medoid"
+        },
+        "files": [
+            "./includes/Medoid.php"
+        ]
     }
 }

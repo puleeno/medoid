@@ -1,8 +1,13 @@
 <?php
+namespace Medoid\Cloud;
+
+use Medoid\Abstracts\Cloud;
+use Medoid\Response;
 use BackblazeB2\Client;
 use BackblazeB2\Bucket;
 
-class Medoid_Cloud_Backblaze extends Medoid_Cloud {
+
+class Backblaze extends Medoid_Cloud {
 	const CLOUD_TYPE = 'backblaze';
 
 	protected $client;
@@ -41,7 +46,7 @@ class Medoid_Cloud_Backblaze extends Medoid_Cloud {
 	}
 
 	public function upload( $file, $new_file ) {
-		$response = new Medoid_Response( $this->get_id() );
+		$response = new Response( $this->get_id() );
 		try {
 			if ( ! file_exists( $file ) ) {
 				throw new Exception( sprintf( 'Can not open file %s', $file ) );

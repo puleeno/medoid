@@ -1,6 +1,9 @@
 <?php
+namespace Medoid\Abstracts;
 
-abstract class Medoid_CDN implements Medoid_CDN_Interface {
+use Medoid\Constracts\CDN as CDNInterface;
+
+abstract class CDN implements CDNInterface {
 	const TYPE_NAME = null;
 
 	protected $image_url;

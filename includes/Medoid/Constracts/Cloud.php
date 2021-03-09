@@ -1,5 +1,7 @@
 <?php
-interface Medoid_Cloud_Interface {
+namespace Medoid\Constracts;
+
+interface Cloud {
 	public function get_name();
 
 	public function get_id();

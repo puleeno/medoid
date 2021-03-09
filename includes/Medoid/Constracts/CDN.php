@@ -1,6 +1,7 @@
 <?php
+namespace Medoid\Constracts;
 
-interface Medoid_CDN_Interface {
+interface CDN {
 	public function __toString();
 
 	public function get_name();

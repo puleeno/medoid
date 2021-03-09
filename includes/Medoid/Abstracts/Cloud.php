@@ -1,6 +1,10 @@
 <?php
+namespace Medoid\Abstracts;
 
-abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
+use Medoid\Constracts\Cloud as CloudInterface;
+use Medoid\DB;
+
+abstract class Cloud implements CloudInterface {
 	protected $db;
 	protected $_internal_cloud_id;
 	protected $options;
@@ -24,7 +28,7 @@ abstract class Medoid_Cloud implements Medoid_Cloud_Interface {
 
 	public function get_db() {
 		if ( empty( $this->db ) ) {
-			$this->db = Medoid_Core_Db::instance();
+			$this->db = DB::instance();
 		}
 		return $this->db;
 	}

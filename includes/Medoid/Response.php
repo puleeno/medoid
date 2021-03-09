@@ -1,6 +1,7 @@
 <?php
+namespace Medoid;
 
-class Medoid_Response {
+class Response {
 	protected $provider_id;
 	protected $provider_image_id;
 

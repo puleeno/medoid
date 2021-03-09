@@ -1,5 +1,7 @@
 <?php
-class Medoid_Core_Cdn_Builder {
+namespace Medoid\Core;
+
+class CDNBuilder {
 	public function create_cdn() {
 	}
 

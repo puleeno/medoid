@@ -1,4 +1,7 @@
 <?php
+use Medoid\Image;
+use Medoid\DB;
+
 /**
  * This file best working in case web has proxy CDN like CloudFlare
  */
@@ -20,7 +23,7 @@ class Medoid_Proxy {
 	}
 
 	public function init() {
-		$this->db = Medoid_Core_Db::instance();
+		$this->db = DB::instance();
 	}
 
 	public function init_hooks() {
@@ -53,7 +56,7 @@ class Medoid_Proxy {
 	public function get_image_from_alias( $alias ) {
 		$db_image = $this->db->get_image_by_alias( $alias );
 		if ( $db_image ) {
-			return Medoid_Image::create_image( $db_image->post_id, $db_image );
+			return Image::create_image( $db_image->post_id, $db_image );
 		}
 	}
 
@@ -64,11 +67,11 @@ class Medoid_Proxy {
 		}
 		$db_image = $this->db->get_image_size_by_alias( $alias, array( $image_size['width'], $image_size['height'] ) );
 		if ( $db_image ) {
-			return Medoid_Image::create_image( $db_image->post_id, $db_image, explode( 'x', $size ) );
+			return Image::create_image( $db_image->post_id, $db_image, explode( 'x', $size ) );
 		}
 		$db_image = $this->db->get_image_by_alias( $alias );
 		if ( $db_image ) {
-			return Medoid_Image::create_image( $db_image->post_id, $db_image, $image_size, true );
+			return Image::create_image( $db_image->post_id, $db_image, $image_size, true );
 		}
 	}
 

@@ -1,5 +1,7 @@
 <?php
-class Medoid_Install {
+namespace Medoid;
+
+class Installer {
 	protected static $instance;
 
 	protected $create_tables = array();

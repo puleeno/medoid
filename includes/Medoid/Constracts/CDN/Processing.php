@@ -1,5 +1,7 @@
 <?php
-interface Medoid_CDN_Processing {
+namespace Medoid\Constracts;
+
+interface CDNProcessing {
 	const PROCESSING = true;
 
 	public function resize( $width, $height = false );

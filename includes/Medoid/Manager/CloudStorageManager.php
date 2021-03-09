@@ -1,12 +1,15 @@
 <?php
+namespace Medoid\Manager;
 
-class Medoid_Cloud_Storages {
+use Medoid\DB;
+
+class CloudStorageManager {
 	protected static $clouds = array();
 	protected $query;
 	protected $db;
 
 	public function init() {
-		$this->db = Medoid_Core_Db::instance();
+		$this->db = DB::instance();
 	}
 
 	public function setup_clouds() {
@@ -54,4 +57,4 @@ class Medoid_Cloud_Storages {
 	}
 }
 
-new Medoid_Cloud_Storages();
+new CloudStorageManager();

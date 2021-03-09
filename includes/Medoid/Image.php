@@ -1,5 +1,10 @@
 <?php
-class Medoid_Image {
+namespace Medoid;
+
+use Medoid\DB;
+use Medoid\Core\Manager;
+
+class Image {
 	protected static $medoid_instances = array();
 
 	protected $attachment_id;
@@ -139,7 +144,7 @@ class Medoid_Image {
 		);
 
 		if ( $this->is_resize && ! $this->is_resized ) {
-			$db            = Medoid_Core_Db::instance();
+			$db            = DB::instance();
 			$cdn_image_url = $this->get_cdn_image_url();
 
 			$db->insert_image_size(
@@ -159,7 +164,7 @@ class Medoid_Image {
 			return $this->image_cdn_url;
 		}
 
-		$cdn_provider = Medoid_Core_Manager::get_instance()->get_cdn( $this->cdn_provider );
+		$cdn_provider = Manager::get_instance()->get_cdn( $this->cdn_provider );
 		if ( ! $cdn_provider || ! ( $cdn_class = array_get( $cdn_provider, 'class_name' ) ) ) {
 			return $this->image_url;
 		}
