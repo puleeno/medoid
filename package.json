@@ -1,0 +1,44 @@
+{
+  "name": "medoid",
+  "version": "1.0.0",
+  "description": "The media on the cloud replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary, Google Cloud Storage and more",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medoid/medoid.git"
+  },
+  "keywords": [
+    "cloud",
+    "image",
+    "media",
+    "wordpress"
+  ],
+  "author": "Puleeno Nguyen",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/medoid/medoid/issues"
+  },
+  "homepage": "https://github.com/medoid/medoid#readme",
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-react": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0"
+  },
+  "dependencies": {
+    "connected-react-router": "^6.9.1",
+    "history": "^5.0.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.0.5",
+    "redux-observable": "^1.2.0",
+    "rxjs": "^6.6.6"
+  }
+}

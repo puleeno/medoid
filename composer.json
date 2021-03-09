@@ -13,5 +13,10 @@
     "require": {
         "medoid/backblaze-b2": "1.4.2",
         "ramphor/facades": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Medoid\\": "includes/"
+        }
     }
 }
