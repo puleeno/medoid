@@ -103,5 +103,3 @@ class UploadHandler {
 		return sprintf( '%s-%s', date( 'YmdHis' ), $filename );
 	}
 }
-
-new UploadHandler();

@@ -5,6 +5,7 @@ use Monolog\Handler\StreamHandler;
 use Medoid\Installer;
 use Medoid\Core\ImageDelivery;
 use Medoid\Core\Syncer;
+use Medoid\Core\UploadHandler;
 
 final class Medoid {
 	protected static $instance;
@@ -49,64 +50,18 @@ final class Medoid {
 	}
 
 	public function includes() {
-		$composer = sprintf( '%s/vendor/autoload.php', MEDOID_ABSPATH );
-		if ( ! file_exists( $composer ) ) {
-			if ( is_admin() ) {
-				add_action( 'admin_notices', array( $this, 'composer_not_found' ) );
-			}
-			return;
-		}
-		/**
-		 * Load dependences via Composer Package Manager
-		 */
-		require_once $composer;
-
-		// Require the Medoid interfaces
-		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cloud-interface.php';
-		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-interface.php';
-		require_once MEDOID_ABSPATH . '/includes/core/interfaces/medoid-cdn-processing.php';
-
-		// Require the Medoid abstracts
-		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cloud.php';
-		require_once MEDOID_ABSPATH . '/includes/core/abstracts/class-medoid-cdn.php';
-
-		// Load Medoid core
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-db.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-cache.php';
-
-		// Install Medoid
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-install.php';
-
 		// Load medoid helpers
-		require_once MEDOID_ABSPATH . '/includes/medoid-common-helpers.php';
+		require_once MEDOID_ABSPATH . '/includes/functions.php';
 
 		// Load Medoid Admin
 		if ( $this->is_request( 'admin' ) ) {
 			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
 		}
-
-		// Only require classes when necessary
-		spl_autoload_register( array( $this, 'autoload_medoid_classes' ) );
-
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-manager.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-upload-handler.php';
-
-		if ( $this->is_request( 'cron' ) ) {
-			/**
-			 * Load the Medoid syncer
-			 * The image will be upload to Cloud Store via WordPress Cronjob
-			 *
-			 * Reference: https://developer.wordpress.org/plugins/cron/
-			 */
-			require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-syncer.php';
-		}
-
-		// Customize WordPress load the images
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-image.php';
-		require_once MEDOID_ABSPATH . '/includes/core/class-medoid-core-image-delivery.php';
 		if ( get_option( 'medoid_use_php_proxy', true ) ) {
 			require_once MEDOID_ABSPATH . '/boots/fake-proxy.php';
 		}
+
+		new UploadHandler();
 	}
 
 	private function is_request( $type ) {
@@ -154,18 +109,5 @@ final class Medoid {
 
 	public static function is_active() {
 		return true;
-	}
-
-	public function autoload_medoid_classes( $cls ) {
-		if ( ! preg_match( '/^Medoid_/', $cls ) ) {
-			return;
-		}
-		// Generate file name from class name
-		$file_name = sprintf( '%s/includes/classes/class-%s.php', MEDOID_ABSPATH, str_replace( '_', '-', strtolower( $cls ) ) );
-
-		// Check class file is exists and require
-		if ( file_exists( $file_name ) ) {
-			require_once $file_name;
-		}
 	}
 }

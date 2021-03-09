@@ -56,5 +56,3 @@ class CloudStorageManager {
 		);
 	}
 }
-
-new CloudStorageManager();
