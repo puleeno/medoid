@@ -1,10 +1,11 @@
 <?php
 namespace Medoid\Constracts;
 
-interface CDN {
-	public function __toString();
+interface CDN
+{
+    public function __toString();
 
-	public function get_name();
+    public function get_name();
 
-	public function get_url();
+    public function get_url();
 }
