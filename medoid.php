@@ -11,12 +11,19 @@
 
 define( 'MEDOID_PLUGIN_FILE', __FILE__ );
 
-if ( ! class_exists( 'Medoid' ) ) {
-	require_once dirname( __FILE__ ) . '/includes/class-medoid.php';
+if ( ! class_exists( Medoid::class ) ) {
+	$composerAutoload = sprintf('%s/vendor/autoload.php', dirname(MEDOID_PLUGIN_FILE));
+	if (file_exists($composerAutoload)) {
+		require_once $composerAutoload;
+	}
 }
 
 if ( ! function_exists( 'medoid' ) ) {
 	function medoid() {
+		if (!class_exists(Medoid::class)) {
+			error_log(__('Plugin medoid is not loaded', 'medoid'));
+			return;
+		}
 		return Medoid::instance();
 	}
 }
