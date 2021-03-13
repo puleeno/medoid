@@ -2,6 +2,7 @@
 namespace Medoid\Core;
 
 use Medoid\CDN\CloudImage;
+use Medoid\Cloud\Backblaze;
 
 class Manager {
 	protected static $instance;
@@ -40,7 +41,7 @@ class Manager {
 	public function get_cloud_providers( $refresh = false ) {
 		if ( empty( $this->cloud_providers ) || $refresh ) {
 			$default_clouds = array(
-				Medoid_Cloud_Backblaze::CLOUD_TYPE => Medoid_Cloud_Backblaze::class,
+				Backblaze::CLOUD_TYPE => Backblaze::class,
 			);
 
 			$this->cloud_providers = apply_filters(
@@ -70,7 +71,7 @@ class Manager {
 	}
 
 	public function get_active_cloud() {
-		return new Medoid_Cloud_Backblaze( 1 );
+		return new Backblaze( 1 );
 	}
 
 	public function get_all_cdn() {

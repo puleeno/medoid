@@ -7,7 +7,7 @@ use BackblazeB2\Client;
 use BackblazeB2\Bucket;
 
 
-class Backblaze extends Medoid_Cloud {
+class Backblaze extends Cloud {
 	const CLOUD_TYPE = 'backblaze';
 
 	protected $client;

@@ -2,6 +2,7 @@
 namespace Medoid\Manager;
 
 use Medoid\DB;
+use Medoid\Cloud\Backblaze;
 
 class CloudStorageManager {
 	protected static $clouds = array();
@@ -17,7 +18,7 @@ class CloudStorageManager {
 		$providers = apply_filters(
 			'medoid_cloud_providers',
 			array(
-				Medoid_Cloud_Backblaze::CLOUD_TYPE => Medoid_Cloud_Backblaze::class,
+				Backblaze::CLOUD_TYPE => Backblaze::class,
 			)
 		);
 

@@ -55,7 +55,7 @@ final class Medoid {
 
 		// Load Medoid Admin
 		if ( $this->is_request( 'admin' ) ) {
-			require_once MEDOID_ABSPATH . '/includes/admin/class-medoid-admin.php';
+			require_once MEDOID_ABSPATH . '/admin/class-medoid-admin.php';
 		}
 		if ( get_option( 'medoid_use_php_proxy', true ) ) {
 			require_once MEDOID_ABSPATH . '/boots/fake-proxy.php';

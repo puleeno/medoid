@@ -1,5 +1,7 @@
 <?php
-namespace Medoid\Core;
+namespace Medoid;
+
+use Medoid\Cloud\Backblaze;
 
 class DB {
 	protected static $instance;
@@ -51,7 +53,7 @@ class DB {
 			(object) array(
 				'ID'         => 1,
 				'name'       => 'Medoid Cloud Name',
-				'cloud_type' => Medoid_Cloud_Backblaze::CLOUD_TYPE,
+				'cloud_type' => Backblaze::CLOUD_TYPE,
 				'active'     => true,
 			),
 		);
