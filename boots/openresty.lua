@@ -52,26 +52,28 @@ function medoid.close_db(self)
 end
 
 function medoid.get_image(self, proxy_image_id)
+    local raw_sql = [[
+        SELECT
+            i.post_id,
+            i.image_url,
+            s.image_url AS image_size_url,
+            p.guid,
+            i.cdn_image_url,
+            s.cdn_image_url as cdn_image_size_url
+        FROM
+            %smedoid_images i
+            LEFT JOIN %smedoid_image_sizes s ON s.image_id = i.ID
+            INNER JOIN %sposts p ON p.ID = i.post_id
+        WHERE
+            i.alias = ?
+            OR s.alias = ?
+    ]]
+
+    raw_sql = raw_sql:format(self.configs.db.prefix, self.configs.db.prefix, self.configs.db.prefix)
+
     local sth =
         assert(
-        self.connection:prepare(
-            [[
-                SELECT
-                    i.post_id,
-                    i.image_url,
-                    s.image_url AS image_size_url,
-                    p.guid,
-                    i.cdn_image_url,
-                    s.cdn_image_url as cdn_image_size_url
-                FROM
-                    lc_medoid_images i
-                    LEFT JOIN lc_medoid_image_sizes s ON s.image_id = i.ID
-                    INNER JOIN lc_posts p ON p.ID = i.post_id
-                WHERE
-                    i.proxy_id = ?
-                    OR s.proxy_id = ?
-            ]]
-        )
+        self.connection:prepare(raw_sql)
     )
 
     -- execute select with a bind variable
