@@ -6,6 +6,7 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 # Main Features
 - [x] Replace WordPress media and use thirdparty cloud platform
 - [x] Support CDN processing via thirdparty
+- [x] Replace CDN image URL by internal proxy URL look like. https://yourdomain.com/images/<image_size>/image_file_name.jpg -> point to http://cdn-domain.com/processing-image-here.jpg?width=400&height=400
 - [ ] Processing image by WordPress
 - [ ] Support multi clouds
 - [ ] Folder management for WordPress Media
@@ -20,4 +21,4 @@ The replacement for WordPress Media to cloud services: AWS S3, Imgur, Cloudinary
 
 # CDNs are supported
 
-- [x] [Cloudimage](https://www.cloudimage.io)
+- [x] [Cloudimage](https://www.cloudimage.io/en/home?ref=puleeno&tap_s=1652729-2688cf)
