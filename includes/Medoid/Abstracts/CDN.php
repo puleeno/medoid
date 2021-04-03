@@ -26,9 +26,44 @@ abstract class CDN implements CDNInterface
         );
     }
 
+    public function __toString()
+    {
+        $cloudimage_url = $this->get_url();
+        $query_args     = array();
+
+        if (! $this->is_original_image && ! empty($this->sizes)) {
+            if ($this->sizes['width'] > 0) {
+                $query_args['w'] = $this->sizes['width'];
+            }
+            if ($this->sizes['height'] > 0) {
+                $query_args['h'] = $this->sizes['height'];
+            }
+        }
+
+        $ret = $cloudimage_url . $this->image_url;
+        if (! empty($query_args)) {
+            $ret .= '?' . http_build_query($query_args);
+        }
+
+        return apply_filters(
+            strtolower("medoid_cdn_{$this->get_name()}_image_url_output"),
+            $ret,
+            $this
+        );
+    }
+
     public function is_support($feature)
     {
         $mapping = array( $this, $feature );
         return is_callable($mapping);
+    }
+
+    public function support_http() {
+        return true;
+    }
+
+    public function convert_image_url_https_to_http()
+    {
+        // default do not run any actions
     }
 }

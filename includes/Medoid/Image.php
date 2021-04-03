@@ -195,6 +195,9 @@ class Image
         }
 
         $this->flag_cdn_url_is_generated = true;
+        if ($cdn_image->support_http()) {
+            $cdn_image->convert_image_url_https_to_http();
+        }
         $this->image_cdn_url             = (string) $cdn_image;
 
         return $this->image_cdn_url;
