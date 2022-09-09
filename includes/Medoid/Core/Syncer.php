@@ -10,8 +10,6 @@ class Syncer
 
     public function includes()
     {
-        require_once MEDOID_ABSPATH . '/includes/core/class-medoid-response.php';
-
         $cloud_storage = new CloudStorageManager();
         $cloud_storage->init();
         $cloud_storage->setup_clouds();
